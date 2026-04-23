@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Industry Trends & Insights</title>
+    <style>
+        /* Basic styling for the page and feed items */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            box-sizing: border-box; /* Include padding in element's total width and height */
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+            border-bottom: 2px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .feed-item {
+            background-color: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            word-wrap: break-word; /* Ensure long words wrap */
+        }
+        .feed-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+        .feed-item h2 {
+            color: #0056b3;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.6em;
+        }
+        .feed-item h2 a {
+            text-decoration: none;
+            color: #0056b3;
+        }
+        .feed-item h2 a:hover {
+            text-decoration: underline;
+        }
+        .feed-item p {
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 15px;
+            font-size: 1.0em;
+        }
+        .feed-meta {
+            font-size: 0.85em;
+            color: #777;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .feed-meta .source {
+            font-weight: bold;
+        }
+        .loading-indicator, .error-message {
+            text-align: center;
+            padding: 20px;
+            font-size: 1.1em;
+            color: #666;
+            display: none; /* Hidden by default */
+        }
+        .error-message {
+            color: #d9534f; /* Red for errors */
+        }
+        .refresh-button {
+            display: block;
+            margin: 20px auto 30px; /* More space below */
+            padding: 12px 25px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .refresh-button:hover {
+            background-color: #218838;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+        .refresh-button:active {
+            background-color: #1e7e34;
+            box-shadow: none;
+            transform: translateY(1px);
+        }
+        @media (max-width: 600px) {
+            .container {
+                width: 100%;
+                padding: 15px;
+            }
+            h1 {
+                font-size: 1.8em;
+            }
+            .feed-item h2 {
+                font-size: 1.3em;
+            }
+            .refresh-button {
+                width: 100%;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Industry Trends & Insights</h1>
+
+        <button class="refresh-button" id="refreshFeedBtn">Refresh Feed</button>
+
+        <div class="loading-indicator" id="loadingIndicator">Loading trends...</div>
+        <div class="error-message" id="errorMessage"></div>
+        <div class="trends-feed" id="trendsFeed">
+            </div>
+    </div>
+
+    <script>
+        const trendsFeed = document.getElementById('trendsFeed');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const errorMessage = document.getElementById('errorMessage');
+        const refreshFeedBtn = document.getElementById('refreshFeedBtn');
+
+        // This URL must match the path defined in your app1/urls.py
+        const TRENDS_API_URL = '/api/trends/'; 
+
+        async function fetchIndustryTrends() {
+            trendsFeed.innerHTML = ''; // Clear previous content
+            errorMessage.style.display = 'none'; // Hide any previous error message
+            loadingIndicator.style.display = 'block'; // Show loading indicator
+
+            try {
+                const response = await fetch(TRENDS_API_URL); // Send GET request to your API
+                if (!response.ok) {
+                    // If HTTP response is not ok (e.g., 404, 500), throw an error
+                    const errorText = await response.text(); // Get more specific error from response body
+                    throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+                }
+                const data = await response.json(); // Parse the JSON response
+
+                if (data.articles && data.articles.length > 0) {
+                    data.articles.forEach(article => {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.classList.add('feed-item');
+                        itemDiv.innerHTML = `
+                            <h2><a href="${article.url}" target="_blank" rel="noopener noreferrer">${article.title}</a></h2>
+                            <p>${article.description || 'No description available.'}</p>
+                            <div class="feed-meta">
+                                <span class="source">Source: ${article.source}</span>
+                                <span class="date">${article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : 'Date N/A'}</span>
+                            </div>
+                        `;
+                        trendsFeed.appendChild(itemDiv);
+                    });
+                } else {
+                    trendsFeed.innerHTML = '<p style="text-align: center; color: #777;">No trends found at the moment. Try refreshing or check API configuration.</p>';
+                }
+
+            } catch (error) {
+                console.error('Error fetching industry trends:', error);
+                errorMessage.textContent = `Failed to load industry trends. Please check your API key, network, or server logs. Detail: ${error.message}`;
+                errorMessage.style.display = 'block';
+            } finally {
+                loadingIndicator.style.display = 'none'; // Always hide loading indicator
+            }
+        }
+
+        // Fetch trends when the page loads
+        document.addEventListener('DOMContentLoaded', fetchIndustryTrends);
+
+        // Fetch trends when the refresh button is clicked
+        refreshFeedBtn.addEventListener('click', fetchIndustryTrends);
+
+        // Note: CSRF token is not typically required for GET requests in Django REST Framework.
+        // It would be needed for POST, PUT, DELETE requests.
+    </script>
+</body>
+</html>

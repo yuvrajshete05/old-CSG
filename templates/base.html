@@ -1,0 +1,194 @@
+<!-- templates/base.html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}CareerGuideAI{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <h1>CareerGuideAI</h1>
+        <nav>
+            <a href="{% url 'home' %}">Home</a> |
+            <a href="{% url 'profile' %}">Profile</a> |
+            <a href="{% url 'logout' %}">Logout</a>
+            <li><a href="{% url 'chatbot:ai_counselor_interface' %}">AI Counselor</a></li>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+            <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+{% endif %}
+
+    <footer>
+        <p>© 2025 CareerGuideAI</p>
+    </footer>
+</body>
+</html> -->
+
+
+{% load static %} {# This line is essential for using static files (CSS, JS, images) #}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {# This is the *single* title block that other templates will override #}
+    <title>{% block title %}CareerGuideAI - Default Title{% endblock %}</title>
+
+    {# Link to your global CSS file. Ensure you have static/css/main.css in your project or an app's static folder. #}
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+
+    {# You can add other global head elements here, like Bootstrap CSS, Font Awesome, etc. #}
+    {# Example: <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> #}
+    
+    {# Add any specific CSS for this base template here if needed #}
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5; /* Light grey background */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header {
+            background-color: #0056b3; /* Darker blue header */
+            color: white;
+            padding: 15px 20px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            background-color: #004499; /* Even darker blue for nav */
+            padding: 10px 0;
+        }
+        nav ul li {
+            margin: 0 15px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        nav ul li a:hover {
+            background-color: #003366; /* Hover effect */
+        }
+        main {
+            flex-grow: 1;
+            padding: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 15px 20px;
+            margin-top: auto; /* Pushes footer to the bottom */
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
+        }
+        .messages {
+            list-style: none;
+            padding: 10px;
+            margin: 0 0 20px 0;
+            border-radius: 5px;
+        }
+        .messages li {
+            padding: 8px 15px;
+            margin-bottom: 5px;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .messages .success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .messages .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .messages .info {
+            background-color: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .messages .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+        }
+    </style>
+
+    {# This block allows child templates to add custom CSS or meta tags to the head #}
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <header>
+        <h1>CareerGuideAI</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'chatbot:ai_counselor_interface' %}">AI Counselor</a></li>
+                {# Add more navigation links as needed #}
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'logout' %}">Logout ({{ user.username }})</a></li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'signup' %}">Sign Up</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+
+        {# This is where the content from child templates will be inserted #}
+        {% block content %}
+            {# Default content for the main area if a child template doesn't define it #}
+            <p>Welcome to CareerGuideAI!</p>
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; {% now "Y" %} CareerGuideAI. All rights reserved.</p>
+    </footer>
+
+    {# Add global JavaScript files here, e.g., Bootstrap JS #}
+    {# Example: <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script> #}
+
+    {# This block allows child templates to add custom JavaScript at the end of the body #}
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

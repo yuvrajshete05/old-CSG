@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Job & Internship Listings</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        .job-card { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 5px; }
+        .job-title { font-size: 18px; font-weight: bold; }
+        .company { color: #555; }
+        .apply-btn { margin-top: 10px; background: #28a745; color: white; padding: 5px 10px; text-decoration: none; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+    <h2>Job & Internship Listings</h2>
+
+    <form method="get">
+        <input type="text" name="search" placeholder="Search jobs..." value="{{ query }}">
+        <button type="submit">Search</button>
+    </form>
+
+    <hr>
+
+    {% for job in jobs %}
+    <div class="job-card">
+        <div class="job-title">{{ job.title }}</div>
+        <div class="company">{{ job.company_name }} — {{ job.category }}</div>
+        <p>{{ job.description|truncatechars:200 }}</p>
+        <a class="apply-btn" href="{{ job.url }}" target="_blank">Apply Now</a>
+    </div>
+    {% empty %}
+    <p>No jobs found.</p>
+    {% endfor %}
+
+</body>
+</html>

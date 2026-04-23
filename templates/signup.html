@@ -1,0 +1,539 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Modern Signup Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* Reset and base */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #1e1e2f, #282c3a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #eee;
+  }
+
+  /* Form container */
+  form {
+    margin-top: 3cm;
+    height: 15cm;
+    background: #2b2e44;
+    padding: 40px 50px;
+    border-radius: 15px;
+    width: 380px;
+    box-shadow:
+      0 8px 16px rgba(0,0,0,0.4),
+      inset 0 0 10px rgba(255,255,255,0.05);
+    position: relative;
+  }
+
+  form h3 {
+    margin-bottom: 30px;
+    font-size: 28px;
+    font-weight: 600;
+    text-align: center;
+    letter-spacing: 1px;
+    color: #f0f0f3;
+  }
+
+  /* Input wrapper for floating label */
+  .input-group {
+    position: relative;
+    margin-bottom: 35px;
+  }
+
+  /* Inputs style */
+  input {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #555a7b;
+    color: #eee;
+    font-size: 16px;
+    padding: 10px 0 8px 0;
+    transition: border-color 0.3s ease;
+  }
+
+  input::placeholder {
+    color: transparent;
+  }
+
+  input:focus {
+    outline: none;
+    border-bottom-color: #65d1ba;
+  }
+
+  /* Floating labels */
+  label {
+    position: absolute;
+    left: 0;
+    top: 10px;
+    color: #8a8c9f;
+    font-size: 16px;
+    pointer-events: none;
+    transition: 0.3s ease all;
+  }
+
+  /* Move label when input is focused or filled */
+  input:focus + label,
+  input:not(:placeholder-shown) + label {
+    top: -18px;
+    font-size: 13px;
+    color: #65d1ba;
+  }
+
+  /* Animated underline on input focus */
+  .input-group::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 0;
+    background: #65d1ba;
+    transition: 0.3s ease;
+  }
+  input:focus ~ .input-group::after,
+  input:focus + label + .input-group::after {
+    width: 100%;
+  }
+
+  /* Submit Button */
+  button {
+    width: 100%;
+    padding: 14px 0;
+    background: linear-gradient(45deg, #65d1ba, #3aa1b0);
+    border: none;
+    border-radius: 30px;
+    color: #1f2a34;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(101, 209, 186, 0.6);
+    transition: background 0.4s ease, box-shadow 0.4s ease;
+    user-select: none;
+  }
+  button:hover {
+    background: linear-gradient(45deg, #3aa1b0, #65d1ba);
+    box-shadow: 0 8px 20px rgba(101, 209, 186, 0.9);
+  }
+
+  /* Link below button */
+  a {
+    display: block;
+    margin-top: 25px;
+    text-align: center;
+    color: #65d1ba;
+    font-weight: 600;
+    text-decoration: none;
+    letter-spacing: 0.8px;
+    transition: color 0.3s ease;
+  }
+  a:hover {
+    color: #3aa1b0;
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+<h1 style="
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #f0f0f3;
+  font-family: 'Poppins', sans-serif;
+  font-size: 36px;
+  font-weight: 600;
+  text-align: center;
+">
+  Intelligent Career Guidance System
+</h1>
+
+<form action="" method="post">
+  {% csrf_token %}
+  <h3>Signup Here</h3>
+
+  {% if messages %}
+  <div style="margin-bottom: 20px;">
+    {% for message in messages %}
+      <div style="
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        {% if message.tags %}
+          {% if 'error' in message.tags %}
+            background-color: #ff6b6b;
+            color: white;
+            border: 1px solid #c92a2a;
+          {% elif 'success' in message.tags %}
+            background-color: #51cf66;
+            color: white;
+            border: 1px solid #2f9e44;
+          {% else %}
+            background-color: #4dabf7;
+            color: white;
+            border: 1px solid #1971c2;
+          {% endif %}
+        {% endif %}
+      ">
+        {{ message }}
+      </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  {% if message %}
+  <div style="
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    background-color: #ff6b6b;
+    color: white;
+    border: 1px solid #c92a2a;
+    font-size: 14px;
+  ">
+    {{ message }}
+  </div>
+  {% endif %}
+
+  <div class="input-group">
+    <input type="text" id="username" name="username" placeholder=" " required />
+    <label for="username">Username</label>
+  </div>
+
+  <div class="input-group">
+    <input type="email" id="email" name="email" placeholder=" " required />
+    <label for="email">Email </label>
+  </div>
+
+  <div class="input-group">
+    <input type="password" id="password1" name="password1" placeholder=" " required />
+    <label for="password1">Password</label>
+  </div>
+
+  <div class="input-group">
+    <input type="password" id="password2" name="password2" placeholder=" " required />
+    <label for="password2">Confirm Password</label>
+  </div>
+
+  <button type="submit">Signup</button>
+ Changed this line to use a direct path to your custom login view -->
+  <!-- <a href="/login/">I already have an account</a>
+</form>
+
+</body>
+</html>  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Signup | Intelligent Career Guidance</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet" />
+    <style>
+        /* --- Base Styles --- */
+        * { box-sizing: border-box; }
+        
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #282c3a, #1e1e2f);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #eee;
+            padding: 20px;
+        }
+
+        h1.main-title {
+            color: #f0f0f3;
+            font-size: clamp(24px, 5vw, 36px);
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* --- Form Container --- */
+        .form-card {
+            background: #2b2e44;
+            padding: 40px;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .form-card:hover {
+            transform: translateY(-5px);
+        }
+
+        h3 {
+            margin: 0 0 30px 0;
+            font-size: 26px;
+            text-align: center;
+            color: #65d1ba;
+        }
+
+        /* --- Input Groups --- */
+        .input-group {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        input {
+            width: 100%;
+            background: transparent;
+            border: none;
+            border-bottom: 2px solid #555a7b;
+            color: #fff;
+            padding: 10px 0;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        label {
+            position: absolute;
+            left: 0;
+            top: 10px;
+            color: #8a8c9f;
+            transition: 0.3s ease all;
+            pointer-events: none;
+        }
+
+        /* Interaction Logic */
+        input:focus + label,
+        input:not(:placeholder-shown) + label {
+            top: -20px;
+            font-size: 12px;
+            color: #65d1ba;
+            font-weight: 600;
+        }
+
+        input:focus {
+            border-bottom-color: #65d1ba;
+        }
+
+        /* --- Dynamic Strength Meter & Validation --- */
+        .validation-msg {
+            font-size: 11px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .error-text { color: #ff6b6b; }
+
+        /* --- Submit Button --- */
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, #65d1ba, #3aa1b0);
+            border: none;
+            border-radius: 12px;
+            color: #1f2a34;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(101, 209, 186, 0.3);
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        button:hover:not(:disabled) {
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(101, 209, 186, 0.5);
+        }
+
+        button:disabled {
+            filter: grayscale(1);
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* --- Links --- */
+        .footer-link {
+            display: block;
+            margin-top: 25px;
+            text-align: center;
+            color: #8a8c9f;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .footer-link span {
+            color: #65d1ba;
+            font-weight: 600;
+        }
+
+        .footer-link:hover span {
+            text-decoration: underline;
+        }
+
+        /* Toast Notification Styles */
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            animation: slideDown 0.4s ease-out;
+            max-width: 90%;
+            word-wrap: break-word;
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+        
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 0;
+            }
+        }
+        
+        .alert-error { 
+            background: #ff6b6b; 
+            color: white; 
+            border: 1px solid #c92a2a;
+        }
+        
+        .alert-success { 
+            background: #51cf66; 
+            color: white;
+            border: 1px solid #2f9e44;
+        }
+    </style>
+</head>
+<body>
+
+<h1 class="main-title">Intelligent Career Guidance System</h1>
+
+<div class="form-card">
+    <form id="signupForm" action="" method="post">
+        {% csrf_token %}
+        <h3>Create Account</h3>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="input-group">
+            <input type="text" id="username" name="username" placeholder=" " required />
+            <label for="username">Username</label>
+        </div>
+
+        <div class="input-group">
+            <input type="email" id="email" name="email" placeholder=" " required />
+            <label for="email">Email Address</label>
+        </div>
+
+        <div class="input-group">
+            <input type="password" id="password1" name="password1" placeholder=" " required />
+            <label for="password1">Password</label>
+        </div>
+
+        <div class="input-group" style="margin-bottom: 10px;">
+            <input type="password" id="password2" name="password2" placeholder=" " required />
+            <label for="password2">Confirm Password</label>
+            <span id="match-error" class="validation-msg error-text">Passwords do not match</span>
+        </div>
+
+        <button type="submit" id="submitBtn">Signup</button>
+        
+        <a href="/login/" class="footer-link">Already have an account? <span>Login</span></a>
+    </form>
+</div>
+
+<script>
+    // Auto-hide toast messages after 5 seconds
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+        setTimeout(() => {
+            alert.style.animation = 'fadeOut 0.4s ease-out forwards';
+            setTimeout(() => {
+                alert.remove();
+            }, 400);
+        }, 5000);
+    });
+
+    const pass1 = document.getElementById('password1');
+    const pass2 = document.getElementById('password2');
+    const errorMsg = document.getElementById('match-error');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function validatePasswords() {
+        if (pass2.value.length > 0) {
+            if (pass1.value !== pass2.value) {
+                errorMsg.style.display = 'block';
+                submitBtn.disabled = true;
+            } else {
+                errorMsg.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        } else {
+            errorMsg.style.display = 'none';
+            submitBtn.disabled = false;
+        }
+    }
+
+    pass1.addEventListener('input', validatePasswords);
+    pass2.addEventListener('input', validatePasswords);
+
+    // Simple submission animation
+    document.getElementById('signupForm').onsubmit = function() {
+        submitBtn.innerHTML = "Creating Account...";
+        submitBtn.style.opacity = "0.7";
+    };
+</script>
+
+</body>
+</html>

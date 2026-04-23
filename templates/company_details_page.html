@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    </head>
+<body class="bg-gray-950 text-gray-200 p-4 sm:p-8">
+    <div class="container mx-auto max-w-4xl my-10 p-6 sm:p-10 bg-gray-900 rounded-3xl shadow-2xl border border-gray-800">
+        <h1 class="text-3xl sm:text-4xl font-extrabold mb-4 text-center gradient-text">
+            {{ company_name }}
+        </h1>
+        
+        <p class="text-center text-lg text-gray-400 mb-8">
+            {{ summary }}
+        </p>
+
+        <div class="text-center mt-12">
+            <a href="{% url 'company_tests_page' %}" class="inline-block px-6 py-3 text-lg font-bold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-colors shadow-lg">
+                ← Back to All Companies
+            </a>
+        </div>
+    </div>
+</body>
+</html>

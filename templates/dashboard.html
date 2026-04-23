@@ -1,0 +1,908 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smarter & Cooler Career Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables for theming (refined colors) */
+        :root {
+            /* Light Theme */
+            --bg-color-light: #f0f2f5; /* Lighter background */
+            --text-color-light: #333d47;
+            --header-bg-light: #007bff; /* Primary blue */
+            --header-text-light: #ffffff;
+            --container-bg-light: #ffffff;
+            --card-bg-light: #ffffff;
+            --card-border-light: #e6e9ed;
+            --heading-color-light: #2c3e50;
+            --accent-color-light: #28a745; /* Vibrant green */
+            --sub-heading-color-light: #0056b3; /* Darker blue */
+            --progress-bg-light: #e9ecef;
+            --progress-fill-light: #28a745;
+            --skill-item-bg-light: #f1f3f5;
+            --shadow-light: rgba(0, 0, 0, 0.15); /* Slightly darker shadow */
+            --subtle-shadow-light: rgba(0, 0, 0, 0.08); /* Slightly darker subtle shadow */
+
+            /* Dark Theme */
+            --bg-color-dark: #1a202c; /* Deep charcoal */
+            --text-color-dark: #e2e8f0; /* Off-white */
+            --header-bg-dark: #2d3748; /* Darker blue-gray */
+            --header-text-dark: #ffffff;
+            --container-bg-dark: #2d3748;
+            --card-bg-dark: #3a475a; /* Slightly lighter than container for contrast */
+            --card-border-dark: #4a5568;
+            --heading-color-dark: #cbd5e0;
+            --accent-color-dark: #38c172; /* Brighter green */
+            --sub-heading-color-dark: #63b3ed; /* Lighter blue */
+            --progress-bg-dark: #4a5568;
+            --progress-fill-dark: #38c172;
+            --skill-item-bg-dark: #4a5568;
+            --shadow-dark: rgba(0, 0, 0, 0.4); /* Slightly darker shadow */
+            --subtle-shadow-dark: rgba(0, 0, 0, 0.25); /* Slightly darker subtle shadow */
+        }
+
+        /* General Body Styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color-light);
+            color: var(--text-color-light);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+            line-height: 1.6;
+            scroll-behavior: smooth; /* Smooth scrolling for anchor links */
+        }
+
+        /* Dark mode active styles */
+        body.dark-mode {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+        }
+        .dark-mode header {
+            background-color: var(--header-bg-dark);
+        }
+        .dark-mode .container {
+            background-color: var(--container-bg-dark);
+            box-shadow: 0 10px 30px var(--shadow-dark);
+        }
+        .dark-mode h2 {
+            color: var(--heading-color-dark);
+            border-bottom-color: var(--card-border-dark);
+        }
+        .dark-mode h2::after {
+            background-color: var(--accent-color-dark);
+        }
+        .dark-mode .card {
+            background-color: var(--card-bg-dark);
+            border-color: var(--card-border-dark);
+            box-shadow: 0 4px 18px var(--subtle-shadow-dark); /* Enhanced shadow */
+        }
+        .dark-mode .card:hover {
+            box-shadow: 0 15px 35px var(--shadow-dark); /* Enhanced hover shadow */
+        }
+        .dark-mode .card h3 {
+            color: var(--sub-heading-color-dark);
+        }
+        .dark-mode .card p, .dark-mode .card ul li {
+            color: var(--text-color-dark);
+        }
+        .dark-mode .card .value {
+            color: var(--accent-color-dark);
+        }
+        .dark-mode .skill-list li {
+            background-color: var(--skill-item-bg-dark);
+            color: var(--text-color-dark);
+        }
+        .dark-mode .skill-list li strong {
+            color: var(--text-color-dark);
+        }
+        .dark-mode .progress-bar-container {
+            background-color: var(--progress-bg-dark);
+        }
+        .dark-mode .progress-bar {
+            background-color: var(--progress-fill-dark);
+        }
+        .dark-mode footer {
+            background-color: var(--header-bg-dark);
+            box-shadow: 0 -4px 15px var(--shadow-dark);
+        }
+        .dark-mode .theme-toggle-button {
+             border-color: var(--header-text-dark);
+             color: var(--header-text-dark);
+        }
+        .dark-mode .theme-toggle-button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        .dark-mode .theme-toggle-button:active {
+            background-color: rgba(255, 255, 255, 0.05);
+            transform: scale(0.98);
+        }
+        .dark-mode table {
+            background-color: var(--card-bg-dark);
+            border: 1px solid var(--card-border-dark);
+            color: var(--text-color-dark);
+        }
+        .dark-mode table th, .dark-mode table td {
+            border: 1px solid var(--card-border-dark);
+        }
+        .dark-mode table th {
+            background-color: var(--subtle-shadow-dark);
+        }
+        .dark-mode .back-button {
+            background-color: var(--accent-color-dark);
+            color: var(--header-text-dark);
+            box-shadow: 0 4px 10px rgba(56, 193, 114, 0.25); /* Adjusted shadow */
+        }
+
+        .dark-mode .back-button:hover {
+            background-color: #2e9f5e; /* Slightly darker green for dark mode hover */
+            box-shadow: 0 6px 15px rgba(56, 193, 114, 0.35); /* Adjusted shadow */
+        }
+
+
+        /* Header Styles */
+        header {
+            background-color: var(--header-bg-light);
+            color: var(--header-text-light);
+            padding: 25px 40px;
+            text-align: center;
+            box-shadow: 0 4px 15px var(--shadow-light);
+            position: relative;
+            z-index: 10; /* Ensure button is above content */
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.8em;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.5px;
+            font-weight: 700;
+        }
+        header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+
+        /* Theme Toggle Button */
+        .theme-toggle-button {
+            position: absolute;
+            top: 25px;
+            right: 30px;
+            background: none;
+            border: 2px solid var(--header-text-light);
+            color: var(--header-text-light);
+            padding: 10px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, transform 0.2s ease-out;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            outline: none; /* Remove default outline */
+        }
+        .theme-toggle-button:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        .theme-toggle-button:active {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: scale(0.98);
+        }
+        .theme-toggle-button:focus-visible { /* Accessibility: focus state */
+            outline: 3px solid var(--accent-color-light);
+            outline-offset: 3px;
+        }
+        .dark-mode .theme-toggle-button:focus-visible {
+            outline: 3px solid var(--accent-color-dark);
+        }
+
+        .theme-toggle-button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Container & Grid Layout */
+        .container {
+            flex-grow: 1;
+            padding: 50px;
+            max-width: 1300px; /* Slightly wider */
+            margin: 35px auto;
+            background-color: var(--container-bg-light);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px var(--shadow-light);
+            transition: background-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+        }
+        h2 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--heading-color-light);
+            border-bottom: 1px solid var(--card-border-light); /* Softer border */
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+            font-size: 2.2em;
+            text-align: center;
+            position: relative;
+            font-weight: 700;
+        }
+        h2::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 5px;
+            background-color: var(--accent-color-light);
+            position: absolute;
+            bottom: -3px; /* Adjusted position */
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+            animation: fadeIn 0.8s ease-out; /* Simple fade-in animation */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+            to { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px; /* Increased gap */
+        }
+
+        /* Card Styles */
+        .card {
+            background-color: var(--card-bg-light);
+            border: 1px solid var(--card-border-light);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 18px var(--subtle-shadow-light); /* Enhanced shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.4s ease-in-out, border-color 0.4s ease-in-out;
+            display: flex; /* Use flexbox for internal layout */
+            flex-direction: column;
+        }
+        .card:hover {
+            transform: translateY(-12px); /* Slightly more pronounced lift */
+            box-shadow: 0 15px 35px var(--shadow-light); /* Enhanced hover shadow */
+        }
+        .card h3 {
+            color: var(--sub-heading-color-light);
+            margin-top: 0;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+        }
+        .card p {
+            line-height: 1.7;
+            color: var(--text-color-light);
+            margin-bottom: 15px;
+            flex-grow: 1; /* Makes paragraphs take available space */
+        }
+        .card .value {
+            font-size: 2.5em;
+            font-weight: 700;
+            color: var(--accent-color-light);
+            margin-top: 25px;
+            display: block;
+            text-align: center;
+            letter-spacing: 1px;
+            animation: pulse 1.5s infinite alternate; /* Subtle pulse for values */
+        }
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(1.02); opacity: 0.95; }
+        }
+
+        /* Skill List & Progress Bars */
+        .skill-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .skill-list li {
+            background-color: var(--skill-item-bg-light);
+            padding: 12px 18px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 1.05em;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+        .skill-list li:hover {
+            transform: translateX(8px); /* Slightly more pronounced slide */
+        }
+        .skill-list li strong {
+            color: var(--heading-color-light);
+            font-weight: 600;
+        }
+        .progress-bar-container {
+            background-color: var(--progress-bg-light);
+            border-radius: 5px;
+            height: 12px;
+            width: 120px; /* Slightly wider progress bars */
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .progress-bar {
+            height: 100%;
+            background-color: var(--progress-fill-light);
+            width: var(--progress-width, 0%);
+            border-radius: 5px;
+            transition: width 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Smoother animation */
+        }
+        .dark-mode .progress-bar-container {
+            box-shadow: inset 0 1px 3px rgba(255,255,255,0.1);
+        }
+
+        /* List Styling (e.g., Learning Opportunities, Courses) */
+        .card ul, .card ol {
+            list-style-position: inside;
+            padding-left: 0; /* Remove default padding for ordered/unordered lists */
+        }
+        .card ul li, .card ol li {
+            margin-bottom: 8px;
+            padding-left: 10px;
+            position: relative;
+        }
+        .card ul li::before {
+            content: '•'; /* Custom bullet point */
+            color: var(--accent-color-light);
+            font-size: 1.2em;
+            position: absolute;
+            left: 0;
+            top: 0;
+            transition: color 0.3s ease; /* Smooth transition for bullet color */
+        }
+        .dark-mode .card ul li::before {
+            color: var(--accent-color-dark);
+        }
+        .card ol li {
+            list-style-type: decimal; /* Ensure numbering for ordered lists */
+            margin-left: 1.5em; /* Indent for numbers */
+        }
+
+        /* Table Styling for Career Comparison Chart */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 25px;
+            font-size: 0.95em;
+            background-color: var(--card-bg-light);
+            border-radius: 8px;
+            overflow: hidden; /* Ensures rounded corners are applied to table content */
+            box-shadow: 0 4px 15px var(--subtle-shadow-light);
+            transition: background-color 0.4s ease-in-out, border-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+        }
+
+        table th, table td {
+            padding: 15px;
+            text-align: left;
+            border: 1px solid var(--card-border-light);
+        }
+
+        table th {
+            background-color: #f8f9fa; /* Light grey header */
+            font-weight: 600;
+            color: var(--heading-color-light);
+            font-family: 'Montserrat', sans-serif;
+            position: sticky; /* Make headers sticky for long tables */
+            top: 0;
+            z-index: 1; /* Ensure headers are above scrolling content */
+        }
+        .dark-mode table th {
+            background-color: var(--subtle-shadow-dark);
+            color: var(--heading-color-dark);
+        }
+
+
+        table tr:nth-child(even) {
+            background-color: #fdfdfd; /* Slightly different background for even rows */
+        }
+        .dark-mode table tr:nth-child(even) {
+            background-color: rgba(0,0,0,0.1); /* Darker even rows */
+        }
+
+        table tr:hover {
+            background-color: #e9ecef; /* Lighter hover for light mode table */
+            transform: scale(1.005); /* Slight scale on hover */
+            transition: background-color 0.2s ease, transform 0.2s ease;
+        }
+        .dark-mode table tr:hover {
+            background-color: var(--skill-item-bg-dark); /* Darker hover for dark mode table */
+        }
+
+
+        /* Back to Home Button Styling */
+        .back-button {
+            display: inline-flex; /* Use flexbox for icon and text alignment */
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+            margin: 40px auto 20px auto; /* Centered, with top and bottom margin */
+            padding: 12px 25px;
+            background-color: var(--accent-color-light); /* Uses accent color for consistency */
+            color: var(--header-text-light); /* White text for contrast */
+            text-decoration: none;
+            border-radius: 30px; /* Pill-shaped */
+            font-weight: 600;
+            font-size: 1.05em;
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0, 123, 255, 0.25); /* Subtle shadow */
+            outline: none; /* Remove default outline */
+        }
+
+        .back-button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 123, 255, 0.35);
+        }
+
+        .back-button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 123, 255, 0.2);
+        }
+        .back-button:focus-visible { /* Accessibility: focus state */
+            outline: 3px solid #0056b3; /* Match hover color */
+            outline-offset: 3px;
+        }
+        .dark-mode .back-button:focus-visible {
+            outline: 3px solid #2e9f5e;
+        }
+
+
+        /* Optional: Style for the house icon if you use one inside the button */
+        .back-button svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor; /* Inherit color from the button text */
+        }
+
+
+        /* Footer */
+        footer {
+            background-color: var(--header-bg-light);
+            color: var(--header-text-light);
+            text-align: center;
+            padding: 25px 40px;
+            margin-top: 60px;
+            box-shadow: 0 -4px 15px var(--shadow-light);
+            font-size: 0.95em;
+            transition: background-color 0.4s ease-in-out, box-shadow 0.4s ease-in-out;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .container {
+                padding: 30px;
+                margin: 25px auto;
+            }
+            h2 {
+                font-size: 1.8em;
+                margin-bottom: 30px;
+            }
+            .dashboard-grid {
+                gap: 25px;
+            }
+            .card {
+                padding: 25px;
+            }
+            .card h3 {
+                font-size: 1.4em;
+            }
+            .card .value {
+                font-size: 2em;
+            }
+            header h1 {
+                font-size: 2.2em;
+            }
+            header p {
+                font-size: 1em;
+            }
+            .theme-toggle-button {
+                top: 20px;
+                right: 20px;
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+            .theme-toggle-button svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            h2 {
+                font-size: 1.6em;
+            }
+            header h1 {
+                font-size: 1.8em;
+            }
+            header p {
+                font-size: 0.9em;
+            }
+            .theme-toggle-button {
+                position: static; /* Place it in flow on smaller screens */
+                margin-top: 15px;
+                display: flex;
+                justify-content: center;
+                width: fit-content;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            header {
+                padding-bottom: 20px; /* Adjust padding if button moves */
+            }
+            .card .value {
+                font-size: 1.8em;
+            }
+            .skill-list li {
+                font-size: 0.95em;
+            }
+            .progress-bar-container {
+                width: 100px;
+                height: 10px;
+            }
+             /* Responsive adjustments for the back button */
+            .back-button {
+                padding: 10px 20px;
+                font-size: 0.95em;
+                margin: 30px auto 15px auto;
+            }
+            table th, table td {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+            /* Make table columns stack or reduce in size for small screens */
+            table thead {
+                display: none; /* Hide table headers on very small screens */
+            }
+            table, table tbody, table tr, table td {
+                display: block; /* Make table elements behave like block elements */
+                width: 100%;
+            }
+            table tr {
+                margin-bottom: 15px;
+                border: 1px solid var(--card-border-light);
+                border-radius: 8px;
+                padding: 10px;
+                box-shadow: 0 2px 8px var(--subtle-shadow-light);
+                display: flex;
+                flex-direction: column; /* Stack table cells */
+            }
+            .dark-mode table tr {
+                border-color: var(--card-border-dark);
+                box-shadow: 0 2px 8px var(--subtle-shadow-dark);
+            }
+            table td {
+                border: none; /* Remove individual cell borders */
+                text-align: right; /* Align value to the right */
+                position: relative;
+                padding-left: 50%; /* Make space for pseudo-element label */
+            }
+            table td::before {
+                content: attr(data-label); /* Use data-label for the pseudo-element */
+                position: absolute;
+                left: 10px;
+                width: calc(50% - 20px); /* Adjust width */
+                padding-right: 10px;
+                white-space: nowrap;
+                text-align: left;
+                font-weight: 600;
+                color: var(--sub-heading-color-light);
+            }
+            .dark-mode table td::before {
+                color: var(--sub-heading-color-dark);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>My Career Insights Dashboard</h1>
+        <p>A snapshot of your career potential (Static Demo with Dynamic Styling)</p>
+        <button id="themeToggleButton" class="theme-toggle-button">
+            <svg class="sun-icon" style="display: block;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2.5c-.28 0-.5.22-.5.5v1c0 .28.22.5.5.5s.5-.22.5-.5v-1c0-.28-.22-.5-.5-.5zm0 18c-.28 0-.5.22-.5.5v1c0 .28.22.5.5.5s.5-.22.5-.5v-1c0-.28-.22-.5-.5-.5zM5.92 4.5l-.707-.707c-.195-.195-.512-.195-.707 0s-.195.512 0 .707l.707.707c.195.195.512.195.707 0s.195-.512 0-.707zm12.16 12.16l-.707-.707c-.195-.195-.512-.195-.707 0s-.195.512 0 .707l.707.707c.195.195.512.195.707 0s.195-.512 0-.707zM3.5 12c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5s.22.5.5.5h1c.28 0 .5-.22.5-.5zm18 0c0-.28-.22-.5-.5-.5h-1c-.28 0-.5.22-.5.5s.22.5.5.5h1c.28 0 .5-.22.5-.5zM4.5 18.08l-.707.707c-.195.195-.195.512 0 .707s.512.195.707 0l.707-.707c-.195-.195.195-.512 0-.707s-.512-.195-.707 0zm12.16-12.16l-.707.707c-.195.195-.195.512 0 .707s.512.195.707 0l.707-.707c-.195-.195.195-.512 0-.707s-.512-.195-.707 0zM12 7a5 5 0 100 10 5 5 0 000-10zm0 8a3 3 0 110-6 3 3 0 010 6z"/></svg>
+            <svg class="moon-icon" style="display: none;" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 3a9 9 0 009 9c0 4.97-4.03 9-9 9S3 16.97 3 12A9 9 0 0012 3zM6.28 6.28A7 7 0 0118.72 18.72 9 9 0 006.28 6.28z"/></svg>
+            <span>Light Mode</span>
+        </button>
+    </header>
+
+    <div class="container">
+        <h2>Your Skill Profile</h2>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>Overall Potential</h3>
+                <p>A comprehensive assessment based on your aggregated skills and interests, indicating strong aptitude for dynamic environments.</p>
+                <span class="value">Excellent</span>
+            </div>
+
+            <div class="card">
+                <h3>Recommended Path</h3>
+                <p>Based on current market demand and your core competencies, a career in **Software Development** with a specialization in AI/ML is highly recommended.</p>
+                <span class="value">Software Development</span>
+            </div>
+
+            <div class="card">
+                <h3>Confidence Score</h3>
+                <p>The system's confidence in this recommendation, derived from sophisticated pattern recognition and data analysis.</p>
+                <span class="value">92%</span>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 50px;">Detailed Skill Breakdown</h2>
+        <div class="dashboard-grid">
+            <div class="card skill-list">
+                <h3>Core Competencies</h3>
+                <ul>
+                    <li>
+                        <strong>Logic & Problem Solving</strong>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="--progress-width: 90%;"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Creativity & Innovation</strong>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="--progress-width: 75%;"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Mathematical Aptitude</strong>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="--progress-width: 85%;"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Communication Skills</strong>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="--progress-width: 80%;"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card skill-list">
+                <h3>Related Skills</h3>
+                <ul>
+                    <li>
+                        <strong>Analytical Thinking</strong>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="--progress-width: 88%;"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Attention to Detail</strong>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="--progress-width: 90%;"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Teamwork & Collaboration</strong>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="--progress-width: 70%;"></div>
+                        </div>
+                    </li>
+                    <li>
+                        <strong>Adaptability & Learning Agility</strong>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" style="--progress-width: 85%;"></div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3>Learning Opportunities</h3>
+                <p>Focus on these areas to further enhance your career trajectory:</p>
+                <ul>
+                    <li>Public Speaking & Presentation Skills</li>
+                    <li>Advanced Data Structures & Algorithms</li>
+                    <li>Digital Marketing & SEO Fundamentals</li>
+                    <li>Cloud Computing Certifications (AWS/Azure/GCP)</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 style="margin-top: 50px;">Career Trends & Insights</h2>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>Top 3 Emerging Roles (Next 5 Years)</h3>
+                <ol>
+                    <li>AI/ML Engineer & Researcher</li>
+                    <li>Cybersecurity Analyst & Consultant</li>
+                    <li>Cloud Architect & DevOps Specialist</li>
+                </ol>
+            </div>
+            <div class="card">
+                <h3>Industry Outlook: Technology Sector</h3>
+                <p>The technology sector continues to show robust growth potential globally, with a significant increase in demand for specialized skills in AI, data science, and cloud infrastructure.</p>
+                <p>Continuous learning and skill adaptation will be key for long-term success.</p>
+            </div>
+            <div class="card">
+                <h3>Recommended Courses & Certifications</h3>
+                <ul>
+                    <li>"Python for Data Science and Machine Learning" (Coursera)</li>
+                    <li>"Full Stack Web Development Bootcamp" (Udemy)</li>
+                    <li>"Machine Learning Specialization" (Stanford Online / Coursera)</li>
+                    <li>"Certified Ethical Hacker (CEH)" (EC-Council)</li>
+                </ul>
+            </div>
+        </div>
+
+        ---
+
+        <h2 style="margin-top: 50px;">Personalized Career Insight</h2>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>Your Unique Value Proposition</h3>
+                <p>Your strong analytical skills combined with exceptional creativity make you an ideal candidate for roles requiring innovative problem-solving. You possess a rare blend of logical rigor and imaginative thinking, which can lead to breakthrough solutions.</p>
+            </div>
+            <div class="card">
+                <h3>Growth Mindset Recommendation</h3>
+                <p>Embrace challenges in areas like complex system design and cross-functional team leadership. Your adaptability will allow you to quickly master new technologies and lead diverse projects effectively, especially in rapidly evolving fields.</p>
+            </div>
+            <div class="card">
+                <h3>Impact Opportunities</h3>
+                <p>Consider roles in R&D or startup environments where your innovative thinking can directly influence product development and strategic direction. You have the potential to not just execute, but to invent and redefine.</p>
+            </div>
+        </div>
+
+        ---
+
+        <h2 style="margin-top: 50px;">Alternate Career Paths</h2>
+        <div class="dashboard-grid">
+            <div class="card">
+                <h3>Data Scientist</h3>
+                <p>Leverage your mathematical aptitude and problem-solving skills to analyze large datasets, build predictive models, and extract actionable insights. High demand across various industries.</p>
+                <ul>
+                    <li>**Key Skills:** Python/R, SQL, Statistics, Machine Learning, Data Visualization.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Product Manager</h3>
+                <p>Combine your communication and analytical skills to define product vision, strategy, and roadmap. Act as the bridge between engineering, design, and business teams.</p>
+                <ul>
+                    <li>**Key Skills:** Market Research, Agile Methodologies, UX/UI Understanding, Stakeholder Management.</li>
+                </ul>
+            </div>
+            <div class="card">
+                <h3>Management Consultant</h3>
+                <p>Apply your logical and problem-solving abilities to advise organizations on strategy, operations, and technology challenges. Requires strong analytical and presentation skills.</p>
+                <ul>
+                    <li>**Key Skills:** Business Acumen, Strategic Thinking, Client Management, Presentation Skills.</li>
+                </ul>
+            </div>
+        </div>
+
+        ---
+
+        <h2 style="margin-top: 50px;">Career Comparison Chart</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Career Role</th>
+                    <th>Average Salary (Approx.)</th>
+                    <th>Growth Outlook (Next 10 Yrs)</th>
+                    <th>Core Skill Match</th>
+                    <th>Learning Curve</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td data-label="Career Role">Software Developer (AI/ML)</td>
+                    <td data-label="Average Salary (Approx.)">₹10-30 LPA</td>
+                    <td data-label="Growth Outlook (Next 10 Yrs)">Excellent (25%+)</td>
+                    <td data-label="Core Skill Match">90%</td>
+                    <td data-label="Learning Curve">Moderate to High</td>
+                </tr>
+                <tr>
+                    <td data-label="Career Role">Data Scientist</td>
+                    <td data-label="Average Salary (Approx.)">₹8-25 LPA</td>
+                    <td data-label="Growth Outlook (Next 10 Yrs)">Very Good (20-25%)</td>
+                    <td data-label="Core Skill Match">85%</td>
+                    <td data-label="Learning Curve">Moderate</td>
+                </tr>
+                <tr>
+                    <td data-label="Career Role">Product Manager</td>
+                    <td data-label="Average Salary (Approx.)">₹12-35 LPA</td>
+                    <td data-label="Growth Outlook (Next 10 Yrs)">Good (15-20%)</td>
+                    <td data-label="Core Skill Match">80%</td>
+                    <td data-label="Learning Curve">Moderate</td>
+                </tr>
+                <tr>
+                    <td data-label="Career Role">Cybersecurity Analyst</td>
+                    <td data-label="Average Salary (Approx.)">₹6-18 LPA</td>
+                    <td data-label="Growth Outlook (Next 10 Yrs)">Excellent (30%+)</td>
+                    <td data-label="Core Skill Match">75%</td>
+                    <td data-label="Learning Curve">Moderate</td>
+                </tr>
+                <tr>
+                    <td data-label="Career Role">Management Consultant</td>
+                    <td data-label="Average Salary (Approx.)">₹9-30 LPA</td>
+                    <td data-label="Growth Outlook (Next 10 Yrs)">Good (10-15%)</td>
+                    <td data-label="Core Skill Match">80%</td>
+                    <td data-label="Learning Curve">High</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+      <a href="{% url 'career_recommend' %}" class="back-button">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+        <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+    Back to form
+</a>
+
+    <a href="{% url 'career_result' %}" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Back to recommendation
+    </a>
+
+ 
+    <a href="{% url 'home' %}" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+        </svg>
+        Back to Home
+    </a>
+
+    <footer>
+        <p>&copy; 2025 Career Insights Dashboard. All rights reserved. (Static Demo)</p>
+    </footer>
+
+    <script>
+        const themeToggleButton = document.getElementById('themeToggleButton');
+        const body = document.body;
+        const sunIcon = themeToggleButton.querySelector('.sun-icon');
+        const moonIcon = themeToggleButton.querySelector('.moon-icon');
+        const buttonText = themeToggleButton.querySelector('span');
+
+        // Check for saved theme preference or default to light
+        const currentTheme = localStorage.getItem('theme');
+        if (currentTheme === 'dark-mode') {
+            body.classList.add('dark-mode');
+            sunIcon.style.display = 'none';
+            moonIcon.style.display = 'block';
+            buttonText.textContent = 'Light Mode';
+        } else {
+            body.classList.remove('dark-mode');
+            sunIcon.style.display = 'block';
+            moonIcon.style.display = 'none';
+            buttonText.textContent = 'Dark Mode';
+        }
+
+        themeToggleButton.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+
+            if (body.classList.contains('dark-mode')) {
+                localStorage.setItem('theme', 'dark-mode');
+                sunIcon.style.display = 'none';
+                moonIcon.style.display = 'block';
+                buttonText.textContent = 'Light Mode';
+            } else {
+                localStorage.setItem('theme', 'light-mode');
+                sunIcon.style.display = 'block';
+                moonIcon.style.display = 'none';
+                buttonText.textContent = 'Dark Mode';
+            }
+        });
+    </script>
+</body>
+</html>

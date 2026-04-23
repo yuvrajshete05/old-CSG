@@ -1,0 +1,2217 @@
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Home - Career Guidance</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
+    <style>
+      /* --- Global & Body Styles --- */
+      body {
+        background-color: #1a202c; /* Deep charcoal for a dark, modern look */
+        font-family: 'Poppins', sans-serif; /* Modern, readable font */
+        color: #e2e8f0; /* Off-white for readability on dark background */
+        padding-top: 70px;
+        line-height: 1.6; /* Improved readability */
+        transition: background-color 0.4s ease-in-out, color 0.4s ease-in-out;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Light Mode Styles */
+      body.light-mode {
+        background-color: #ffffff; /* White background for light mode */
+        color: #2d3748; /* Darker text for light mode */
+      }
+
+      body.light-mode .navbar {
+        background: #f8f9fa; /* Light background for navbar */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      body.light-mode .navbar-brand {
+        color: #2d3748 !important;
+      }
+
+      body.light-mode .navbar-nav .nav-link {
+        color: #4a5568 !important; /* Darker links in light mode */
+      }
+
+      body.light-mode .navbar-nav .nav-link:hover {
+        background-color: rgba(0, 0, 0, 0.05); /* Lighter hover for links */
+        color: #2d3748 !important;
+      }
+      
+      body.light-mode .features-section h2, 
+      body.light-mode .testimonials-section h2, 
+      body.light-mode .popular-careers h2, 
+      body.light-mode .news-section h2, 
+      body.light-mode .search-section h2, 
+      body.light-mode .contact-section h2, 
+      body.light-mode .assessment-section h2, 
+      body.light-mode .how-it-works-section h2, 
+      body.light-mode .social-links-section h2 {
+          color: #2d3748; /* Darker headings in light mode */
+      }
+
+      body.light-mode .feature-box, body.light-mode .testimonial-box, body.light-mode .career-box, body.light-mode .news-box {
+        background: #ffffff; /* White card background */
+        border: 1px solid #e2e8f0; /* Lighter border */
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      body.light-mode .feature-box p, body.light-mode .career-box p, body.light-mode .news-box p, body.light-mode .testimonial-box p {
+        color: #4a5568; /* Darker text in light mode cards */
+      }
+
+      body.light-mode .search-section {
+        background-color: #f0f4f8; /* Lighter background for search section */
+      }
+
+      body.light-mode .search-bar input[type="text"] {
+        background-color: #ffffff;
+        border: 2px solid #63b3ed; /* Blue border in light mode */
+        color: #2d3748;
+      }
+
+      body.light-mode .search-bar input[type="text"]::placeholder {
+        color: #718096;
+      }
+
+      body.light-mode .assessment-section {
+        background-color: #f7fafc; /* Lighter background for assessments */
+      }
+
+      body.light-mode .social-links-section {
+        background-color: #ffffff; /* Same as body for subtle transition */
+      }
+      
+      body.light-mode .social-icon {
+        color: #4a5568; /* Darker default icon color */
+      }
+
+      body.light-mode footer {
+        background-color: #f8f9fa; /* Light footer background */
+        color: #4a5568;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      /* --- Navbar Styles --- */
+      .navbar {
+        width: 100%;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4); /* Enhanced shadow for depth */
+        background: #2d3748; /* Darker blue-gray for navbar */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .navbar-brand {
+        font-weight: 700; /* Bolder font weight */
+        font-size: 1.6rem; /* Slightly larger brand name */
+        color: #ffffff !important;
+        font-family: 'Montserrat', sans-serif; /* Montserrat for brand */
+        letter-spacing: 0.5px;
+      }
+
+      .navbar-nav .nav-link {
+        font-size: 1.05rem;
+        margin: 0 12px; /* Increased margin */
+        color: #cbd5e0 !important; /* Lighter off-white */
+        transition: color 0.3s ease, background-color 0.3s ease, transform 0.2s ease-out;
+        padding: 8px 15px; /* Added padding for better hover area */
+        border-radius: 8px; /* Rounded corners for links */
+      }
+
+      .navbar-nav .nav-link:hover {
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.15); /* More visible hover */
+        transform: translateY(-2px); /* Subtle lift on hover */
+      }
+
+      .navbar-nav .nav-link.text-danger:hover {
+        background-color: rgba(255, 0, 0, 0.2); /* Redder hover for logout */
+      }
+
+      .navbar-toggler {
+        border: none;
+        outline: none; /* Remove default outline */
+      }
+
+      /* Light/Dark Mode Toggle Button */
+      .theme-toggle {
+          background: none;
+          border: none;
+          color: #cbd5e0; /* Default color for the icon */
+          font-size: 1.5rem;
+          cursor: pointer;
+          margin-left: 20px;
+          transition: color 0.3s ease, transform 0.2s ease-out;
+      }
+
+      .theme-toggle:hover {
+          color: #ffffff;
+          transform: scale(1.1);
+      }
+
+      body.light-mode .theme-toggle {
+          color: #4a5568; /* Darker icon in light mode */
+      }
+
+      body.light-mode .theme-toggle:hover {
+          color: #2d3748;
+      }
+
+      /* --- Main Hero Section --- */
+      .main-section {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        min-height: 85vh; /* Take more vertical space */
+        padding: 50px 15px; /* Added padding */
+      }
+
+      .image-section {
+        flex: 1 1 50%;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .image-section img {
+        max-width: 95%; /* Slightly larger image */
+        height: auto; /* Maintain aspect ratio */
+        max-height: 450px; /* Cap height */
+        border-radius: 15px; /* Rounded image corners */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); /* Stronger shadow */
+        transition: transform 0.3s ease-out;
+      }
+      .image-section img:hover {
+          transform: scale(1.02); /* Slight zoom on hover */
+      }
+
+      .text-section {
+        flex: 1 1 50%;
+        padding: 40px;
+        text-align: center;
+      }
+
+      .text-section h1 {
+        font-weight: 700;
+        font-size: 3.2rem; /* Larger hero heading */
+        color: #63b3ed; /* Lighter blue for main heading */
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 20px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3); /* Subtle text shadow */
+      }
+
+      .text-section p {
+        font-size: 1.2rem; /* Larger paragraph text */
+        color: #a0aec0; /* Softer text color */
+        margin-bottom: 25px;
+      }
+
+      .btn-pink {
+        background-color: #ff5c9d; /* Vibrant pink */
+        border: none;
+        color: white;
+        padding: 14px 35px; /* Larger padding for button */
+        font-size: 1.2rem; /* Larger button text */
+        font-weight: 600; /* Medium bold */
+        border-radius: 30px; /* More rounded */
+        margin-top: 20px;
+        transition: background-color 0.3s ease, transform 0.2s ease-out, box-shadow 0.3s ease;
+        box-shadow: 0 4px 10px rgba(255, 92, 157, 0.4); /* Pink shadow */
+      }
+
+      .btn-pink:hover {
+        background-color: #ff3b85; /* Darker pink on hover */
+        transform: translateY(-3px); /* Lift on hover */
+        box-shadow: 0 8px 20px rgba(255, 92, 157, 0.6); /* More prominent shadow on hover */
+      }
+      .btn-pink:active {
+        transform: translateY(0); /* Press down on click */
+        box-shadow: 0 2px 5px rgba(255, 92, 157, 0.3);
+      }
+
+      /* --- Section Headings --- */
+      .features-section, .testimonials-section, .popular-careers, .news-section, .search-section, .contact-section, .assessment-section, .how-it-works-section, .social-links-section { /* Added .social-links-section */
+        padding: 80px 15px; /* Increased vertical padding */
+        text-align: center;
+      }
+
+      .features-section h2, .testimonials-section h2, .popular-careers h2, .news-section h2, .search-section h2, .contact-section h2, .assessment-section h2, .how-it-works-section h2, .social-links-section h2 { /* Added .social-links-section */
+        margin-bottom: 50px; /* Increased margin below heading */
+        font-size: 2.8rem; /* Larger section headings */
+        font-weight: 700;
+        color: #cbd5e0; /* Off-white for section headings */
+        font-family: 'Montserrat', sans-serif;
+        position: relative;
+        padding-bottom: 15px;
+      }
+      .features-section h2::after, .testimonials-section h2::after, .popular-careers h2::after, .news-section h2::after, .search-section h2::after, .contact-section h2::after, .assessment-section h2::after, .how-it-works-section h2::after, .social-links-section h2::after { /* Added .social-links-section */
+          content: '';
+          display: block;
+          width: 80px;
+          height: 4px;
+          background-color: #ff5c9d; /* Pink underline */
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          border-radius: 2px;
+      }
+
+      /* --- Box Styles (Features, Careers, News, How It Works Steps) --- */
+      .feature-box, .testimonial-box, .career-box, .news-box {
+        margin-bottom: 30px;
+        background: #2d3748; /* Darker card background */
+        border: 1px solid #4a5568; /* Softer border */
+        border-radius: 12px; /* More rounded corners */
+        padding: 30px; /* Increased padding */
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+        transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Space out content */
+        height: 100%; /* Ensure equal height in rows */
+      }
+
+      .feature-box:hover, .career-box:hover, .news-box:hover {
+        transform: translateY(-8px); /* Lift on hover */
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5); /* More pronounced shadow on hover */
+      }
+
+      .feature-box h4, .career-box h4, .news-box h4 {
+        color: #ff5c9d; /* Vibrant pink for subheadings */
+        font-weight: 600; /* Slightly less bold */
+        font-size: 1.4rem; /* Larger subheading */
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+      }
+      .testimonial-box h4 {
+        color: #38c172; /* Green for testimonial name */
+        font-weight: 600;
+        font-size: 1.3rem;
+      }
+
+      .feature-box p, .career-box p, .news-box p, .testimonial-box p {
+        font-size: 1rem;
+        color: #a0aec0; /* Softer text color */
+        flex-grow: 1; /* Allow paragraphs to take space */
+      }
+      .feature-box .step-number { /* Styling for step numbers */
+          font-size: 2.5rem;
+          font-weight: 700;
+          color: #63b3ed; /* Blue for step numbers */
+          margin-bottom: 15px;
+          line-height: 1;
+      }
+
+
+      /* --- Search Bar --- */
+      .search-section {
+          background-color: #212529; /* Slightly different background for search section */
+          padding: 60px 15px;
+      }
+      .search-bar {
+        max-width: 600px; /* Wider search bar */
+        margin: 0 auto 40px;
+        display: flex;
+        border-radius: 30px; /* Rounded container */
+        overflow: hidden; /* Ensure content respects border-radius */
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Shadow for search bar */
+      }
+
+      .search-bar input[type="text"] {
+        flex-grow: 1; /* Input takes available space */
+        padding: 15px 25px; /* Larger padding */
+        border-radius: 30px 0 0 30px; /* Rounded left side */
+        border: 2px solid #ff5c9d; /* Pink border */
+        font-size: 1.1rem;
+        outline: none;
+        background-color: #1a202c; /* Dark input background */
+        color: #e2e8f0; /* Light input text */
+        transition: border-color 0.3s ease;
+      }
+      .search-bar input[type="text"]::placeholder {
+          color: #a0aec0; /* Placeholder color */
+      }
+      .search-bar input[type="text"]:focus {
+          border-color: #63b3ed; /* Blue border on focus */
+      }
+
+      .search-bar button {
+        padding: 15px 30px; /* Larger padding */
+        border: none;
+        background-color: #ff5c9d; /* Pink button */
+        color: white;
+        font-weight: 600;
+        border-radius: 0 30px 30px 0; /* Rounded right side */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease-out;
+      }
+
+      .search-bar button:hover {
+        background-color: #ff3b85;
+        transform: scale(1.02); /* Subtle scale on hover */
+      }
+      .search-bar button:active {
+        transform: scale(0.98);
+      }
+
+      /* --- Assessment Section Styles --- */
+      .assessment-section {
+          background-color: #2a323c; /* Slightly different background for assessments */
+          padding: 60px 15px;
+      }
+
+      .assessment-button-group {
+          display: flex;
+          flex-wrap: wrap; /* Allow wrapping on smaller screens */
+          justify-content: center;
+          gap: 1.5rem; /* Space between buttons */
+          margin-top: 30px;
+      }
+
+      .assessment-button {
+          background-color: #63b3ed; /* Default blue for buttons */
+          color: #fff;
+          font-weight: 600;
+          padding: 1rem 2rem;
+          border-radius: 0.75rem;
+          box-shadow: 0 5px 15px rgba(99, 179, 237, 0.4);
+          transition: all 0.3s ease-in-out;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          text-decoration: none;
+          font-size: 1.125rem;
+      }
+      .assessment-button:hover {
+          background-color: #4299e1;
+          transform: translateY(-0.25rem) scale(1.02);
+          box-shadow: 0 8px 20px rgba(99, 179, 237, 0.6);
+          color: #fff; /* Keep text white on hover */
+      }
+      .assessment-button.bg-purple-600 { background-color: #805ad5; }
+      .assessment-button.bg-purple-600:hover { background-color: #6b46c1; }
+      .assessment-button.bg-red-600 { background-color: #e53e3e; }
+      .assessment-button.bg-red-600:hover { background-color: #c53030; }
+      .assessment-button.bg-yellow-600 { background-color: #d69e2e; }
+      .assessment-button.bg-yellow-600:hover { background-color: #b7791f; }
+      .assessment-button.bg-green-600 { background-color: #38a169; }
+      .assessment-button.bg-green-600:hover { background-color: #2f855a; }
+
+      .assessment-button svg {
+          width: 1.5rem;
+          height: 1.5rem;
+          fill: currentColor;
+      }
+
+      /* --- Social Links Section --- */
+      .social-links-section {
+        background-color: #1a202c; /* Same as body for subtle transition */
+        padding: 40px 15px 80px; /* Adjust padding to sit nicely above footer */
+      }
+
+      .social-icon-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px; /* Space between icons */
+        margin-top: 30px;
+      }
+
+      .social-icon {
+        color: #cbd5e0; /* Default icon color */
+        font-size: 2.5rem; /* Larger icons */
+        transition: color 0.3s ease, transform 0.2s ease-out;
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px) scale(1.1); /* Lift and slight zoom */
+      }
+
+      .social-icon.fa-facebook-f:hover { color: #3b5998; }
+      .social-icon.fa-twitter:hover { color: #00acee; }
+      .social-icon.fa-linkedin-in:hover { color: #0077b5; }
+      .social-icon.fa-instagram:hover { color: #E1306C; }
+      .social-icon.fa-envelope:hover { color: #EA4335; } /* Gmail red */
+
+      /* --- Footer Styles --- */
+      footer {
+        background-color: #2d3748; /* Matching navbar background */
+        color: #a0aec0;
+        text-align: center;
+        padding: 30px 15px; /* Increased padding */
+        margin-top: 60px;
+        font-size: 0.95rem;
+        box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4); /* Shadow for footer */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      /* --- Responsive Adjustments --- */
+      @media (max-width: 992px) {
+        .text-section h1 {
+          font-size: 2.8rem;
+        }
+        .text-section p {
+          font-size: 1.1rem;
+        }
+        .btn-pink {
+          padding: 12px 28px;
+          font-size: 1.1rem;
+        }
+        .features-section h2, .popular-careers h2, .news-section h2, .search-section h2, .contact-section h2, .assessment-section h2, .how-it-works-section h2, .social-links-section h2 { /* Added .social-links-section */
+          font-size: 2.2rem;
+        }
+        .feature-box h4, .career-box h4, .news-box h4 {
+            font-size: 1.3rem;
+        }
+        .social-icon {
+          font-size: 2rem; /* Adjust social icon size */
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-section {
+          flex-direction: column; /* Stack image and text vertically */
+          text-align: center;
+          min-height: unset; /* Remove min-height for better mobile flow */
+        }
+        .image-section, .text-section {
+          flex: 1 1 100%; /* Take full width */
+          padding: 20px;
+        }
+        .image-section img {
+          max-height: 300px;
+        }
+        .text-section h1 {
+          font-size: 2.5rem;
+        }
+        .text-section p {
+          font-size: 1rem;
+        }
+        .btn-pink {
+          font-size: 1rem;
+          padding: 10px 25px;
+        }
+        .features-section, .popular-careers, .news-section, .search-section, .contact-section, .assessment-section, .how-it-works-section, .social-links-section { /* Added .social-links-section */
+          padding: 40px 10px;
+        }
+        .features-section h2, .popular-careers h2, .news-section h2, .search-section h2, .contact-section h2, .assessment-section h2, .how-it-works-section h2, .social-links-section h2 { /* Added .social-links-section */
+          font-size: 2rem;
+          margin-bottom: 30px;
+        }
+        .search-bar input[type="text"], .search-bar button {
+            padding: 12px 20px; /* Slightly smaller input/button on mobile */
+            font-size: 1rem;
+        }
+        .search-bar {
+            flex-direction: column; /* Stack search input and button */
+            border-radius: 10px;
+            overflow: visible;
+            box-shadow: none; /* Remove search bar shadow for stacked layout */
+        }
+        .search-bar input[type="text"] {
+            border-radius: 10px;
+            margin-bottom: 10px; /* Space between input and button */
+            border: 2px solid #ff5c9d; /* Retain border */
+        }
+        .search-bar button {
+            border-radius: 10px;
+            width: 100%; /* Full width button */
+        }
+        .assessment-button { /* Adjust assessment buttons for mobile */
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
+            width: 100%; /* Make buttons full width */
+            justify-content: center; /* Center content */
+        }
+        .social-icon {
+          font-size: 1.8rem;
+        }
+        .social-icon-group {
+          gap: 15px; /* Adjust gap for smaller screens */
+        }
+      }
+
+      @media (max-width: 576px) {
+        .navbar-brand {
+          font-size: 1.2rem;
+        }
+        .navbar-nav .nav-link {
+          font-size: 0.95rem;
+          margin: 0 5px;
+          padding: 6px 10px;
+        }
+        .text-section h1 {
+          font-size: 2rem;
+        }
+        .features-section h2, .popular-careers h2, .news-section h2, .search-section h2, .contact-section h2, .assessment-section h2, .how-it-works-section h2, .social-links-section h2 { /* Added .social-links-section */
+          font-size: 1.8rem;
+        }
+        .feature-box, .career-box, .news-box {
+          padding: 20px;
+        }
+        .social-icon {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">CareerGuideAI</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+          </li>
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger" href="{% url 'logout' %}">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+          </li>
+          {% endif %}
+          <li class="nav-item">
+            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light and dark mode">
+                <i class="fas fa-moon"></i>
+            </button>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="main-section container-fluid">
+      <div class="row w-100 align-items-center">
+        <div class="col-md-6 image-section">
+          <img src="https://cdn3d.iconscout.com/3d/premium/thumb/casual-girl-pointing-to-right-side-using-both-hand-8418465-6678443.png" alt="Career Guide Character" />
+        </div>
+        <div class="col-md-6 text-section">
+          <h1>Intelligent Career Guidance System</h1>
+          <p>Discover your strengths and passions with AI-powered insights.</p>
+          <p>Take our quick test to find the perfect career path after Engineering.</p>
+          <a href="{% url 'career_form' %}" class="btn btn-pink">
+            Get Started!
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <section class="how-it-works-section">
+        <h2>How It Works</h2>
+        <div class="row">
+            <div class="col-md-4 feature-box">
+                <div class="step-number">1</div>
+                <h4>Sign Up & Log In</h4>
+                <p>Create your account or log in to access all the features of our intelligent career guidance system. It's quick and easy to get started!</p>
+            </div>
+            <div class="col-md-4 feature-box">
+                <div class="step-number">2</div>
+                <h4>Take the Assessment</h4>
+                <p>Complete our personalized career assessment. Our AI analyzes your interests, skills, and academic background to provide tailored career recommendations.</p>
+            </div>
+            <div class="col-md-4 feature-box">
+                <div class="step-number">3</div>
+                <h4>Explore Your Dashboard</h4>
+                <p>View your personalized career paths, detailed insights, and educational roadmaps on your interactive dashboard. Track your progress and set goals.</p>
+            </div>
+            <div class="col-md-4 feature-box">
+                <div class="step-number">4</div>
+                <h4>Test Your Knowledge</h4>
+                <p>Challenge yourself with dynamic, AI-generated quizzes in various technical domains or try our coding challenges to assess your understanding.</p>
+            </div>
+            <div class="col-md-4 feature-box">
+                <div class="step-number">5</div>
+                <h4>Search & Connect</h4>
+                <p>Utilize the search bar to find specific careers, skills, or courses. If you need more help, our contact section connects you with experts.</p>
+            </div>
+            <div class="col-md-4 feature-box">
+                <div class="step-number">6</div>
+                <h4>Stay Updated</h4>
+                <p>Keep an eye on the latest career news and trends to stay ahead in the ever-evolving job market. We'll provide you with fresh insights.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="features-section">
+      <h2>Why Choose CareerGuideAI?</h2>
+      <div class="row">
+        <div class="col-md-4 feature-box">
+          <h4>Personalized Guidance</h4>
+          <p>Receive tailored career advice based on your aptitude, interests, and academic background. Our AI analyzes your responses and suggests the best-suited paths, taking the guesswork out of decision-making.</p>
+        </div>
+        <div class="col-md-4 feature-box">
+          <h4>Instant Assessments</h4>
+          <p>Take a quick, scientifically designed test that evaluates your skills, personality traits, and preferences to identify suitable careers in minutes. No more hours of research—get accurate suggestions fast.</p>
+        </div>
+        <div class="col-md-4 feature-box">
+          <h4>Help with Educational Planning</h4>
+          <p>A career counsellor doesn’t just tell you what career might suit you—they also help plan the educational roadmap to get there, including: University or college selection, Course recommendations, Scholarship or entrance exam guidance</p>
+        </div>
+        <div class="col-md-4 feature-box">
+          <h4>Career Roadmaps</h4>
+          <p>Visualize your journey step-by-step with detailed roadmaps outlining key milestones. From degree requirements to recommended certifications, we ensure you stay on track from student to professional.</p>
+        </div>
+        <div class="col-md-4 feature-box">
+          <h4>Awareness of New-Age Careers</h4>
+          <p>Intelligent counsellors stay updated with market trends, emerging fields, and in-demand skills. They can introduce you to non-traditional or high-growth paths you might not have considered.</p>
+        </div>
+        <div class="col-md-4 feature-box">
+          <h4>Interactive Dashboard</h4>
+          <p>Manage your progress, set career goals, and explore relevant skills and learning paths with a user-friendly dashboard. Get reminders, track completed assessments, and stay organized through every stage of your career planning.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="popular-careers">
+      <h2>Popular Career Options</h2>
+      <div class="row">
+        <div class="col-md-3 career-box">
+          <h4>Data Scientist</h4>
+          <p>High demand, lucrative salary, requires skills in Python, ML, and statistics.</p>
+        </div>
+        <div class="col-md-3 career-box">
+          <h4>Software Engineer</h4>
+          <p>Core tech role, excellent job growth, focus on coding and system design.</p>
+        </div>
+        <div class="col-md-3 career-box">
+          <h4>Civil Engineer</h4>
+          <p>Design and build infrastructure, great for those who love planning and fieldwork.</p>
+        </div>
+        <div class="col-md-3 career-box">
+          <h4>UX Designer</h4>
+          <p>Combine creativity and tech, focus on improving user experiences.</p>
+        </div>
+        <div class="col-md-3 career-box">
+          <h4>AI/ML Engineer</h4>
+          <p>Work with artificial intelligence algorithms and machine learning models to build smart systems.</p>
+        </div>
+        <div class="col-md-3 career-box">
+          <h4>Cybersecurity Analyst</h4>
+          <p>Protect digital infrastructure and data from cyber threats with skills in security protocols and tools.</p>
+        </div>
+        <div class="col-md-3 career-box">
+          <h4>DevOps Engineer</h4>
+          <p>Bridge development and operations, automate deployment, and manage infrastructure efficiently.</p>
+        </div>
+        <div class="col-md-3 career-box">
+          <h4>Product Manager</h4>
+          <p>Lead cross-functional teams, define product strategy, and ensure user satisfaction and business success.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="news-section">
+      <h2>Latest Career News & Trends</h2>
+      <div class="row">
+        <div class="col-md-4 news-box">
+          <h4>Top 5 Emerging Careers in 2025</h4>
+          <p>Explore growing fields like AI, Renewable Energy, and Cybersecurity shaping the future job market.</p>
+        </div>
+        <div class="col-md-4 news-box">
+          <h4>How to Upskill for Your Dream Job</h4>
+          <p>Learn key skills through online courses and certifications to boost your career prospects.</p>
+        </div>
+        <div class="col-md-4 news-box">
+          <h4>Understanding Job Market Analytics</h4>
+          <p>Data-driven insights to help you make informed career decisions.</p>
+        </div>
+      </div>
+    </section>
+
+   <section class="search-section">
+      <h2>Quick Career Search</h2>
+      <form class="search-bar" action="{% url 'search' %}" method="GET">
+        <input type="text" name="query" placeholder="Search careers, skills, courses..." required />
+        <button type="submit">Search</button>
+      </form>
+    </section>
+
+    <section class="assessment-section">
+        <h2>Knowledge Assessments</h2>
+        <p class="mb-4">Test your skills with dynamic, AI-generated quizzes in various tech fields, or challenge yourself with a coding problem.</p>
+        <div class="assessment-button-group">
+            <a href="{% url 'generate_test' test_type='computer_science' %}" class="assessment-button bg-purple-600">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M11.25 4.507A4.5 4.5 0 0 0 9 9.75v.75H6.75a.75.75 0 0 0-.75.75v10.5c0 .414.336.75.75.75h9c.414 0 .75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75h-2.25V9.75a4.5 4.5 0 0 0-2.25-5.243ZM12 3a6 6 0 0 1 6 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 3 22.5V13.5A2.25 2.25 0 0 1 5.25 11.25H6V9.75a6 6 0 0 1 6-6Z" />
+                </svg>
+                Computer Science Test
+            </a>
+
+            <a href="{% url 'generate_test' test_type='data_science' %}" class="assessment-button bg-red-600">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M11.25 4.507A4.5 4.5 0 0 0 9 9.75v.75H6.75a.75.75 0 0 0-.75.75v10.5c0 .414.336.75.75.75h9c.414 0 .75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75h-2.25V9.75a4.5 4.5 0 0 0-2.25-5.243ZM12 3a6 6 0 0 1 6 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 3 22.5V13.5A2.25 2.25 0 0 1 5.25 11.25H6V9.75a6 6 0 0 1 6-6Z" />
+                </svg>
+                Data Science Test
+            </a>
+
+            <a href="{% url 'generate_test' test_type='web_development' %}" class="assessment-button bg-yellow-600">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M11.25 4.507A4.5 4.5 0 0 0 9 9.75v.75H6.75a.75.75 0 0 0-.75.75v10.5c0 .414.336.75.75.75h9c.414 0 .75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75h-2.25V9.75a4.5 4.5 0 0 0-2.25-5.243ZM12 3a6 6 0 0 1 6 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 3 22.5V13.5A2.25 2.25 0 0 1 5.25 11.25H6V9.75a6 6 0 0 1 6-6Z" />
+                </svg>
+                Web Development Test
+            </a>
+
+            <a href="{% url 'generate_test' test_type='coding' %}" class="assessment-button bg-green-600">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M11.25 4.507A4.5 4.5 0 0 0 9 9.75v.75H6.75a.75.75 0 0 0-.75.75v10.5c0 .414.336.75.75.75h9c.414 0 .75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75h-2.25V9.75a4.5 4.5 0 0 0-2.25-5.243ZM12 3a6 6 0 0 1 6 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 3 22.5V13.5A2.25 2.25 0 0 1 5.25 11.25H6V9.75a6 6 0 0 1 6-6Z" />
+                </svg>
+                Coding Challenge
+            </a>
+        </div>
+    </section>
+ 
+    <section class="contact-section">
+      <h2>Need Help?</h2>
+      <p>Contact our career experts or chat with our AI assistant for personalized support.</p>
+      <a href="{% url 'contact' %}" class="btn btn-pink">Contact Us</a>
+    </section>
+
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    <section class="social-links-section">
+        <h2>Connect With Us</h2>
+        <p>Stay updated and reach out through our social channels or directly via email.</p>
+        <div class="social-icon-group">
+            <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f social-icon"></i></a>
+            <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter social-icon"></i></a>
+            <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in social-icon"></i></a>
+            <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram social-icon"></i></a>
+            <a href="mailto:info@careerguideai.com" aria-label="Email Us"><i class="fas fa-envelope social-icon"></i></a>
+        </div>
+    </section>
+
+    <footer>
+      &copy; 2025 Intelligent Career Guidance | Powered by AI
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+    <script>
+      document.getElementById('theme-toggle').addEventListener('click', function() {
+          document.body.classList.toggle('light-mode');
+          const isLightMode = document.body.classList.contains('light-mode');
+          localStorage.setItem('theme', isLightMode ? 'light' : 'dark');
+          this.querySelector('i').classList.toggle('fa-sun', isLightMode);
+          this.querySelector('i').classList.toggle('fa-moon', !isLightMode);
+      });
+
+      // Check for saved theme preference on page load
+      window.onload = function() {
+          const savedTheme = localStorage.getItem('theme');
+          const themeToggleIcon = document.getElementById('theme-toggle').querySelector('i');
+          if (savedTheme === 'light') {
+              document.body.classList.add('light-mode');
+              themeToggleIcon.classList.add('fa-sun');
+              themeToggleIcon.classList.remove('fa-moon');
+          } else {
+              // Default to dark mode or if savedTheme is 'dark'
+              document.body.classList.remove('light-mode');
+              themeToggleIcon.classList.add('fa-moon');
+              themeToggleIcon.classList.remove('fa-sun');
+          }
+      };
+    </script>
+  </body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Home - Career Guidance</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+
+    <style>
+      /* --- Global & Body Styles --- */
+      body {
+        font-family: 'Poppins', sans-serif; /* Modern, readable font */
+        padding-top: 70px;
+        line-height: 1.6; /* Improved readability */
+        /* Removed transition for theme change as there's no toggle */
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* --- Dark Mode Variables (Default and only theme) --- */
+      :root {
+          --bg-primary: #1a202c; /* Deep charcoal */
+          --bg-secondary: #2d3748; /* Darker blue-gray */
+          --text-primary: #e2e8f0; /* Off-white */
+          --text-secondary: #a0aec0; /* Softer text color */
+          --border-color: #4a5568; /* Softer border */
+          --shadow-color: rgba(0, 0, 0, 0.4);
+          --navbar-shadow-color: rgba(0, 0, 0, 0.4);
+          --card-shadow-color: rgba(0, 0, 0, 0.3);
+          --search-bg: #212529;
+          --assessment-bg: #2a323c;
+          --btn-pink-shadow: rgba(255, 92, 157, 0.4);
+          --btn-pink-hover-shadow: rgba(255, 92, 157, 0.6);
+          --search-input-bg: #1a202c;
+      }
+
+      /* Apply theme variables */
+      body {
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+      }
+
+      /* --- Navbar Styles --- */
+      .navbar {
+        width: 100%;
+        box-shadow: 0 5px 15px var(--navbar-shadow-color); /* Enhanced shadow for depth */
+        background: var(--bg-secondary); /* Darker blue-gray for navbar */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .navbar-brand {
+        font-weight: 700; /* Bolder font weight */
+        font-size: 1.6rem; /* Slightly larger brand name */
+        color: var(--text-primary) !important;
+        font-family: 'Montserrat', sans-serif; /* Montserrat for brand */
+        letter-spacing: 0.5px;
+      }
+
+      .navbar-nav .nav-link {
+        font-size: 1.05rem;
+        margin: 0 12px; /* Increased margin */
+        color: var(--text-secondary) !important; /* Lighter off-white */
+        transition: color 0.3s ease, background-color 0.3s ease, transform 0.2s ease-out;
+        padding: 8px 15px; /* Added padding for better hover area */
+        border-radius: 8px; /* Rounded corners for links */
+      }
+
+      .navbar-nav .nav-link:hover {
+        color: var(--text-primary) !important;
+        background-color: rgba(255, 255, 255, 0.15); /* More visible hover */
+        transform: translateY(-2px); /* Subtle lift on hover */
+      }
+
+      .navbar-nav .nav-link.text-danger:hover {
+        background-color: rgba(255, 0, 0, 0.2); /* Redder hover for logout */
+      }
+
+      .navbar-toggler {
+        border: none;
+        outline: none; /* Remove default outline */
+      }
+
+      /* --- Main Hero Section --- */
+      .main-section {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        min-height: 85vh; /* Take more vertical space */
+        padding: 50px 15px; /* Added padding */
+      }
+
+      .image-section {
+        flex: 1 1 50%;
+        text-align: center;
+        padding: 20px;
+      }
+
+      .image-section img {
+        max-width: 95%; /* Slightly larger image */
+        height: auto; /* Maintain aspect ratio */
+        max-height: 450px; /* Cap height */
+        border-radius: 15px; /* Rounded image corners */
+        box-shadow: 0 10px 30px var(--shadow-color); /* Stronger shadow */
+        transition: transform 0.3s ease-out;
+      }
+      .image-section img:hover {
+          transform: scale(1.02); /* Slight zoom on hover */
+      }
+
+      .text-section {
+        flex: 1 1 50%;
+        padding: 40px;
+        text-align: center;
+      }
+
+      .text-section h1 {
+        font-weight: 700;
+        font-size: 3.2rem; /* Larger hero heading */
+        color: #63b3ed; /* Lighter blue for main heading */
+        font-family: 'Montserrat', sans-serif;
+        margin-bottom: 20px;
+        text-shadow: 0 2px 8px rgba(0,0,0,0.3); /* Subtle text shadow */
+      }
+
+      .text-section p {
+        font-size: 1.2rem; /* Larger paragraph text */
+        color: var(--text-secondary); /* Softer text color */
+        margin-bottom: 25px;
+      }
+      /* Typing animation for tagline */
+      .tagline-container {
+        min-height: 30px; /* Ensure space for the typing text */
+      }
+      .typing-animation {
+        overflow: hidden; /* Ensures the text appears to type */
+        border-right: .15em solid orange; /* The caret */
+        white-space: nowrap; /* Keeps the content on a single line */
+        margin: 0 auto;
+        letter-spacing: .05em; /* Adjust as needed */
+        animation:
+          typing 3.5s steps(40, end),
+          blink-caret .75s step-end infinite;
+      }
+
+      /* The typing animation effect */
+      @keyframes typing {
+        from { width: 0 }
+        to { width: 100% }
+      }
+
+      /* The typewriter caret effect */
+      @keyframes blink-caret {
+        from, to { border-color: transparent }
+        50% { border-color: #ff5c9d; } /* Pink caret */
+      }
+
+
+      .btn-pink {
+        background-color: #ff5c9d; /* Vibrant pink */
+        border: none;
+        color: white;
+        padding: 14px 35px; /* Larger padding for button */
+        font-size: 1.2rem; /* Larger button text */
+        font-weight: 600; /* Medium bold */
+        border-radius: 30px; /* More rounded */
+        margin-top: 20px;
+        transition: background-color 0.3s ease, transform 0.2s ease-out, box-shadow 0.3s ease;
+        box-shadow: 0 4px 10px var(--btn-pink-shadow); /* Pink shadow */
+      }
+
+      .btn-pink:hover {
+        background-color: #ff3b85; /* Darker pink on hover */
+        transform: translateY(-3px); /* Lift on hover */
+        box-shadow: 0 8px 20px var(--btn-pink-hover-shadow); /* More prominent shadow on hover */
+      }
+      .btn-pink:active {
+        transform: translateY(0); /* Press down on click */
+        box-shadow: 0 2px 5px var(--btn-pink-shadow);
+      }
+
+      /* --- Section Headings --- */
+      .features-section, .testimonials-section, .popular-careers, .news-section, .search-section, .contact-section, .assessment-section, .how-it-works-section, .social-links-section {
+        padding: 80px 15px; /* Increased vertical padding */
+        text-align: center;
+      }
+
+      .features-section h2, .testimonials-section h2, .popular-careers h2, .news-section h2, .search-section h2, .contact-section h2, .assessment-section h2, .how-it-works-section h2, .social-links-section h2 {
+        margin-bottom: 50px; /* Increased margin below heading */
+        font-size: 2.8rem; /* Larger section headings */
+        font-weight: 700;
+        color: var(--text-primary); /* Off-white for section headings */
+        font-family: 'Montserrat', sans-serif;
+        position: relative;
+        padding-bottom: 15px;
+      }
+      .features-section h2::after, .testimonials-section h2::after, .popular-careers h2::after, .news-section h2::after, .search-section h2::after, .contact-section h2::after, .assessment-section h2::after, .how-it-works-section h2::after, .social-links-section h2::after {
+          content: '';
+          display: block;
+          width: 80px;
+          height: 4px;
+          background-color: #ff5c9d; /* Pink underline */
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          transform: translateX(-50%);
+          border-radius: 2px;
+      }
+
+      /* --- Box Styles (Features, Careers, News, How It Works Steps) --- */
+      .feature-box, .testimonial-box, .career-box, .news-box {
+        margin-bottom: 30px;
+        background: var(--bg-secondary); /* Darker card background */
+        border: 1px solid var(--border-color); /* Softer border */
+        border-radius: 12px; /* More rounded corners */
+        padding: 30px; /* Increased padding */
+        box-shadow: 0 6px 20px var(--card-shadow-color); /* Subtle shadow for depth */
+        transition: transform 0.3s ease-out, box-shadow 0.3s ease-out;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between; /* Space out content */
+        height: 100%; /* Ensure equal height in rows */
+      }
+
+      .feature-box:hover, .career-box:hover, .news-box:hover {
+        transform: translateY(-8px); /* Lift on hover */
+        box-shadow: 0 12px 30px var(--shadow-color); /* More pronounced shadow on hover */
+      }
+
+      .feature-box h4, .career-box h4, .news-box h4 {
+        color: #ff5c9d; /* Vibrant pink for subheadings */
+        font-weight: 600; /* Slightly less bold */
+        font-size: 1.4rem; /* Larger subheading */
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+      }
+      .testimonial-box h4 {
+        color: #38c172; /* Green for testimonial name */
+        font-weight: 600;
+        font-size: 1.3rem;
+      }
+
+      .feature-box p, .career-box p, .news-box p, .testimonial-box p {
+        font-size: 1rem;
+        color: var(--text-secondary); /* Softer text color */
+        flex-grow: 1; /* Allow paragraphs to take space */
+      }
+      .feature-box .step-number { /* Styling for step numbers */
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #63b3ed; /* Blue for step numbers */
+            margin-bottom: 15px;
+            line-height: 1;
+        }
+
+
+      /* --- Search Bar --- */
+      .search-section {
+          background-color: var(--search-bg); /* Slightly different background for search section */
+          padding: 60px 15px;
+      }
+      .search-bar {
+        max-width: 600px; /* Wider search bar */
+        margin: 0 auto 40px;
+        display: flex;
+        border-radius: 30px; /* Rounded container */
+        overflow: hidden; /* Ensure content respects border-radius */
+        box-shadow: 0 5px 15px var(--card-shadow-color); /* Shadow for search bar */
+      }
+
+      .search-bar input[type="text"] {
+        flex-grow: 1; /* Input takes available space */
+        padding: 15px 25px; /* Larger padding */
+        border-radius: 30px 0 0 30px; /* Rounded left side */
+        border: 2px solid #ff5c9d; /* Pink border */
+        font-size: 1.1rem;
+        outline: none;
+        background-color: var(--search-input-bg); /* Dark input background */
+        color: var(--text-primary); /* Light input text */
+        transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+      }
+      .search-bar input[type="text"]::placeholder {
+          color: var(--text-secondary); /* Placeholder color */
+      }
+      .search-bar input[type="text"]:focus {
+          border-color: #63b3ed; /* Blue border on focus */
+      }
+
+      .search-bar button {
+        padding: 15px 30px; /* Larger padding */
+        border: none;
+        background-color: #ff5c9d; /* Pink button */
+        color: white;
+        font-weight: 600;
+        border-radius: 0 30px 30px 0; /* Rounded right side */
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease-out;
+      }
+
+      .search-bar button:hover {
+        background-color: #ff3b85;
+        transform: scale(1.02); /* Subtle scale on hover */
+      }
+      .search-bar button:active {
+        transform: scale(0.98);
+      }
+
+      /* --- Assessment Section Styles --- */
+      .assessment-section {
+          background-color: var(--assessment-bg); /* Slightly different background for assessments */
+          padding: 60px 15px;
+      }
+
+      .assessment-button-group {
+          display: flex;
+          flex-wrap: wrap; /* Allow wrapping on smaller screens */
+          justify-content: center;
+          gap: 1.5rem; /* Space between buttons */
+          margin-top: 30px;
+      }
+
+      .assessment-button {
+          background-color: #63b3ed; /* Default blue for buttons */
+          color: #fff;
+          font-weight: 600;
+          padding: 1rem 2rem;
+          border-radius: 0.75rem;
+          box-shadow: 0 5px 15px rgba(99, 179, 237, 0.4);
+          transition: all 0.3s ease-in-out;
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          text-decoration: none;
+          font-size: 1.125rem;
+      }
+      .assessment-button:hover {
+          background-color: #4299e1;
+          transform: translateY(-0.25rem) scale(1.02);
+          box-shadow: 0 8px 20px rgba(99, 179, 237, 0.6);
+          color: #fff; /* Keep text white on hover */
+      }
+      .assessment-button.bg-purple-600 { background-color: #805ad5; }
+      .assessment-button.bg-purple-600:hover { background-color: #6b46c1; }
+      .assessment-button.bg-red-600 { background-color: #e53e3e; }
+      .assessment-button.bg-red-600:hover { background-color: #c53030; }
+      .assessment-button.bg-yellow-600 { background-color: #d69e2e; }
+      .assessment-button.bg-yellow-600:hover { background-color: #b7791f; }
+      .assessment-button.bg-green-600 { background-color: #38a169; }
+      .assessment-button.bg-green-600:hover { background-color: #2f855a; }
+
+      .assessment-button svg {
+          width: 1.5rem;
+          height: 1.5rem;
+          fill: currentColor;
+      }
+
+      /* --- Social Links Section --- */
+      .social-links-section {
+        background-color: var(--bg-primary); /* Same as body for subtle transition */
+        padding: 40px 15px 80px; /* Adjust padding to sit nicely above footer */
+      }
+
+      .social-icon-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px; /* Space between icons */
+        margin-top: 30px;
+      }
+
+      .social-icon {
+        color: var(--text-secondary); /* Default icon color */
+        font-size: 2.5rem; /* Larger icons */
+        transition: color 0.3s ease, transform 0.2s ease-out;
+      }
+
+      .social-icon:hover {
+        transform: translateY(-5px) scale(1.1); /* Lift and slight zoom */
+      }
+
+      .social-icon.fa-facebook-f:hover { color: #3b5998; }
+      .social-icon.fa-twitter:hover { color: #00acee; }
+      .social-icon.fa-linkedin-in:hover { color: #0077b5; }
+      .social-icon.fa-instagram:hover { color: #E1306C; }
+      .social-icon.fa-envelope:hover { color: #EA4335; } /* Gmail red */
+
+      /* --- Footer Styles --- */
+      footer {
+        background-color: var(--bg-secondary); /* Matching navbar background */
+        color: var(--text-secondary);
+        text-align: center;
+        padding: 30px 15px; /* Increased padding */
+        margin-top: 60px;
+        font-size: 0.95rem;
+        box-shadow: 0 -5px 15px var(--navbar-shadow-color); /* Shadow for footer */
+        transition: background-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+      }
+
+      /* --- Scroll-based Animation Classes --- */
+      .fade-in {
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .fade-in.appear {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .slide-up {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+      }
+      .slide-up.appear {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      /* --- Contact Section Buttons Styling --- */
+      .contact-buttons-group {
+        display: flex;
+        justify-content: center;
+        gap: 20px; /* Space between buttons */
+        margin-top: 30px;
+      }
+
+      /* Reusing .btn-pink for "Contact Us" */
+      .btn-live-chat {
+        background-color: #63b3ed; /* Blue for chat */
+        border: none;
+        color: white;
+        padding: 14px 35px;
+        font-size: 1.2rem;
+        font-weight: 600;
+        border-radius: 30px;
+        transition: background-color 0.3s ease, transform 0.2s ease-out, box-shadow 0.3s ease;
+        box-shadow: 0 4px 10px rgba(99, 179, 237, 0.4); /* Blue shadow */
+        display: inline-flex; /* Allows icon and text to align */
+        align-items: center;
+        gap: 10px; /* Space between icon and text */
+      }
+
+      .btn-live-chat:hover {
+        background-color: #4299e1; /* Darker blue on hover */
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(99, 179, 237, 0.6);
+        color: white; /* Ensure text stays white on hover */
+      }
+      .btn-live-chat:active {
+        transform: translateY(0);
+        box-shadow: 0 2px 5px rgba(99, 179, 237, 0.3);
+      }
+
+
+      /* --- Responsive Adjustments --- */
+      @media (max-width: 992px) {
+        .text-section h1 {
+          font-size: 2.8rem;
+        }
+        .text-section p {
+          font-size: 1.1rem;
+        }
+        .btn-pink {
+          padding: 12px 28px;
+          font-size: 1.1rem;
+        }
+        .features-section h2, .popular-careers h2, .news-section h2, .search-section h2, .contact-section h2, .assessment-section h2, .how-it-works-section h2, .social-links-section h2 {
+          font-size: 2.2rem;
+        }
+        .feature-box h4, .career-box h4, .news-box h4 {
+            font-size: 1.3rem;
+        }
+        .social-icon {
+          font-size: 2rem; /* Adjust social icon size */
+        }
+        .btn-live-chat {
+            padding: 12px 28px; /* Adjust padding for live chat button */
+            font-size: 1.1rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .main-section {
+          flex-direction: column; /* Stack image and text vertically */
+          text-align: center;
+          min-height: unset; /* Remove min-height for better mobile flow */
+        }
+        .image-section, .text-section {
+          flex: 1 1 100%; /* Take full width */
+          padding: 20px;
+        }
+        .image-section img {
+          max-height: 300px;
+        }
+        .text-section h1 {
+          font-size: 2.5rem;
+        }
+        .text-section p {
+          font-size: 1rem;
+        }
+        .btn-pink {
+          font-size: 1rem;
+          padding: 10px 25px;
+        }
+        .features-section, .popular-careers, .news-section, .search-section, .contact-section, .assessment-section, .how-it-works-section, .social-links-section {
+          padding: 40px 10px;
+        }
+        .features-section h2, .popular-careers h2, .news-section h2, .search-section h2, .contact-section h2, .assessment-section h2, .how-it-works-section h2, .social-links-section h2 {
+          font-size: 2rem;
+          margin-bottom: 30px;
+        }
+        .search-bar input[type="text"], .search-bar button {
+            padding: 12px 20px; /* Slightly smaller input/button on mobile */
+            font-size: 1rem;
+        }
+        .search-bar {
+            flex-direction: column; /* Stack search input and button */
+            border-radius: 10px;
+            overflow: visible;
+            box-shadow: none; /* Remove search bar shadow for stacked layout */
+        }
+        .search-bar input[type="text"] {
+            border-radius: 10px;
+            margin-bottom: 10px; /* Space between input and button */
+            border: 2px solid #ff5c9d; /* Retain border */
+        }
+        .search-bar button {
+            border-radius: 10px;
+            width: 100%; /* Full width button */
+        }
+        .assessment-button { /* Adjust assessment buttons for mobile */
+            font-size: 1rem;
+            padding: 0.8rem 1.5rem;
+            width: 100%; /* Make buttons full width */
+            justify-content: center; /* Center content */
+        }
+        .social-icon {
+          font-size: 1.8rem;
+        }
+        .social-icon-group {
+          gap: 15px; /* Adjust gap for smaller screens */
+        }
+        .contact-buttons-group {
+            flex-direction: column; /* Stack buttons on small screens */
+            gap: 15px;
+        }
+        .contact-buttons-group .btn {
+            width: 100%; /* Make buttons full width */
+        }
+      }
+
+      @media (max-width: 576px) {
+        .navbar-brand {
+          font-size: 1.2rem;
+        }
+        .navbar-nav .nav-link {
+          font-size: 0.95rem;
+          margin: 0 5px;
+          padding: 6px 10px;
+        }
+        .text-section h1 {
+          font-size: 2rem;
+        }
+        .features-section h2, .popular-careers h2, .news-section h2, .search-section h2, .contact-section h2, .assessment-section h2, .how-it-works-section h2, .social-links-section h2 {
+          font-size: 1.8rem;
+        }
+        .feature-box, .career-box, .news-box {
+          padding: 20px;
+        }
+        .social-icon {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <a class="navbar-brand" href="#">CareerGuideAI</a>
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-toggle="collapse"
+        data-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'home' %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'about' %}">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+          </li>
+        
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-danger" href="{% url 'login' %}">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+    <div class="main-section container-fluid">
+      <div class="row w-100 align-items-center">
+        <div class="col-md-6 image-section">
+          <img src="https://cdn3d.iconscout.com/3d/premium/thumb/casual-girl-pointing-to-right-side-using-both-hand-8418465-6678443.png" alt="Career Guide Character" />
+        </div>
+        <div class="col-md-6 text-section">
+          <h1>Intelligent Career Guidance System</h1>
+          <div class="tagline-container">
+            <p id="typed-tagline" class="typing-animation"></p>
+          </div>
+          <p>Take our quick test to find the perfect career path after Engineering.</p>
+          <a href="{% url 'career_form' %}" class="btn btn-pink">
+            Get Started!
+          </a>
+        </div>
+      </div>
+    </div>
+
+    
+    <section class="features-section fade-in">
+      <h2>Why Choose CareerGuideAI?</h2>
+      <div class="row">
+        <div class="col-md-4 feature-box slide-up">
+          <h4>Personalized Guidance</h4>
+          <p>Receive tailored career advice based on your aptitude, interests, and academic background. Our AI analyzes your responses and suggests the best-suited paths, taking the guesswork out of decision-making.</p>
+        </div>
+        <div class="col-md-4 feature-box slide-up">
+          <h4>Instant Assessments</h4>
+          <p>Take a quick, scientifically designed test that evaluates your skills, personality traits, and preferences to identify suitable careers in minutes. No more hours of research—get accurate suggestions fast.</p>
+        </div>
+        <div class="col-md-4 feature-box slide-up">
+          <h4>Help with Educational Planning</h4>
+          <p>A career counsellor doesn’t just tell you what career might suit you—they also help plan the educational roadmap to get there, including: University or college selection, Course recommendations, Scholarship or entrance exam guidance</p>
+        </div>
+        <div class="col-md-4 feature-box slide-up">
+          <h4>Career Roadmaps</h4>
+          <p>Visualize your journey step-by-step with detailed roadmaps outlining key milestones. From degree requirements to recommended certifications, we ensure you stay on track from student to professional.</p>
+        </div>
+        <div class="col-md-4 feature-box slide-up">
+          <h4>Awareness of New-Age Careers</h4>
+          <p>Intelligent counsellors stay updated with market trends, emerging fields, and in-demand skills. They can introduce you to non-traditional or high-growth paths you might not have considered.</p>
+        </div>
+        <div class="col-md-4 feature-box slide-up">
+          <h4>Interactive Dashboard</h4>
+          <p>Manage your progress, set career goals, and explore relevant skills and learning paths with a user-friendly dashboard. Get reminders, track completed assessments, and stay organized through every stage of your career planning.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="how-it-works-section fade-in">
+        <h2>How It Works</h2>
+        <div class="row">
+            <div class="col-md-4 feature-box slide-up">
+                <div class="step-number">1</div>
+                <h4>Sign Up & Log In</h4>
+                <p>Create your account or log in to access all the features of our intelligent career guidance system. It's quick and easy to get started!</p>
+            </div>
+            <div class="col-md-4 feature-box slide-up">
+                <div class="step-number">2</div>
+                <h4>Take the Assessment</h4>
+                <p>Complete our personalized career assessment. Our AI analyzes your interests, skills, and academic background to provide tailored career recommendations.</p>
+            </div>
+            <div class="col-md-4 feature-box slide-up">
+                <div class="step-number">3</div>
+                <h4>Explore Your Dashboard</h4>
+                <p>View your personalized career paths, detailed insights, and educational roadmaps on your interactive dashboard. Track your progress and set goals.</p>
+            </div>
+            <div class="col-md-4 feature-box slide-up">
+                <div class="step-number">4</div>
+                <h4>Test Your Knowledge</h4>
+                <p>Challenge yourself with dynamic, AI-generated quizzes in various technical domains or try our coding challenges to assess your understanding.</p>
+            </div>
+            <div class="col-md-4 feature-box slide-up">
+                <div class="step-number">5</div>
+                <h4>Search & Connect</h4>
+                <p>Utilize the search bar to find specific careers, skills, or courses. If you need more help, our contact section connects you with experts.</p>
+            </div>
+            <div class="col-md-4 feature-box slide-up">
+                <div class="step-number">6</div>
+                <h4>Stay Updated</h4>
+                <p>Keep an eye on the latest career news and trends to stay ahead in the ever-evolving job market. We'll provide you with fresh insights.</p>
+            </div>
+        </div>
+    </section>
+    
+ <section class="search-section fade-in">
+      <h2>Quick Career Search</h2>
+      <form class="search-bar" action="{% url 'search' %}" method="GET">
+        <input type="text" name="query" placeholder="Search careers, skills, courses..." required />
+        <button type="submit">Search</button>
+      </form>
+    </section>
+
+    <section class="popular-careers fade-in">
+      <h2>Popular Career Options</h2>
+      <div class="row">
+        <div class="col-md-3 career-box slide-up">
+          <h4>Data Scientist</h4>
+          <p>High demand, lucrative salary, requires skills in Python, ML, and statistics.</p>
+        </div>
+        <div class="col-md-3 career-box slide-up">
+          <h4>Software Engineer</h4>
+          <p>Core tech role, excellent job growth, focus on coding and system design.</p>
+        </div>
+        <div class="col-md-3 career-box slide-up">
+          <h4>Civil Engineer</h4>
+          <p>Design and build infrastructure, great for those who love planning and fieldwork.</p>
+        </div>
+        <div class="col-md-3 career-box slide-up">
+          <h4>UX Designer</h4>
+          <p>Combine creativity and tech, focus on improving user experiences.</p>
+        </div>
+        <div class="col-md-3 career-box slide-up">
+          <h4>AI/ML Engineer</h4>
+          <p>Work with artificial intelligence algorithms and machine learning models to build smart systems.</p>
+        </div>
+        <div class="col-md-3 career-box slide-up">
+          <h4>Cybersecurity Analyst</h4>
+          <p>Protect digital infrastructure and data from cyber threats with skills in security protocols and tools.</p>
+        </div>
+        <div class="col-md-3 career-box slide-up">
+          <h4>DevOps Engineer</h4>
+          <p>Bridge development and operations, automate deployment, and manage infrastructure efficiently.</p>
+        </div>
+        <div class="col-md-3 career-box slide-up">
+          <h4>Product Manager</h4>
+          <p>Lead cross-functional teams, define product strategy, and ensure user satisfaction and business success.</p>
+        </div>
+      </div>
+    </section>
+
+   
+
+    <section class="assessment-section fade-in">
+        <h2>Knowledge Assessments</h2>
+        <p class="mb-4">Test your skills with dynamic, AI-generated quizzes in various tech fields, or challenge yourself with a coding problem.</p>
+        <div class="assessment-button-group slide-up">
+
+
+            <!-- <a href="{% url 'generate_test' test_type='aptitude' %}" class="assessment-button bg-blue-600">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                <path d="M11.25 4.507A4.5 4.5 0 0 0 9 9.75v.75H6.75a.75.75 0 0 0-.75.75v10.5c0 .414.336.75.75.75h9c.414 0 .75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75h-2.25V9.75a4.5 4.5 0 0 0-2.25-5.243ZM12 3a6 6 0 0 1 6 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 3 22.5V13.5A2.25 2.25 0 0 1 5.25 11.25H6V9.75a6 6 0 0 1 6-6Z" />
+            </svg>
+            Aptitude Test
+            </a> -->
+            
+            <a href="{% url 'generate_test' test_type='computer_science' %}" class="assessment-button bg-purple-600">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M11.25 4.507A4.5 4.5 0 0 0 9 9.75v.75H6.75a.75.75 0 0 0-.75.75v10.5c0 .414.336.75.75.75h9c.414 0 .75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75h-2.25V9.75a4.5 4.5 0 0 0-2.25-5.243ZM12 3a6 6 0 0 1 6 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 3 22.5V13.5A2.25 2.25 0 0 1 5.25 11.25H6V9.75a6 6 0 0 1 6-6Z" />
+                </svg>
+                Computer Science Test
+            </a>
+
+            <a href="{% url 'generate_test' test_type='data_science' %}" class="assessment-button bg-red-600">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M11.25 4.507A4.5 4.5 0 0 0 9 9.75v.75H6.75a.75.75 0 0 0-.75.75v10.5c0 .414.336.75.75.75h9c.414 0 .75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75h-2.25V9.75a4.5 4.5 0 0 0-2.25-5.243ZM12 3a6 6 0 0 1 6 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 3 22.5V13.5A2.25 2.25 0 0 1 5.25 11.25H6V9.75a6 6 0 0 1 6-6Z" />
+                </svg>
+                Data Science Test
+            </a>
+
+            <a href="{% url 'generate_test' test_type='web_development' %}" class="assessment-button bg-yellow-600">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M11.25 4.507A4.5 4.5 0 0 0 9 9.75v.75H6.75a.75.75 0 0 0-.75.75v10.5c0 .414.336.75.75.75h9c.414 0 .75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75h-2.25V9.75a4.5 4.5 0 0 0-2.25-5.243ZM12 3a6 6 0 0 1 6 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 3 22.5V13.5A2.25 2.25 0 0 1 5.25 11.25H6V9.75a6 6 0 0 1 6-6Z" />
+                </svg>
+                Web Development Test
+            </a>
+
+            <a href="{% url 'generate_test' test_type='coding' %}" class="assessment-button bg-green-600">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5">
+                    <path d="M11.25 4.507A4.5 4.5 0 0 0 9 9.75v.75H6.75a.75.75 0 0 0-.75.75v10.5c0 .414.336.75.75.75h9c.414 0 .75-.336.75-.75V11.25a.75.75 0 0 0-.75-.75h-2.25V9.75a4.5 4.5 0 0 0-2.25-5.243ZM12 3a6 6 0 0 1 6 6v.75h.75a2.25 2.25 0 0 1 2.25 2.25v10.5a2.25 2.25 0 0 1-2.25 2.25h-9A2.25 2.25 0 0 1 3 22.5V13.5A2.25 2.25 0 0 1 5.25 11.25H6V9.75a6 6 0 0 1 6-6Z" />
+                </svg>
+                Coding Challenge
+            </a>
+        </div>
+    </section>
+   
+    
+<section class="features-section fade-in">
+    <h2>AI-Generated Resume Tips</h2>
+    <div class="row">
+        <div class="col-lg-4 col-md-6 feature-box slide-up">
+            <h4>Tailor Your Resume to the Job</h4>
+            <p>Our AI suggests customizing your resume for each application. Highlight keywords from the job description and showcase skills most relevant to the role you're targeting. This significantly increases your chances of passing applicant tracking systems (ATS).</p>
+        </div>
+        <div class="col-lg-4 col-md-6 feature-box slide-up">
+            <h4>Quantify Your Achievements</h4>
+            <p>Instead of just listing responsibilities, use numbers and metrics to demonstrate your impact. For example, "Increased sales by 15%" or "Managed a team of 10+" is far more impactful than vague statements.</p>
+        </div>
+        <div class="col-lg-4 col-md-6 feature-box slide-up">
+            <h4>Optimize for Keywords</h4>
+            <p>Based on your chosen career, our AI identifies crucial industry-specific keywords. Integrate these naturally throughout your resume, especially in your skills section and work experience bullet points, to align with employer searches.</p>
+        </div>
+        <div class="col-lg-4 col-md-6 feature-box slide-up">
+            <h4>Choose a Clean, Readable Format</h4>
+            <p>Clarity is key. Opt for a professional, uncluttered layout that's easy to scan. Use clear headings, consistent formatting, and appropriate white space. Avoid overly flashy designs that might distract from your content.</p>
+        </div>
+        <div class="col-lg-4 col-md-6 feature-box slide-up">
+            <h4>Highlight Relevant Skills</h4>
+            <p>Beyond technical skills, emphasize soft skills like problem-solving, communication, and teamwork that are highly valued in your desired career. Use action verbs to describe how you applied these skills in previous roles.</p>
+        </div>
+        <div class="col-lg-4 col-md-6 feature-box slide-up">
+            <h4>Proofread Meticulously</h4>
+            <p>Even with AI assistance, a final human review is crucial. Check for any typos, grammatical errors, or inconsistencies. A flawless resume reflects attention to detail and professionalism. Consider using online tools for a final check.</p>
+        </div>
+    </div>
+ <div class="text-center mt-12">
+    <a href="{% url 'resume_builder' %}" 
+       class="btn btn-live-chat">
+        Build My Resume
+    </a>
+</section>
+
+
+
+
+    
+
+<hr style="border: #2d3748 solid 2px"> 
+
+<!-- Company-Wise Test Section -->
+<!-- Company-Wise Test Section -->
+<section class="test-prep-section">
+  <div class="test-prep-container">
+    <div class="header">
+      <h2 class="section-title">🎯 Company-Wise Mock Tests</h2>
+      <p class="tagline">Prepare smarter with real-world practice tests from top companies.</p>
+    </div>
+
+    <div class="content">
+      <p class="description">
+        Boost your career with <strong>real-world mock tests</strong> designed for leading companies.
+      </p>
+
+      <div class="feature-list">
+        <div class="feature-card">
+          <span class="icon">✅</span>
+          <div>
+            <h4>Aptitude Tests</h4>
+            <p>Logical reasoning, quantitative, and verbal practice sets</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <span class="icon">💻</span>
+          <div>
+            <h4>Coding Challenges</h4>
+            <p>DSA, problem-solving, and competitive coding practice</p>
+          </div>
+        </div>
+        <div class="feature-card">
+          <span class="icon">🎤</span>
+          <div>
+            <h4>Interview Practice</h4>
+            <p>Real company interview questions with AI feedback</p>
+          </div>
+        </div>
+        <!-- New HR Interview Round card -->
+        <div class="feature-card">
+          <span class="icon">🤝</span>
+          <div>
+            <h4>HR Interview Round</h4>
+            <p>Behavioral questions, common HR queries, and resume-based questions</p>
+          </div>
+        </div>
+      </div>
+
+      <p class="company-count">
+        Includes Infosys, TCS, Wipro, Accenture, IBM, Google, Microsoft, and many more.
+      </p>
+
+      <a href="{% url 'company_tests_page' %}" class="cta-button">
+        Start Practicing →
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Use CSS variables for the dark theme */
+  :root {
+    --bg-primary: #1a202c;
+    --bg-secondary: #2d3748;
+    --card-bg: #273142;
+    --text-primary: #e2e8f0;
+    --text-secondary: #a0aec0;
+    --border-color: #4a5568;
+    --shadow-color: rgba(0, 0, 0, 0.4);
+    --card-shadow-color: rgba(0, 0, 0, 0.3);
+    --btn-pink-shadow: rgba(255, 92, 157, 0.4);
+    --btn-pink-hover-shadow: rgba(255, 92, 157, 0.6);
+  }
+
+  .test-prep-section {
+    background-color: var(--bg-secondary);
+    padding: 60px 20px;
+    border-radius: 20px;
+    max-width: 1300px;
+    margin: 50px auto;
+    box-shadow: 0 6px 25px var(--card-shadow-color);
+    transition: 0.3s ease;
+    opacity: 0;
+    transform: translateY(30px);
+    text-align: center;
+    font-family: "Poppins", sans-serif;
+  }
+
+  .test-prep-section.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .test-prep-section:hover {
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  }
+
+  .section-title {
+    font-size: 2.4rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+  }
+
+  .tagline {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+  }
+
+  .description {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+  }
+
+  .feature-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    /* Removed flex-wrap to keep cards on a single line */
+    margin-bottom: 30px;
+  }
+
+  .feature-card {
+    flex: 1;
+    /* Min-width adjusted to a smaller value to help prevent overflow on small screens */
+    min-width: 200px;
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 14px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    display: flex;
+    gap: 15px;
+    align-items: flex-start;
+    transition: 0.3s ease;
+  }
+
+  .feature-card:hover {
+    background: var(--bg-secondary);
+    transform: translateY(-5px);
+  }
+
+  .feature-card h4 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-primary);
+  }
+
+  .feature-card p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .icon {
+    font-size: 1.6rem;
+  }
+
+  .company-count {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+  }
+
+  .cta-button {
+    display: inline-block;
+    padding: 14px 34px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(45deg, #ff5c9d, #ff3b85);
+    border-radius: 40px;
+    box-shadow: 0 6px 20px var(--btn-pink-shadow);
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .cta-button:hover {
+    background: linear-gradient(45deg, #ff3b85, #ff1a77);
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 768px) {
+    .feature-list {
+      /* Keep cards on a single row even on mobile */
+      flex-direction: row;
+    }
+    .section-title {
+      font-size: 1.8rem;
+    }
+    .tagline {
+      font-size: 1rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const observer = new IntersectionObserver(
+      (entries, observer) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    const section = document.querySelector(".test-prep-section");
+    if (section) {
+      observer.observe(section);
+    }
+  });
+</script>
+
+
+
+
+
+
+
+    <section class="news-section fade-in">
+      <h2>Latest Career News & Trends</h2>
+      <div class="row">
+        <div class="col-md-4 news-box slide-up">
+          <h4>Top 5 Emerging Careers in 2025</h4>
+          <p>Explore growing fields like AI, Renewable Energy, and Cybersecurity shaping the future job market.</p>
+        </div>
+        <div class="col-md-4 news-box slide-up">
+          <h4>How to Upskill for Your Dream Job</h4>
+          <p>Learn key skills through online courses and certifications to boost your career prospects.</p>
+        </div>
+        <div class="col-md-4 news-box slide-up">
+          <h4>Understanding Job Market Analytics</h4>
+          <p>Data-driven insights to help you make informed career decisions.</p>
+        </div>
+      </div>
+    </section>
+
+
+ <hr style="border: #2d3748 solid 2px">
+
+
+    <section class="contact-section fade-in">
+      <h2>Need Help?</h2>
+      <p>Contact our career experts or chat with our AI assistant for personalized support.</p>
+      <div class="contact-buttons-group slide-up">
+          <a href="{% url 'contact' %}" class="btn btn-pink">Contact Us</a>
+          <a href="{% url 'live_chat' %}" id="liveChatButton" class="btn btn-live-chat">
+              <i class="fas fa-comments"></i> Live Chat
+          </a>
+      </div>
+    </section>
+
+
+ <hr style="border: #2d3748 solid 2px">
+<!-- ======================================================================================================================================
+     -->
+
+<section class="team-section">
+    <style>
+       
+        .team-section {
+            padding: 80px 20px;
+            background: var(--background); /* Uses the body's background for consistency */
+            text-align: center;
+            color: var(--text-color);
+            width: 100%;
+        }
+
+        .team-section h2 {
+            font-size: 3.2rem;
+            margin-bottom: 20px;
+            color: var(--primary); /* Accent color for the section heading */
+            font-weight: 700;
+        }
+
+        .team-section .section-description {
+            font-size: 1.2rem;
+            color: var(--subtle-text);
+            max-width: 700px;
+            margin: 0 auto 60px;
+            line-height: 1.6;
+        }
+
+        .team-members-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .team-member-card {
+            background: var(--card-bg); /* Uses the card background variable */
+            border-radius: var(--border-radius-medium);
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .team-member-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.55);
+        }
+
+        /* Removed .team-member-photo specific styling */
+
+        .team-member-card h3 {
+            font-size: 1.8rem;
+            color: var(--text-color);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .team-member-card .team-member-role {
+            font-size: 1.1rem;
+            color: var(--primary); /* Role text in accent color */
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .team-member-card .team-member-bio {
+            font-size: 0.95rem;
+            color: var(--subtle-text);
+            line-height: 1.6;
+            margin-bottom: 20px;
+            flex-grow: 1; /* Allows bio to take available space */
+        }
+
+        .team-member-card .social-links {
+            margin-top: auto; /* Pushes social links to bottom */
+            display: flex;
+            gap: 15px;
+        }
+
+        .team-member-card .social-links a {
+            color: var(--subtle-text);
+            font-size: 1.5rem;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .team-member-card .social-links a:hover {
+            color: var(--primary); /* Accent color on hover */
+            transform: scale(1.1);
+        }
+
+        /* Responsive adjustments for smaller screens (only for team section) */
+        @media (max-width: 768px) {
+            .team-section h2 {
+                font-size: 2.5rem;
+            }
+            .team-section .section-description {
+                font-size: 1rem;
+                margin-bottom: 40px;
+            }
+            .team-member-card {
+                padding: 25px;
+            }
+            /* Removed .team-member-photo responsive styling */
+            .team-member-card h3 {
+                font-size: 1.6rem;
+            }
+            .team-member-card .team-member-role {
+                font-size: 1rem;
+            }
+            .team-member-card .team-member-bio {
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .team-section {
+                padding: 60px 15px;
+            }
+            .team-members-grid {
+                grid-template-columns: 1fr; /* Single column on very small screens */
+            }
+        }
+    </style>
+
+    <h2>Meet Our Team</h2>
+    <p class="section-description">
+        Behind every great project is a passionate team. Get to know the minds driving innovation.
+    </p>
+
+    <div class="team-members-grid">
+
+        <div class="team-member-card">
+            <h3>Yuvraj Shete</h3>
+            <p class="team-member-role">Founder & CEO</p>
+            <p class="team-member-bio">Visionary leader with a passion for transforming ideas into impactful solutions through AI.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/yuvrajshete05/" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+                <a href="https://github.com/yuvrajshete05" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+
+        <div class="team-member-card">
+            <h3>Toshavi Marwade</h3>
+            <p class="team-member-role">Co-Founder & CTO</p>
+            <p class="team-member-bio">Bringing cutting-edge technical expertise and a knack for elegant problem-solving.</p>
+            <div class="social-links">
+                <a href="https://www.linkedin.com/in/toshavi-marwade-5b6429266/" target="_blank" aria-label="LinkedIn Profile"><i class="fab fa-linkedin"></i></a>
+                <a href="#" target="_blank" aria-label="GitHub Profile"><i class="fab fa-github"></i></a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+ <hr style="border: #2d3748 solid 2px">   
+
+ <section class="social-links-section fade-in">
+        <h2>Connect With Us</h2>
+        <p>Stay updated and reach out through our social channels or directly via email.</p>
+        <div class="social-icon-group slide-up">
+            <a href="#" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f social-icon"></i></a>
+            <a href="#" target="_blank" aria-label="Twitter"><i class="fab fa-twitter social-icon"></i></a>
+            <a href="#" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in social-icon"></i></a>
+            <a href="#" target="_blank" aria-label="Instagram"><i class="fab fa-instagram social-icon"></i></a>
+            <a href="mailto:info@careerguideai.com" aria-label="Email Us"><i class="fas fa-envelope social-icon"></i></a>
+        </div>
+    </section>
+
+
+    <footer>
+      &copy; 2025 Intelligent Career Guidance | Powered by AI
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
+    <script>
+      // Typing Animation for Tagline
+      document.addEventListener('DOMContentLoaded', function() {
+        const taglineElement = document.getElementById('typed-tagline');
+        const text = "Discover your strengths and passions with AI-powered insights.";
+        let i = 0;
+        let speed = 50; // Typing speed in milliseconds
+
+        function typeWriter() {
+          if (i < text.length) {
+            taglineElement.innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typeWriter, speed);
+          } else {
+            // Remove the blinking cursor after typing is complete
+            taglineElement.style.borderRight = 'none';
+          }
+        }
+        typeWriter();
+
+        // Live Chat Button Placeholder Logic
+        // const liveChatButton = document.getElementById('liveChatButton');
+        // if (liveChatButton) {
+        //     liveChatButton.addEventListener('click', function(event) {
+        //         event.preventDefault(); // Prevent default link behavior
+
+        //         // --- IMPORTANT: Integrate your Live Chat Service Here ---
+        //         // This is where you would typically call a function from your
+        //         // live chat provider's SDK to open the chat widget.
+        //         //
+        //         // Example for Tawk.to (replace YOUR_PROPERTY_ID and YOUR_WIDGET_ID):
+        //         // if (typeof Tawk_API !== 'undefined' && Tawk_API.hasOwnProperty('maximize')) {
+        //         //     Tawk_API.maximize();
+        //         // } else {
+        //         //     alert('Live chat is currently unavailable. Please use the Contact Us form.');
+        //         // }
+        //         //
+        //         // Example for a generic alert:
+        //         alert('Live chat is coming soon! For now, please use the "Contact Us" form.');
+        //     });
+        // }
+
+
+        // Scroll-based Animations using Intersection Observer
+        const fadeElements = document.querySelectorAll('.fade-in');
+        const slideElements = document.querySelectorAll('.slide-up');
+
+        const observerOptions = {
+          root: null, // viewport as the root
+          rootMargin: '0px',
+          threshold: 0.2 // 20% of the element must be visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('appear');
+              observer.unobserve(entry.target); // Stop observing once it appears
+            }
+          });
+        }, observerOptions);
+
+        fadeElements.forEach(el => observer.observe(el));
+        slideElements.forEach(el => observer.observe(el));
+      });
+    </script>
+    
+    </body>
+</html>

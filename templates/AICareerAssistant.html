@@ -1,0 +1,346 @@
+<!-- 
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Career Assistant</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    /* Custom Color Palette (Cool Tones) */
+    :root {
+      --bg-start: #0a0a1a;   /* Very dark blue */
+      --bg-end: #000000;     /* Pure black */
+      --card-bg: #1a1a2e;    /* Dark purple-blue for cards/bubbles */
+      --border-color: #30304a; /* Subtle dark border */
+      --primary-accent: #00FFFF; /* Electric Cyan */
+      --primary-accent-dark: #00BFFF; /* Deep Sky Blue for hover */
+      --text-light: #E0FFFF; /* Light Cyan for main text */
+      --text-medium: #94B0DA; /* Light Blue for secondary text/placeholders */
+      --shadow-color-light: rgba(0, 255, 255, 0.2); /* Cyan glow shadow */
+      --shadow-color-dark: rgba(0, 191, 255, 0.3);  /* Deeper blue glow shadow */
+    }
+
+    /* Body Background: Radial Gradient for Depth */
+    body {
+      background: radial-gradient(circle at center, var(--bg-start) 0%, var(--bg-end) 100%);
+      color: var(--text-light);
+      font-family: 'Inter', sans-serif;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden; /* Prevent horizontal scroll */
+    }
+
+    /* General Transitions for Smoothness */
+    .transition-all-ease {
+        transition: all 0.3s ease-in-out;
+    }
+
+    /* Animations for messages */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .fade-in {
+      animation: fadeIn 0.3s ease-in-out forwards; /* forwards to keep the final state */
+    }
+
+    /* Typing indicator dots */
+    .dots::after {
+      content: ' .';
+      animation: dots 1.2s steps(3, end) infinite;
+    }
+    @keyframes dots {
+      0% { content: ' .'; }
+      33% { content: ' ..'; }
+      66% { content: ' ...'; }
+      100% { content: ' .'; }
+    }
+
+    /* Custom Scrollbar for Chat Box */
+    #chatBox::-webkit-scrollbar {
+      width: 8px;
+    }
+    #chatBox::-webkit-scrollbar-track {
+      background: var(--bg-start);
+      border-radius: 4px;
+    }
+    #chatBox::-webkit-scrollbar-thumb {
+      background-color: var(--border-color);
+      border-radius: 4px;
+      border: 2px solid var(--bg-start);
+    }
+    #chatBox::-webkit-scrollbar-thumb:hover {
+      background-color: #5a6b8c; /* Slightly lighter on hover */
+    }
+
+    /* Input Field Styling */
+    input[type="text"] {
+      border: 1px solid var(--border-color);
+      background-color: var(--card-bg);
+      color: var(--text-light);
+      placeholder-color: var(--text-medium);
+      transition: all 0.3s ease-in-out;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.4); /* Subtle initial shadow */
+    }
+    input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary-accent);
+      box-shadow: 0 0 0 3px var(--shadow-color-light), 0 0 15px var(--shadow-color-dark); /* Stronger glow */
+    }
+
+    /* Button Styling */
+    button {
+      background-color: var(--primary-accent);
+      color: var(--bg-end); /* Dark text on bright button */
+      font-weight: 600; /* Semi-bold */
+      transition: all 0.2s ease-in-out;
+      box-shadow: 0 4px 10px var(--shadow-color-light); /* Initial glow */
+    }
+    button:hover {
+      background-color: var(--primary-accent-dark);
+      transform: scale(1.05); /* Slight enlarge on hover */
+      box-shadow: 0 6px 15px var(--shadow-color-dark); /* Stronger glow on hover */
+    }
+    button:active {
+      transform: scale(0.98); /* Slight press effect */
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+    button:focus {
+        outline: none;
+        box-shadow: 0 0 0 4px var(--shadow-color-light); /* Prominent focus ring */
+    }
+
+    /* Chat Bubbles */
+    .chat-bubble {
+        background-color: var(--card-bg);
+        border: 1px solid var(--border-color);
+        border-radius: 1.25rem; /* 20px - more rounded */
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+        padding: 1rem;
+        word-wrap: break-word; /* Ensure long words wrap */
+    }
+    .chat-bubble.user {
+        background: linear-gradient(to right, var(--primary-accent-dark), var(--primary-accent)); /* Gradient for user messages */
+        border-color: var(--primary-accent-dark);
+        color: var(--bg-end); /* Dark text on user bubble */
+        box-shadow: 0 4px 12px var(--shadow-color-dark); /* More pronounced shadow for user */
+    }
+    .chat-bubble.assistant {
+        background-color: var(--card-bg);
+        border-color: var(--border-color);
+        color: var(--text-light);
+    }
+
+    /* Introduction Section Specifics */
+    #introSection h1 {
+        text-shadow: 0px 4px 12px rgba(0, 255, 255, 0.3); /* Cyan text glow */
+    }
+    #introSection p {
+        color: var(--text-medium);
+    }
+
+    /* Chat Section Specifics */
+    #careerChatSection h2 {
+        color: var(--primary-accent); /* Highlight chat title */
+        text-shadow: 0px 2px 8px rgba(0, 255, 255, 0.2); /* Cyan text shadow */
+    }
+
+    /* General containers */
+    .max-w-3xl {
+        width: 100%; /* Ensure it takes full width within its constraints */
+        max-width: 48rem; /* Tailwind's max-w-3xl */
+    }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <section id="introSection" class="flex-grow flex items-center justify-center py-24 px-4 transition-all-ease">
+    <div class="max-w-2xl mx-auto text-center">
+      <h1 class="text-5xl md:text-6xl font-extrabold mb-4 text-white">🤖 AI Career Assistant</h1>
+      <p class="text-lg md:text-xl mb-8 leading-relaxed">
+        Describe your skills, interests, or educational background, and I'll suggest the best career paths tailored just for you.
+      </p>
+      <button id="startChatBtn" class="px-8 py-4 rounded-full text-lg font-semibold focus:outline-none">
+        🚀 Start Chat
+      </button>
+    </div>
+  </section>
+
+  <section id="careerChatSection" class="flex-grow flex flex-col justify-between max-w-3xl mx-auto hidden px-4 pb-10 transition-all-ease">
+    <div>
+      <h2 class="text-4xl font-bold text-center mb-6">🎯 Career Suggestion Chat</h2>
+      <div id="chatBox" class="bg-slate-800 p-6 rounded-xl max-h-[70vh] overflow-y-auto space-y-4 shadow-xl border border-slate-700 mb-6">
+        <div class="chat-bubble assistant fade-in">
+          👋 Hi there! I’m your personalized AI Career Guide. Tell me about your interests, skills, or what you're studying, and I'll suggest potential career paths for you.
+        </div>
+      </div>
+    </div>
+
+    <form id="chatForm" class="flex gap-4">
+      <input
+        id="userInput"
+        type="text"
+        placeholder="Type your interest or question..."
+        class="flex-1 p-4 rounded-xl shadow-md"
+        required
+      />
+      <button type="submit" class="px-6 py-3 rounded-xl shadow-lg font-semibold focus:outline-none">Send</button>
+    </form>
+  </section>
+
+  <script>
+    // Note: The API_KEY here is for Groq. If your backend is Django with Gemini,
+    // this frontend API key is separate and specific to the Groq API call.
+    // If you are using your Django backend for the AI part, this JavaScript
+    // would typically make a fetch request to your Django endpoint, not directly to Groq.
+    const API_KEY = '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'; // Replace with your actual Groq API Key
+    const API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+    const MODEL = 'llama-3.1-8b-instant'; // Or other Groq models like 'llama3-8b-8192', 'mixtral-8x7b-32768'
+
+    const introSection = document.getElementById('introSection');
+    const chatSection = document.getElementById('careerChatSection');
+    const chatBox = document.getElementById('chatBox');
+    const chatForm = document.getElementById('chatForm');
+    const userInput = document.getElementById('userInput');
+
+    let greetingPlayed = false; // To ensure audio greeting plays only once
+
+    // Chat history including system prompt for AI context
+    const messageHistory = [
+      {
+        role: 'system',
+        content: "You are a helpful AI that gives career guidance based on the user's interests, skills, or education. Provide 3–5 suggestions with short explanations."
+      }
+    ];
+
+    // Helper function to scroll chat box to the bottom
+    function scrollToBottom() {
+      requestAnimationFrame(() => {
+        chatBox.scrollTop = chatBox.scrollHeight;
+      });
+    }
+
+    // Function to add a new message to the chat box
+    function addMessage(sender, text, isTyping = false) {
+      const div = document.createElement('div');
+      // Apply different styles for user and assistant messages
+      div.className =
+        sender === 'user'
+          ? 'ml-auto chat-bubble user fade-in' // Applied 'user' class for gradient
+          : 'chat-bubble assistant fade-in'; // Applied 'assistant' class for consistency
+      div.textContent = text;
+      if (isTyping) div.classList.add('dots'); // Add typing indicator class
+      chatBox.appendChild(div);
+      scrollToBottom(); // Always scroll to bottom after adding a message
+    }
+
+    // Function to play an audio greeting using Web Speech API
+    function playGreetingAudio() {
+      // Play only once and if speech synthesis is available
+      if (greetingPlayed || !window.speechSynthesis) return;
+
+      const utterance = new SpeechSynthesisUtterance("Welcome to Career Guidance Assistant. Just tell me how I can help you.");
+      utterance.lang = "en-US";
+      utterance.pitch = 1;
+      utterance.rate = 1;
+
+      // Find a suitable voice and speak the utterance
+      const setVoice = () => {
+        const voices = speechSynthesis.getVoices();
+        // Prefer common natural-sounding voices, or fallback to the first available
+        const preferred = voices.find(v => /Google|Zira|Samantha/.test(v.name)) || voices[0];
+        utterance.voice = preferred;
+        speechSynthesis.speak(utterance);
+        greetingPlayed = true;
+      };
+
+      // Check if voices are already loaded, otherwise wait for them
+      if (speechSynthesis.getVoices().length) {
+        setVoice();
+      } else {
+        speechSynthesis.onvoiceschanged = setVoice;
+      }
+    }
+
+    // Event listener for the "Start Chat" button
+    document.getElementById('startChatBtn').addEventListener('click', () => {
+      introSection.classList.add('hidden'); // Hide the intro section
+      chatSection.classList.remove('hidden'); // Show the chat section
+      userInput.focus(); // Focus on the input field
+      playGreetingAudio(); // Play the welcome audio
+    });
+
+    // Event listener for the chat form submission
+    chatForm.addEventListener('submit', async (e) => {
+      e.preventDefault(); // Prevent default form submission
+      const input = userInput.value.trim(); // Get user input and trim whitespace
+      if (!input) return; // Do nothing if input is empty
+
+      addMessage('user', input); // Add user's message to chat box
+      messageHistory.push({ role: 'user', content: input }); // Add to message history for AI context
+      userInput.value = ''; // Clear the input field
+
+      addMessage('assistant', '⏳ Typing...', true); // Show typing indicator
+
+      try {
+        // Make API call to Groq
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${API_KEY}`, // Use the Groq API Key
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            model: MODEL,
+            messages: messageHistory,
+            temperature: 0.7, // Creativity level
+            max_tokens: 1024 // Max length of AI response
+          })
+        });
+
+        const data = await res.json(); // Parse JSON response
+        // Extract AI's reply or provide a fallback
+        const reply = data.choices?.[0]?.message?.content || 'No response.';
+        chatBox.lastChild.remove(); // Remove the typing indicator
+        addMessage('assistant', reply); // Add AI's reply to chat box
+        messageHistory.push({ role: 'assistant', content: reply }); // Add to message history
+      } catch (err) {
+        console.error('API Error:', err); // Log the error for debugging
+        chatBox.lastChild.remove(); // Remove typing indicator
+        addMessage('assistant', '❌ Something went wrong. Please try again.'); // Show user-friendly error
+      }
+    });
+  </script>
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

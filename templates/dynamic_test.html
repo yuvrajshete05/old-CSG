@@ -1,0 +1,642 @@
+<!-- {# app1/templates/dynamic_test.html #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ test_title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: radial-gradient(circle at top left, #1a202c, #2d3748, #1a202c);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 2rem;
+            color: #e2e8f0;
+        }
+
+        .test-container {
+            max-width: 60rem;
+            width: 100%;
+            background: rgba(45, 55, 72, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(74, 85, 104, 0.7);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-heading {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: #cbd5e0;
+            border-bottom: 2px solid #63b3ed;
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .question-block {
+            background-color: #2d3748;
+            border: 1px solid #4a5568;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #e2e8f0;
+        }
+
+        .options-list label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: #cbd5e0;
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .options-list label:hover {
+            color: #63b3ed;
+        }
+
+        .options-list input[type="radio"] {
+            margin-right: 0.75rem;
+        }
+
+        .code-block {
+            background-color: #1a202c;
+            color: #4CAF50; /* Green color for code */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 1rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin-top: 1rem;
+            border: 1px solid #4a5568;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+        }
+        .code-block code {
+            display: block; /* Ensure code lines break */
+        }
+
+
+        .back-button {
+            background-color: #63b3ed;
+            color: #fff;
+            font-weight: 600;
+            padding: 0.875rem 1.75rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 5px 15px rgba(99, 179, 237, 0.4);
+            transition: all 0.3s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            margin-top: 2rem;
+        }
+
+        .back-button:hover {
+            background-color: #4299e1;
+            transform: translateY(-0.25rem) scale(1.02);
+            box-shadow: 0 8px 20px rgba(99, 179, 237, 0.6);
+        }
+
+        .error-message {
+            color: #ef4444; /* Red color for errors */
+            font-weight: 600;
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="test-container">
+        <h1 class="test-heading">{{ test_title }}</h1>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+            <p class="text-center mt-4">Please try refreshing the page or selecting a different test type.</p>
+        {% elif is_coding_challenge %}
+            <div class="coding-challenge">
+                <h3 class="text-xl font-semibold mb-2 text-blue-300">Problem Description:</h3>
+                <p class="mb-4">{{ challenge_data.problem_description | linebreaksbr }}</p>
+
+                <h3 class="text-xl font-semibold mb-2 text-blue-300">Example Input:</h3>
+                <div class="code-block"><code>{{ challenge_data.example_input }}</code></div>
+
+                <h3 class="text-xl font-semibold mt-4 mb-2 text-blue-300">Example Output:</h3>
+                <div class="code-block"><code>{{ challenge_data.example_output }}</code></div>
+
+                <h3 class="text-xl font-semibold mt-4 mb-2 text-blue-300">Solution:</h3>
+                <div class="code-block"><code>{{ challenge_data.solution_code | linebreaksbr }}</code></div>
+                <p class="text-center mt-6 text-gray-400">
+                    This is a challenge for you to solve! The solution is provided for learning purposes.
+                </p>
+            </div>
+        {% elif questions %}
+            <form id="testForm" onsubmit="event.preventDefault(); checkAnswers();">
+                {% for question in questions %}
+                <div class="question-block">
+                    <p class="question-text">{{ forloop.counter }}. {{ question.question }}</p>
+                    <div class="options-list">
+                        {% for option in question.options %}
+                            <div>
+                                <label>
+                                    <input type="radio" name="question_{{ forloop.parentloop.counter }}" value="{{ option.0 }}">
+                                    {{ option }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <p class="correct-answer-display hidden mt-2 text-green-400">
+                        <span class="font-bold">Correct Answer:</span> <span data-correct-answer="{{ question.correct_answer }}"></span>
+                    </p>
+                </div>
+                {% endfor %}
+                <div class="text-center mt-8">
+                    <button type="submit" class="back-button bg-green-500 hover:bg-green-600">Submit Test</button>
+                    <button type="button" onclick="showAnswers();" class="back-button bg-yellow-500 hover:bg-yellow-600">Show Answers</button>
+                    <p id="scoreDisplay" class="text-2xl font-bold mt-4"></p>
+                </div>
+            </form>
+        {% else %}
+            <p class="text-center text-gray-400">No questions generated. Please try again.</p>
+        {% endif %}
+
+        <div class="text-center">
+            <a href="{% url 'home' %}" class="back-button">Go Back to Home</a>
+            <a href="{% url 'generate_test' test_type=test_type %}" class="back-button">Refresh Test</a>
+        </div>
+    </div>
+
+    <script>
+        function checkAnswers() {
+            let score = 0;
+            const totalQuestions = document.querySelectorAll('.question-block').length;
+
+            document.querySelectorAll('.question-block').forEach((block, index) => {
+                const questionNumber = index + 1;
+                const selectedOption = document.querySelector(`input[name="question_${questionNumber}"]:checked`);
+                const correctAnswerElement = block.querySelector('.correct-answer-display span[data-correct-answer]');
+                const correctAnswer = correctAnswerElement.dataset.correctAnswer;
+
+                // Reset styles
+                block.style.backgroundColor = '#2d3748'; // Default background
+
+                if (selectedOption) {
+                    if (selectedOption.value === correctAnswer) {
+                        score++;
+                        block.style.backgroundColor = '#28a74540'; // Light green for correct
+                    } else {
+                        block.style.backgroundColor = '#dc354540'; // Light red for incorrect
+                    }
+                } else {
+                    // No answer selected
+                    block.style.backgroundColor = '#ffc10740'; // Light yellow for unanswered
+                }
+            });
+
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.textContent = `You scored ${score} out of ${totalQuestions}!`;
+            scoreDisplay.style.color = score >= totalQuestions / 2 ? '#34d399' : '#f87171'; // Green if good, red if not
+            scoreDisplay.classList.remove('hidden'); // Ensure score is visible
+            showAnswers(true); // Show answers after submission
+        }
+
+        function showAnswers(isSubmission = false) {
+            document.querySelectorAll('.question-block').forEach(block => {
+                const correctAnswerElement = block.querySelector('.correct-answer-display');
+                if (correctAnswerElement) {
+                    const correctAnswerSpan = correctAnswerElement.querySelector('span[data-correct-answer]');
+                    const correctAnswerValue = correctAnswerSpan.dataset.correctAnswer;
+                    correctAnswerSpan.textContent = correctAnswerValue;
+                    correctAnswerElement.classList.remove('hidden'); // Show the correct answer
+
+                    if (isSubmission) {
+                        // After submission, highlight the correct option and user's choice
+                        const questionNumber = block.querySelector('.question-text').textContent.split('.')[0].trim();
+                        const selectedOptionInput = document.querySelector(`input[name="question_${questionNumber}"]:checked`);
+                        const allOptions = block.querySelectorAll('input[type="radio"]');
+
+                        allOptions.forEach(input => {
+                            if (input.value === correctAnswerValue) {
+                                input.parentElement.style.color = '#34d399'; // Green for correct option
+                                input.parentElement.style.fontWeight = 'bold';
+                            } else {
+                                input.parentElement.style.color = '#cbd5e0'; // Reset other options
+                                input.parentElement.style.fontWeight = 'normal';
+                            }
+                        });
+
+                        if (selectedOptionInput && selectedOptionInput.value !== correctAnswerValue) {
+                            selectedOptionInput.parentElement.style.color = '#ef4444'; // Red for incorrect user choice
+                            selectedOptionInput.parentElement.style.fontWeight = 'bold';
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html> -->
+
+
+
+
+{# app1/templates/dynamic_test.html #}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ test_title }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* --- UPDATED Color Variables for the new theme --- */
+        :root {
+            --bg-primary: #121212; /* Softer, darker gray for body */
+            --bg-secondary: #1e1e1e; /* Slightly lighter dark gray for cards */
+            --text-primary: #e0e0e0; /* Light gray for main text */
+            --text-secondary: #b0b0b0; /* Lighter gray for secondary text */
+            --border-color: #333333; /* Darker border */
+            --shadow-color: rgba(0, 0, 0, 0.6);
+            --card-shadow-color: rgba(0, 0, 0, 0.5);
+            --btn-accent: #00a896; /* Vibrant teal */
+            --btn-accent-hover: #008f7f;
+            --btn-accent-shadow: rgba(0, 168, 150, 0.4);
+            --btn-accent-hover-shadow: rgba(0, 168, 150, 0.6);
+            --btn-secondary-accent: #ffbf69; /* Warm gold */
+            --btn-secondary-accent-hover: #e09f47;
+            --btn-secondary-accent-shadow: rgba(255, 191, 105, 0.4);
+            --btn-secondary-accent-hover-shadow: rgba(255, 191, 105, 0.6);
+            --input-bg: #1e1e1e;
+            --input-border: #333333;
+            --input-focus-border: #00a896;
+            --input-placeholder: #666666;
+            --correct-bg-tint: rgba(0, 168, 150, 0.2); /* Light teal tint */
+            --incorrect-bg-tint: rgba(239, 68, 68, 0.2); /* Light red tint */
+            --unanswered-bg-tint: rgba(255, 191, 105, 0.2); /* Light gold tint */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            /* Updated radial gradient to match new primary/secondary background colors */
+            background: radial-gradient(circle at top left, var(--bg-primary), var(--bg-secondary), var(--bg-primary));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 2rem;
+            color: var(--text-primary);
+        }
+
+        .test-container {
+            max-width: 60rem;
+            width: 100%;
+            /* Updated background and border colors */
+            background: rgba(30, 30, 30, 0.9); /* Using var(--bg-secondary) with alpha */
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 20px var(--shadow-color), inset 0 0 15px rgba(255, 255, 255, 0.05);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .test-heading {
+            font-size: 2.25rem;
+            font-weight: 700;
+            color: var(--text-primary); /* Updated color */
+            border-bottom: 2px solid var(--btn-accent); /* Updated color */
+            padding-bottom: 1rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .question-block {
+            background-color: var(--bg-secondary); /* Updated color */
+            border: 1px solid var(--border-color); /* Updated color */
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary); /* Updated color */
+        }
+
+        .options-list label {
+            display: block;
+            margin-bottom: 0.75rem;
+            font-size: 1.1rem;
+            color: var(--text-secondary); /* Updated color */
+            cursor: pointer;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .options-list label:hover {
+            color: var(--btn-accent); /* Updated hover color */
+        }
+
+        .options-list input[type="radio"] {
+            margin-right: 0.75rem;
+        }
+
+        .code-block {
+            background-color: var(--bg-primary); /* Updated color */
+            color: var(--btn-accent); /* Green color for code, now teal */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+            font-size: 1rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            margin-top: 1rem;
+            border: 1px solid var(--border-color); /* Updated color */
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.4);
+        }
+        .code-block code {
+            display: block; /* Ensure code lines break */
+        }
+
+        .back-button {
+            background-color: var(--btn-accent); /* Updated to primary accent color */
+            color: #fff;
+            font-weight: 600;
+            padding: 0.875rem 1.75rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 5px 15px var(--btn-accent-shadow); /* Updated shadow */
+            transition: all 0.3s ease-in-out;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            margin-top: 2rem;
+            margin-right: 1rem; /* Added margin for spacing between buttons */
+        }
+
+        .back-button:hover {
+            background-color: var(--btn-accent-hover); /* Updated hover color */
+            transform: translateY(-0.25rem) scale(1.02);
+            box-shadow: 0 8px 20px var(--btn-accent-hover-shadow); /* Updated hover shadow */
+        }
+
+        /* Specific styles for different button types if needed, e.g., for submit/show answers */
+        .submit-button {
+            background-color: var(--btn-accent); /* Use primary accent for submit */
+            box-shadow: 0 5px 15px var(--btn-accent-shadow);
+        }
+        .submit-button:hover {
+            background-color: var(--btn-accent-hover);
+            box-shadow: 0 8px 20px var(--btn-accent-hover-shadow);
+        }
+
+        .show-answers-button {
+            background-color: var(--btn-secondary-accent); /* Use secondary accent for show answers */
+            box-shadow: 0 5px 15px var(--btn-secondary-accent-shadow);
+        }
+        .show-answers-button:hover {
+            background-color: var(--btn-secondary-accent-hover);
+            box-shadow: 0 8px 20px var(--btn-secondary-accent-hover-shadow);
+        }
+
+        .error-message {
+            color: #ef4444; /* Red color for errors (kept as is) */
+            font-weight: 600;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        /* Timer specific styles */
+        #timerDisplay {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--btn-accent);
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding: 0.75rem;
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 0.75rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        #timerDisplay.time-critical {
+            color: #ef4444; /* Red for last minute */
+            animation: pulse 1s infinite alternate;
+        }
+        @keyframes pulse {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(1.02); opacity: 0.9; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="test-container">
+        <h1 class="test-heading">{{ test_title }}</h1>
+
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+            <p class="text-center mt-4">Please try refreshing the page or selecting a different test type.</p>
+        {% elif is_coding_challenge %}
+            <div class="coding-challenge">
+                <h3 class="text-xl font-semibold mb-2 text-primary">Problem Description:</h3>
+                <p class="mb-4">{{ challenge_data.problem_description | linebreaksbr }}</p>
+
+                <h3 class="text-xl font-semibold mb-2 text-primary">Example Input:</h3>
+                <div class="code-block"><code>{{ challenge_data.example_input }}</code></div>
+
+                <h3 class="text-xl font-semibold mt-4 mb-2 text-primary">Example Output:</h3>
+                <div class="code-block"><code>{{ challenge_data.example_output }}</code></div>
+
+                <h3 class="text-xl font-semibold mt-4 mb-2 text-primary">Solution:</h3>
+                <div class="code-block"><code>{{ challenge_data.solution_code | linebreaksbr }}</code></div>
+                <p class="text-center mt-6 text-secondary">
+                    This is a challenge for you to solve! The solution is provided for learning purposes.
+                </p>
+            </div>
+        {% elif questions %}
+            <div id="timerDisplay">10:00</div>
+            <form id="testForm" onsubmit="event.preventDefault(); checkAnswers();">
+                {% for question in questions %}
+                <div class="question-block">
+                    <p class="question-text">{{ forloop.counter }}. {{ question.question }}</p>
+                    <div class="options-list">
+                        {% for option in question.options %}
+                            <div>
+                                <label>
+                                    <input type="radio" name="question_{{ forloop.parentloop.counter }}" value="{{ option.0 }}">
+                                    {{ option }}
+                                </label>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <p class="correct-answer-display hidden mt-2 text-green-400">
+                        <span class="font-bold">Correct Answer:</span> <span data-correct-answer="{{ question.correct_answer }}"></span>
+                    </p>
+                </div>
+                {% endfor %}
+                <div class="text-center mt-8">
+                    <button type="submit" class="back-button submit-button" id="submitButton">Submit Test</button>
+                    <button type="button" onclick="showAnswers();" class="back-button show-answers-button">Show Answers</button>
+                    <p id="scoreDisplay" class="text-2xl font-bold mt-4"></p>
+                    <p id="timeUpMessage" class="error-message hidden">Time's Up! Your test has been automatically submitted.</p>
+                </div>
+            </form>
+        {% else %}
+            <p class="text-center text-secondary">No questions generated. Please try again.</p>
+        {% endif %}
+
+        <div class="text-center">
+            <a href="{% url 'home' %}" class="back-button">Go Back to Home</a>
+            <a href="{% url 'generate_test' test_type=test_type %}" class="back-button">Refresh Test</a>
+    
+        </div>
+    </div>
+
+    <script>
+        let timerInterval;
+        const totalTime = 10 * 60; // 10 minutes in seconds
+        let timeLeft = totalTime;
+        let testSubmitted = false; // Flag to prevent multiple submissions
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+        }
+
+        function startTimer() {
+            const timerDisplay = document.getElementById('timerDisplay');
+            if (!timerDisplay) return; // Only start timer if it exists (i.e., not a coding challenge)
+
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    if (!testSubmitted) {
+                        document.getElementById('timeUpMessage').classList.remove('hidden');
+                        checkAnswers(); // Automatically submit
+                        disableForm();
+                    }
+                } else {
+                    timeLeft--;
+                    timerDisplay.textContent = formatTime(timeLeft);
+                    if (timeLeft <= 60) { // Less than 1 minute remaining
+                        timerDisplay.classList.add('time-critical');
+                    }
+                }
+            }, 1000);
+        }
+
+        function disableForm() {
+            document.querySelectorAll('#testForm input[type="radio"]').forEach(input => {
+                input.disabled = true;
+            });
+            document.getElementById('submitButton').disabled = true;
+            document.getElementById('submitButton').textContent = 'Test Submitted';
+        }
+
+        function checkAnswers() {
+            if (testSubmitted) return; // Prevent re-submission
+            testSubmitted = true;
+            clearInterval(timerInterval); // Stop the timer
+            disableForm(); // Disable inputs and submit button
+
+            let score = 0;
+            const totalQuestions = document.querySelectorAll('.question-block').length;
+
+            document.querySelectorAll('.question-block').forEach((block, index) => {
+                const questionNumber = index + 1;
+                const selectedOption = document.querySelector(`input[name="question_${questionNumber}"]:checked`);
+                const correctAnswerElement = block.querySelector('.correct-answer-display span[data-correct-answer]');
+                const correctAnswer = correctAnswerElement.dataset.correctAnswer;
+
+                // Reset styles
+                block.style.backgroundColor = 'var(--bg-secondary)'; // Default background
+
+                if (selectedOption) {
+                    if (selectedOption.value === correctAnswer) {
+                        score++;
+                        block.style.backgroundColor = 'var(--correct-bg-tint)'; // Light teal for correct
+                    } else {
+                        block.style.backgroundColor = 'var(--incorrect-bg-tint)'; // Light red for incorrect
+                    }
+                } else {
+                    // No answer selected
+                    block.style.backgroundColor = 'var(--unanswered-bg-tint)'; // Light gold for unanswered
+                }
+            });
+
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            scoreDisplay.textContent = `You scored ${score} out of ${totalQuestions}!`;
+            scoreDisplay.style.color = score >= totalQuestions / 2 ? 'var(--btn-accent)' : '#ef4444'; // Teal if good, red if not
+            scoreDisplay.classList.remove('hidden'); // Ensure score is visible
+            showAnswers(true); // Show answers after submission
+        }
+
+        function showAnswers(isSubmission = false) {
+            document.querySelectorAll('.question-block').forEach(block => {
+                const correctAnswerElement = block.querySelector('.correct-answer-display');
+                if (correctAnswerElement) {
+                    const correctAnswerSpan = correctAnswerElement.querySelector('span[data-correct-answer]');
+                    const correctAnswerValue = correctAnswerSpan.dataset.correctAnswer;
+                    correctAnswerSpan.textContent = correctAnswerValue;
+                    correctAnswerElement.classList.remove('hidden'); // Show the correct answer
+
+                    if (isSubmission) {
+                        // After submission, highlight the correct option and user's choice
+                        const questionNumber = block.querySelector('.question-text').textContent.split('.')[0].trim();
+                        const selectedOptionInput = document.querySelector(`input[name="question_${questionNumber}"]:checked`);
+                        const allOptions = block.querySelectorAll('input[type="radio"]');
+
+                        allOptions.forEach(input => {
+                            if (input.value === correctAnswerValue) {
+                                input.parentElement.style.color = 'var(--btn-accent)'; // Teal for correct option
+                                input.parentElement.style.fontWeight = 'bold';
+                            } else {
+                                input.parentElement.style.color = 'var(--text-secondary)'; // Reset other options
+                                input.parentElement.style.fontWeight = 'normal';
+                            }
+                        });
+
+                        if (selectedOptionInput && selectedOptionInput.value !== correctAnswerValue) {
+                            selectedOptionInput.parentElement.style.color = '#ef4444'; // Red for incorrect user choice
+                            selectedOptionInput.parentElement.style.fontWeight = 'bold';
+                        }
+                    }
+                }
+            });
+        }
+
+        // Start the timer when the page loads, only if it's an MCQ test (not a coding challenge)
+        document.addEventListener('DOMContentLoaded', () => {
+            const isCodingChallenge = {% if is_coding_challenge %}true{% else %}false{% endif %};
+            if (!isCodingChallenge && document.getElementById('testForm')) {
+                startTimer();
+            }
+        });
+    </script>
+</body>
+</html>

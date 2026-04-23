@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Career Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: radial-gradient(circle at top left, #1a202c, #2d3748, #1a202c);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
+      color: #e2e8f0;
+    }
+
+    .dashboard-container {
+      max-width: 60rem; /* Overall max width for the main content area */
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .section-box {
+      background: rgba(45, 55, 72, 0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(74, 85, 104, 0.7);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4), inset 0 0 15px rgba(255, 255, 255, 0.05);
+      border-radius: 1.5rem;
+      max-width: 100%; /* Take full width of parent dashboard-container */
+      width: 100%;
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-heading {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #cbd5e0;
+      border-bottom: 2px solid #63b3ed;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .user-data p {
+      font-size: 1.1rem;
+      margin: 0.5rem 0;
+    }
+    .user-data strong {
+      color: #cbd5e0; /* To ensure strong text stands out within user-data */
+    }
+
+    .recommendation-content {
+      background-color: #2d3748;
+      color: #e2e8f0;
+      padding: 1.75rem;
+      border-radius: 0.75rem;
+      border: 1px solid #4a5568;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      font-size: 1.125rem;
+      line-height: 1.75;
+      font-weight: 400;
+      box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.3);
+      max-height: 160vh; /* Adjusted max height to leave room for graphs */
+      overflow-y: auto;
+    }
+
+    /* Custom scrollbar for the recommendation content */
+    .recommendation-content::-webkit-scrollbar {
+      width: 10px;
+    }
+    .recommendation-content::-webkit-scrollbar-track {
+      background: #4a5568;
+      border-radius: 10px;
+    }
+    .recommendation-content::-webkit-scrollbar-thumb {
+      background: #63b3ed;
+      border-radius: 10px;
+      border: 2px solid #2d3748;
+    }
+    .recommendation-content::-webkit-scrollbar-thumb:hover {
+      background: #4299e1;
+    }
+
+    .back-button {
+      background-color: #63b3ed;
+      color: #fff;
+      font-weight: 600;
+      padding: 0.875rem 1.75rem;
+      border-radius: 0.75rem;
+      box-shadow: 0 5px 15px rgba(99, 179, 237, 0.4);
+      transition: all 0.3s ease-in-out;
+      display: inline-block;
+      text-decoration: none;
+      margin: 1.5rem 0.5rem 0 0.5rem; /* Adjusted margin for multiple buttons */
+    }
+
+    .back-button:hover {
+      background-color: #4299e1;
+      transform: translateY(-0.25rem) scale(1.02);
+      box-shadow: 0 8px 20px rgba(99, 179, 237, 0.6);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      .section-box, .dashboard-container {
+        padding: 1rem;
+        margin-bottom: 1.5rem;
+      }
+      .section-heading {
+        font-size: 1.5rem;
+      }
+      .user-data p, .recommendation-content {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+
+  <div class="dashboard-container">
+    <!-- Submitted User Data -->
+    <div class="section-box">
+      <h2 class="section-heading">🧾 Your Submitted Details</h2>
+      <div class="user-data">
+        <p><strong>Name:</strong> {{ name }}</p>
+        <p><strong>Gender:</strong> {{ gender }}</p>
+        <!-- <p><strong>Age:</strong> {{ age }}</p> -->
+        <p><strong>Undergraduate Course:</strong> {{ course }}</p>
+        <p><strong>UG Specialization:</strong> {{ ug_specialization }}</p>
+        <p><strong>CGPA:</strong> {{ cgpa }}</p>
+        <p><strong>Interests:</strong> {{ interests }}</p>
+        <p><strong>Skills:</strong> {{ skills }}</p>
+        <p><strong>Certifications:</strong> {{ certifications }}</p>
+        <p><strong>Currently Working:</strong> {{ working }}</p>
+        {% if working == "Yes" and job_title %}
+          <p><strong>Job Title:</strong> {{ job_title }}</p>
+        {% endif %}
+        <!-- <p><strong>Master's Field:</strong> {{ masters_field }}</p> -->
+      </div>
+    </div>
+
+    <!-- Career Recommendation Section -->
+    <div class="section-box">
+      <h2 class="section-heading">🚀 Your Personalized Career Recommendations</h2>
+      <div class="recommendation-content">
+        {{ recommendation }}
+      </div>
+    </div>
+
+    <div class="text-center">
+      <a href="{% url 'career_form' %}" class="back-button">← Go Back to Form</a>
+      <a href="{% url 'home' %}" class="back-button">🏠 Back to Home</a>
+      <a href="{% url 'dashboard' %}" class="back-button">📊 View Dashboard</a> {# Added Dashboard button #}
+    </div>
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Career Recommendation Form</title>
+
+  <!-- Bootstrap CSS (make sure to include it for modal styles) -->
+  <link
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Font Awesome for icons -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    rel="stylesheet"
+  />
+</head>
+<body>
+
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="careerFormModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="careerFormLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content bg-dark text-white">
+        <div class="modal-header">
+          <h4 class="modal-title w-100 text-center" id="careerFormLabel">
+            <i class="fas fa-graduation-cap me-2 text-warning"></i
+            >Intelligent Career Recommendation System
+          </h4>
+          <button
+            type="button"
+            class="close text-white"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+
+        <div class="modal-body">
+          <h5 class="text-center mb-4">
+            <i class="fas fa-user me-2 text-info"></i>Enter Your Details
+          </h5>
+
+          <form action="/submit/" method="POST">
+            <!-- For standalone file without backend, you can remove csrf_token -->
+
+            <!-- Full Name -->
+            <div class="form-group">
+              <label for="name">Full Name</label>
+              <input
+                type="text"
+                class="form-control"
+                name="name"
+                id="name"
+                required
+              />
+            </div>
+
+            <!-- Gender -->
+            <div class="form-group">
+              <label for="gender">Gender</label>
+              <select class="form-control" name="gender" id="gender" required>
+                <option value="" disabled selected>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <!-- Undergraduate Course -->
+            <div class="form-group">
+              <label for="course">Undergraduate Course</label>
+              <select class="form-control" name="course" id="course" required>
+                <option value="" disabled selected>Select Course</option>
+                <option value="B.Tech">B.Tech</option>
+                <option value="B.Sc">B.Sc</option>
+                <option value="BCA">BCA</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <!-- UG Specialization -->
+            <div class="form-group">
+              <label for="ug_specialization"
+                >UG Specialization (e.g., Computer Science)</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="ug_specialization"
+                name="ug_specialization"
+                required
+              />
+            </div>
+
+            <!-- CGPA -->
+            <div class="form-group">
+              <label for="cgpa">CGPA (0 to 10)</label>
+              <input
+                type="number"
+                class="form-control"
+                id="cgpa"
+                name="cgpa"
+                step="0.01"
+                min="0"
+                max="10"
+                required
+              />
+            </div>
+
+            <!-- Area of Interest -->
+            <div class="form-group">
+              <label for="interest">Area of Interest</label>
+              <input type="text" class="form-control" id="interest" name="interest" />
+            </div>
+
+            <!-- Interests -->
+            <div class="form-group">
+              <label for="interests"
+                >Interests (comma-separated, e.g., AI, Web, Cloud)</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="interests"
+                name="interests"
+              />
+            </div>
+
+            <!-- Skills -->
+            <div class="form-group">
+              <label for="skills">Skills (comma-separated, e.g., Python, SQL)</label>
+              <input
+                type="text"
+                class="form-control"
+                id="skills"
+                name="skills"
+              />
+            </div>
+
+            <!-- Certifications -->
+            <div class="form-group">
+              <label for="certifications"
+                >Certifications (comma-separated, e.g., Coursera ML)</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="certifications"
+                name="certifications"
+              />
+            </div>
+
+            <!-- Currently Working -->
+            <div class="form-group">
+              <label>Are you working currently?</label><br />
+              <div class="form-check form-check-inline">
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  id="working_yes"
+                  name="working"
+                  value="Yes"
+                  checked
+                />
+                <label class="form-check-label" for="working_yes">Yes</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  id="working_no"
+                  name="working"
+                  value="No"
+                />
+                <label class="form-check-label" for="working_no">No</label>
+              </div>
+            </div>
+
+            <!-- Job Title -->
+            <div class="form-group">
+              <label for="job_title">Current Job Title (or NA if not working)</label>
+              <input
+                type="text"
+                class="form-control"
+                id="job_title"
+                name="job_title"
+              />
+            </div>
+
+            <!-- Master's Field -->
+            <div class="form-group">
+              <label for="masters_field">Master's Degree Field (or NA if not applicable)</label>
+              <input
+                type="text"
+                class="form-control"
+                id="masters_field"
+                name="masters_field"
+              />
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn btn-success btn-block mt-4">
+              🚀 Predict Career
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap and jQuery scripts for modal functionality -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"
+  ></script>
+
+  <script>
+    // Automatically show modal on page load
+    $(document).ready(function () {
+      $("#careerFormModal").modal("show");
+    });
+  </script>
+</body>
+</html>

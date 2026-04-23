@@ -1,0 +1,7 @@
+<form action="{% url 'submit_form' %}" method="post">
+    {% csrf_token %}
+    <label>Name: <input type="text" name="name"></label><br>
+    <label>Age: <input type="number" name="age"></label><br>
+    <label>Subject: <input type="text" name="subject"></label><br>
+    <input type="submit" value="Predict">
+</form>

@@ -1,0 +1,282 @@
+<!-- myapp/templates/myapp/interview_session.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Interview Practice Session</title>
+    <style>
+        body { font-family: 'Inter', sans-serif; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f2f5; color: #333; }
+        .container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            max-width: 900px;
+            width: 95%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 { color: #2c3e50; margin-bottom: 25px; font-size: 2em; }
+        #video-container {
+            position: relative;
+            width: 100%;
+            max-width: 640px; /* Max width for video */
+            aspect-ratio: 4 / 3; /* Standard video aspect ratio */
+            background: #000;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.3);
+        }
+        #user-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Ensures video covers the container */
+            transform: scaleX(-1); /* Mirror user's video */
+        }
+        #question-display {
+            margin-top: 20px;
+            font-size: 1.6em;
+            font-weight: 500;
+            color: #34495e;
+            min-height: 80px; /* Ensure space for question */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background-color: #ecf0f1;
+            border-radius: 8px;
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        #controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+            outline: none;
+        }
+        button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+        button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 123, 255, 0.3);
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        #message-box {
+            background-color: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeeba;
+            border-radius: 5px;
+            padding: 10px 15px;
+            margin-top: 20px;
+            display: none; /* Hidden by default */
+            width: 100%;
+            box-sizing: border-box;
+            text-align: center;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>Interview Practice: {{ scenario.job_role }} at {{ scenario.company }}</h1>
+        
+        <div id="video-container">
+            <video id="user-video" autoplay muted></video>
+        </div>
+
+        <div id="question-display">
+            <p>Click "Start Interview" to begin.</p>
+        </div>
+
+        <div id="controls">
+            <button id="start-btn">Start Interview</button>
+            <button id="next-btn" style="display: none;">Next Question</button>
+            <button id="stop-btn" style="display: none;">End Interview</button>
+        </div>
+        <div id="message-box"></div>
+    </div>
+
+    <script>
+        const scenarioId = "{{ scenario.id }}";
+        // Parse the questions JSON string passed from Django
+        const questions = JSON.parse('{{ questions|escapejs }}');
+        
+        const userVideo = document.getElementById('user-video');
+        const questionDisplay = document.getElementById('question-display');
+        const startBtn = document.getElementById('start-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const stopBtn = document.getElementById('stop-btn');
+        const messageBox = document.getElementById('message-box');
+
+        let currentQuestionIndex = 0;
+        let mediaRecorder;
+        let recordedChunks = [];
+        let stream; // To hold the media stream (video/audio)
+
+        // Function to display messages to the user (instead of alert)
+        function showMessage(message, type = 'info') {
+            messageBox.innerText = message;
+            messageBox.style.display = 'block';
+            if (type === 'error') {
+                messageBox.style.backgroundColor = '#f8d7da';
+                messageBox.style.color = '#721c24';
+                messageBox.style.borderColor = '#f5c6cb';
+            } else {
+                messageBox.style.backgroundColor = '#d1ecf1';
+                messageBox.style.color = '#0c5460';
+                messageBox.style.borderColor = '#bee5eb';
+            }
+            // Hide message after some time
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 5000);
+        }
+
+        // Function to start the camera and microphone
+        async function startCamera() {
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                userVideo.srcObject = stream;
+                userVideo.play(); // Start playing the video stream
+                showMessage("Camera and microphone access granted. Ready to start!");
+                return true;
+            } catch (err) {
+                console.error("Error accessing media devices:", err);
+                showMessage("Please allow camera and microphone access to start the interview.", 'error');
+                return false;
+            }
+        }
+
+        // Function to start recording the current answer
+        function startRecording() {
+            recordedChunks = []; // Clear previous chunks
+            mediaRecorder = new MediaRecorder(stream);
+            mediaRecorder.ondataavailable = event => {
+                if (event.data.size > 0) {
+                    recordedChunks.push(event.data);
+                }
+            };
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(recordedChunks, { type: 'video/webm' });
+                // Only upload if there's actual data recorded
+                if (blob.size > 0) {
+                    uploadRecording(blob);
+                } else {
+                    console.warn("No video data recorded for this segment.");
+                }
+            };
+            mediaRecorder.start();
+            console.log("Recording started...");
+        }
+
+        // Function to stop recording
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+                mediaRecorder.stop();
+                console.log("Recording stopped.");
+            }
+        }
+
+        // Function to upload the recording to the Django backend
+        async function uploadRecording(blob) {
+            showMessage("Uploading recording...", 'info');
+            const formData = new FormData();
+            formData.append('video', blob, `interview_recording_${scenarioId}_q${currentQuestionIndex}_${new Date().toISOString()}.webm`);
+            formData.append('scenario_id', scenarioId);
+            
+            try {
+                const response = await fetch("{% url 'save_recording' %}", {
+                    method: 'POST',
+                    body: formData,
+                    // Django's CSRF token is crucial for security
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}' 
+                    }
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage("Recording saved successfully!");
+                    console.log(data.message);
+                } else {
+                    showMessage(`Error saving recording: ${data.error || 'Unknown error'}`, 'error');
+                    console.error('Error uploading recording:', data.error || response.statusText);
+                }
+            } catch (error) {
+                showMessage("Network error during upload. Please check your connection.", 'error');
+                console.error('Network or fetch error:', error);
+            }
+        }
+        
+        // Main interview flow logic
+        startBtn.addEventListener('click', async () => {
+            const cameraStarted = await startCamera();
+            if (cameraStarted) {
+                startBtn.style.display = 'none';
+                nextBtn.style.display = 'block';
+                stopBtn.style.display = 'block';
+                
+                // Display the first question and start recording
+                displayNextQuestion();
+                startRecording();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            stopRecording(); // Stop recording the previous answer
+            currentQuestionIndex++;
+            displayNextQuestion();
+            if (currentQuestionIndex < questions.length) {
+                startRecording(); // Start recording for the new question
+            }
+        });
+
+        stopBtn.addEventListener('click', () => {
+            stopRecording(); // Ensure the last recording is stopped and uploaded
+            questionDisplay.innerText = "Interview finished. Thank you! Recordings are being uploaded.";
+            nextBtn.style.display = 'none';
+            stopBtn.style.display = 'none';
+            startBtn.style.display = 'none'; // Hide start button too
+
+            // Stop all tracks to turn off the camera/mic
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+            showMessage("Interview ended. Your recordings are being processed.", 'info');
+        });
+
+        function displayNextQuestion() {
+            if (currentQuestionIndex < questions.length) {
+                questionDisplay.innerText = questions[currentQuestionIndex].text;
+            } else {
+                questionDisplay.innerText = "All questions completed. Click 'End Interview' to finish.";
+                nextBtn.style.display = 'none'; // No more questions, hide next button
+            }
+        }
+    </script>
+</body>
+</html>

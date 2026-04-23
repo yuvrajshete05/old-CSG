@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Real-Time Job Listings</title>
+</head>
+<body>
+    <h1>Real-Time Job Listings</h1>
+    
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% else %}
+        {% if jobs %}
+            <ul>
+            {% for job in jobs %}
+                <li>
+                    <h3>{{ job.title }}</h3>
+                    <p><strong>Company:</strong> {{ job.company }}</p>
+                    <p><strong>Location:</strong> {{ job.location }}</p>
+                    <a href="{{ job.url }}" target="_blank">Apply Now</a>
+                    <hr>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No jobs found at this time.</p>
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>

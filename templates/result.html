@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Builder</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Poppins (for headings) and Inter (for general text) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- Dark Mode Variables (Adopted from your provided CSS) --- */
+        :root {
+            --bg-primary: #1a202c; /* Deep charcoal - original body color */
+            --bg-secondary: #2d3748; /* Darker blue-gray - for cards */
+            --text-primary: #e2e8f0; /* Off-white - now used for body background */
+            --text-secondary: #a0aec0; /* Softer text color */
+            --border-color: #4a5568; /* Softer border */
+            --shadow-color: rgba(0, 0, 0, 0.4);
+            --navbar-shadow-color: rgba(0, 0, 0, 0.4); /* Used for page level shadows */
+            --card-shadow-color: rgba(0, 0, 0, 0.3); /* Used for card elements */
+            --btn-pink: #ff5c9d; /* Vibrant pink */
+            --btn-pink-hover: #ff3b85; /* Darker pink on hover */
+            --btn-pink-shadow: rgba(255, 92, 157, 0.4);
+            --btn-pink-hover-shadow: rgba(255, 92, 157, 0.6);
+            --btn-blue: #63b3ed; /* Blue for chat/secondary actions */
+            --btn-blue-hover: #4299e1; /* Darker blue on hover */
+            --btn-blue-shadow: rgba(99, 179, 237, 0.4);
+            --btn-blue-hover-shadow: rgba(99, 179, 237, 0.6);
+            --input-bg: #1a202c; /* Dark background for form inputs */
+            --input-border: #4a5568; /* Darker border for inputs */
+            --input-focus-border: #63b3ed; /* Blue focus border for inputs */
+            --input-placeholder: #a0aec0; /* Lighter placeholder text */
+        }
+
+        /* Apply theme variables to body */
+        body {
+            font-family: 'Inter', sans-serif; /* Poppins for headings, Inter for body */
+            background-color: var(--text-primary); /* Changed body background to off-white */
+            color: var(--bg-primary); /* Changed body text color to dark charcoal for contrast */
+            line-height: 1.6;
+            padding-top: 70px; /* To accommodate a fixed navbar if it exists */
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Smooth theme transitions */
+        }
+
+        /* General layout and component styling */
+        .container {
+            max-width: 900px;
+        }
+        .form-section {
+            background-color: var(--bg-secondary); /* Darker card background */
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px var(--card-shadow-color), 0 2px 4px -1px var(--card-shadow-color);
+            border: 1px solid var(--border-color); /* Subtle border for definition */
+            transition: all 0.3s ease-in-out; /* Smooth transition for section elements */
+        }
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-secondary); /* Softer text for labels */
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--input-border); /* Darker input border */
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            background-color: var(--input-bg); /* Dark input background */
+            color: var(--text-primary); /* Light input text */
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1); /* Subtle inner shadow */
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--input-placeholder); /* Placeholder color */
+        }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--input-focus-border); /* Blue focus border */
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(99, 179, 237, 0.25); /* Wider, softer blue focus ring */
+        }
+
+        /* Primary Button Styling (using --btn-pink from your provided CSS) */
+        .btn-primary {
+            background-color: var(--btn-pink); /* Vibrant pink */
+            color: #ffffff;
+            padding: 0.8rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background-color 0.2s ease-in-out, transform 0.15s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px var(--btn-pink-shadow); /* Pink shadow */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-primary:hover {
+            background-color: var(--btn-pink-hover); /* Darker pink on hover */
+            transform: translateY(-2px); /* Subtle lift effect */
+            box-shadow: 0 8px 20px var(--btn-pink-hover-shadow); /* More prominent shadow on hover */
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px var(--btn-pink-shadow);
+        }
+
+        /* Secondary Button Styling (for download resume) */
+        .btn-secondary {
+            background-color: var(--btn-blue); /* Blue for secondary action */
+            color: #ffffff;
+            padding: 0.8rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background-color 0.2s ease-in-out, transform 0.15s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px var(--btn-blue-shadow); /* Blue shadow */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-secondary:hover {
+            background-color: var(--btn-blue-hover); /* Darker blue on hover */
+            transform: translateY(-2px); /* Subtle lift effect */
+            box-shadow: 0 8px 20px var(--btn-blue-hover-shadow); /* More prominent shadow on hover */
+        }
+        .btn-secondary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px var(--btn-blue-shadow);
+        }
+
+
+        .loader {
+            border: 4px solid var(--border-color); /* Lighter loader background */
+            border-top: 4px solid var(--btn-blue); /* Blue loader color for contrast */
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* SMART CSS for the generated resume display */
+        .resume-display {
+            font-family: 'Inter', sans-serif; /* Consistent font */
+            font-size: 1rem; /* Clear readability */
+            line-height: 1.6; /* Excellent line spacing */
+            color: var(--text-primary); /* Use text-primary for content */
+            white-space: pre-wrap; /* Preserves whitespace and wraps text */
+            word-break: break-word; /* Prevents long words from overflowing */
+            background-color: var(--bg-secondary); /* Clean background for the resume display */
+            padding: 3.5rem 3rem; /* Generous padding for a document feel */
+            border-radius: 0.75rem; /* Rounded corners */
+            box-shadow: 0 10px 20px -5px var(--card-shadow-color); /* Deeper, softer shadow */
+            letter-spacing: 0.01em; /* Slight letter spacing for better typography */
+            border: 1px solid var(--border-color); /* Subtle border */
+            max-width: 800px; /* Control max width for readability */
+            margin: 0 auto; /* Center the resume display */
+            opacity: 0; /* Initially hidden for fade-in effect */
+            transform: translateY(20px); /* Slightly below for slide-up effect */
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out; /* Smooth transition */
+        }
+
+        /* Class to make the resume-display appear */
+        .resume-display.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Styling for the main H1 title */
+        h1 {
+            font-family: 'Poppins', sans-serif; /* Use Poppins for main titles */
+            color: var(--bg-primary); /* Changed to dark charcoal for contrast with new body background */
+            font-weight: 800; /* Extra bold */
+            text-shadow: 0 3px 10px rgba(0,0,0,0.5); /* More pronounced text shadow */
+        }
+
+        /* Styling for section headings within the form and generated resume */
+        h2, h3 {
+            font-family: 'Poppins', sans-serif; /* Poppins for section headings */
+            color: var(--text-primary); /* Off-white for section headings */
+            font-weight: 700; /* Bold */
+        }
+
+        /* Styling for bold content within the resume-display if AI outputs it */
+        .resume-display strong {
+            font-weight: 700; /* Ensure strong is visibly bolder */
+            color: var(--text-primary); /* Ensure bold text is also off-white */
+        }
+        
+        /* Further styling for bullet points if AI outputs them as such */
+        .resume-display ul {
+            list-style-type: disc;
+            margin-left: 1.5rem;
+            padding-left: 0;
+        }
+        .resume-display li {
+            margin-bottom: 0.25rem;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+            .form-section {
+                padding: 1.5rem;
+            }
+            .resume-display {
+                padding: 2rem 1.5rem;
+                font-size: 0.9rem;
+            }
+            .btn-primary, .btn-secondary {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.95rem;
+            }
+            .grid-cols-1.md\:grid-cols-2 {
+                grid-template-columns: 1fr; /* Stack inputs on smaller screens */
+            }
+            .flex.justify-center.gap-4 {
+                flex-direction: column; /* Stack buttons on smaller screens */
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10">
+    <div class="container mx-auto p-4 md:p-8">
+        <h1 class="text-4xl font-extrabold text-center mb-10 leading-tight">
+            AI-Powered Resume Builder
+        </h1>
+
+        <div class="form-section mb-12">
+            <h2 class="text-2xl font-semibold mb-8 text-center">Enter Your Professional Details</h2>
+            <form method="post" id="resumeForm" class="space-y-6">
+                {% csrf_token %}
+                
+                <!-- Personal Information -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.full_name.id_for_label }}" class="form-label">Full Name</label>
+                        {{ form.full_name }}
+                    </div>
+                    <div>
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                        {{ form.email }}
+                    </div>
+                    <div>
+                        <label for="{{ form.phone.id_for_label }}" class="form-label">Phone</label>
+                        {{ form.phone }}
+                    </div>
+                    <div>
+                        <label for="{{ form.linkedin_url.id_for_label }}" class="form-label">LinkedIn Profile URL</label>
+                        {{ form.linkedin_url }}
+                    </div>
+                    <div>
+                        <label for="{{ form.github_url.id_for_label }}" class="form-label">GitHub Profile URL</label>
+                        {{ form.github_url }}
+                    </div>
+                    <div>
+                        <label for="{{ form.portfolio_url.id_for_label }}" class="form-label">Portfolio URL</label>
+                        {{ form.portfolio_url }}
+                    </div>
+                </div>
+
+                <!-- Summary -->
+                <div>
+                    <label for="{{ form.summary.id_for_label }}" class="form-label">Professional Summary / Objective</label>
+                    {{ form.summary }}
+                </div>
+
+                <!-- Education -->
+                <h3 class="text-xl font-semibold mt-8 mb-4">Education</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.education_level.id_for_label }}" class="form-label">Highest Education Level</label>
+                        {{ form.education_level }}
+                    </div>
+                    <div>
+                        <label for="{{ form.university_name.id_for_label }}" class="form-label">University / Institution Name</label>
+                        {{ form.university_name }}
+                    </div>
+                    <div>
+                        <label for="{{ form.degree.id_for_label }}" class="form-label">Degree / Program</label>
+                        {{ form.degree }}
+                    </div>
+                    <div>
+                        <label for="{{ form.graduation_year.id_for_label }}" class="form-label">Graduation Year</label>
+                        {{ form.graduation_year }}
+                    </div>
+                </div>
+                <div>
+                    <label for="{{ form.education_details.id_for_label }}" class="form-label">Other Education Details (e.g., certifications, relevant coursework)</label>
+                    {{ form.education_details }}
+                </div>
+
+                <!-- Experience -->
+                <h3 class="text-xl font-semibold mt-8 mb-4">Current/Most Recent Experience</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.job_title.id_for_label }}" class="form-label">Job Title</label>
+                        {{ form.job_title }}
+                    </div>
+                    <div>
+                        <label for="{{ form.company_name.id_for_label }}" class="form-label">Company Name</label>
+                        {{ form.company_name }}
+                    </div>
+                    <div>
+                        <label for="{{ form.start_date.id_for_label }}" class="form-label">Start Date</label>
+                        {{ form.start_date }}
+                    </div>
+                    <div>
+                        <label for="{{ form.end_date.id_for_label }}" class="form-label">End Date (Leave blank if current)</label>
+                        {{ form.end_date }}
+                    </div>
+                </div>
+                <div>
+                    <label for="{{ form.experience_details.id_for_label }}" class="form-label">Responsibilities & Achievements (Use bullet points if possible)</label>
+                    {{ form.experience_details }}
+                </div>
+                <div>
+                    <label for="{{ form.previous_experience.id_for_label }}" class="form-label">Previous Experience (Optional, add job title, company, dates, and responsibilities)</label>
+                    {{ form.previous_experience }}
+                </div>
+
+                <!-- Skills -->
+                <div>
+                    <label for="{{ form.skills.id_for_label }}" class="form-label">Skills (Comma-separated: e.g., Python, JavaScript, SQL, Data Analysis)</label>
+                    {{ form.skills }}
+                </div>
+
+                <!-- Projects (Optional) -->
+                <h3 class="text-xl font-semibold mt-8 mb-4">Key Project (Optional)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.project_name.id_for_label }}" class="form-label">Project Name</label>
+                        {{ form.project_name }}
+                    </div>
+                    <div>
+                        <label for="{{ form.project_url.id_for_label }}" class="form-label">Project URL</label>
+                        {{ form.project_url }}
+                    </div>
+                </div>
+                <div>
+                    <label for="{{ form.project_description.id_for_label }}" class="form-label">Project Description and Your Role</label>
+                    {{ form.project_description }}
+                </div>
+                
+                <div class="flex justify-center mt-10">
+                    <button type="submit" class="btn-primary flex items-center justify-center space-x-3" id="generateBtn">
+                        <span id="buttonText">Generate My Resume</span>
+                        <div id="loader" class="loader hidden"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {% if generated_resume_text %}
+        <div class="form-section mt-12">
+            <h2 class="text-2xl font-semibold mb-8 text-center">Your AI-Generated Resume</h2>
+            <div class="resume-display" id="resumeDisplayArea">
+                {{ generated_resume_text }}
+            </div>
+            <div class="flex justify-center gap-4 mt-8"> {# Added gap for spacing between buttons #}
+                <button onclick="copyToClipboard()" class="btn-primary">Copy Resume to Clipboard</button>
+                <button onclick="downloadResume()" class="btn-secondary">Download Resume</button> {# New download button #}
+                <a href="{% url 'home' %}" class="btn-primary">🏠 Back to Home</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('resumeForm').addEventListener('submit', function() {
+            // Show loader and disable button
+            document.getElementById('buttonText').textContent = 'Generating...';
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('generateBtn').disabled = true;
+            // Hide previous resume display if it exists
+            const resumeDisplayArea = document.getElementById('resumeDisplayArea');
+            if (resumeDisplayArea) {
+                resumeDisplayArea.classList.remove('appear');
+            }
+        });
+
+        // Add a listener for when the resume text is actually displayed to trigger animation
+        // This is a simple way; for more complex scenarios, you might need an Intersection Observer
+        document.addEventListener('DOMContentLoaded', function() {
+            const resumeDisplayArea = document.getElementById('resumeDisplayArea');
+            if (resumeDisplayArea && resumeDisplayArea.textContent.trim() !== '') {
+                resumeDisplayArea.classList.add('appear');
+            }
+        });
+
+
+        function copyToClipboard() {
+            const resumeText = document.querySelector('.resume-display').innerText;
+            const textArea = document.createElement("textarea");
+            textArea.value = resumeText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                const copyButton = document.querySelector('.btn-primary');
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text:', err);
+                const copyButton = document.querySelector('.btn-primary');
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Failed to copy!';
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                }, 2000);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function downloadResume() {
+            const resumeText = document.querySelector('.resume-display').innerText;
+            const filename = "resume.txt"; // You can make this dynamic if needed
+            const blob = new Blob([resumeText], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Clean up the object URL
+        }
+    </script>
+</body>
+</html>

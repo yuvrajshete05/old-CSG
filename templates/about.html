@@ -1,0 +1,765 @@
+<!-- You're looking to integrate a Job & Internship Recommendation Feed into your Career Guidance platform\! This is a great feature to enhance user experience by providing relevant opportunities.
+
+Integrating with external APIs like Naukri, Internshala, or LinkedIn Jobs usually requires **server-side implementation** to handle API keys securely, manage rate limits, and bypass Cross-Origin Resource Sharing (CORS) restrictions. Direct client-side (frontend) calls to these major job portals are generally not feasible due or not allowed without proper setup.
+
+However, I can provide you with the full **HTML and CSS structure** for this new section, along with **JavaScript code that simulates fetching data** (using dummy data) and dynamically displaying it. This will give you the complete frontend layout and functionality, which you can then adapt to connect to a real backend API.
+
+I'll add the new feature in a new section within your provided HTML structure, along with updated CSS and a placeholder JavaScript.
+
+Here's your updated `about` file with the "Job & Internship Recommendation Feed" feature: -->
+<!-- 
+```html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Home - Career Guidance</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" />
+    <style>
+
+      body {
+        background-color: black;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: white;
+        padding-top: 70px;
+      }
+
+
+        html {
+    scroll-behavior: smooth;
+  }
+
+
+      .navbar {
+        width: 100%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        background: #212529;
+      }
+
+      .navbar-brand {
+        font-weight: bold;
+        font-size: 1.4rem;
+        color: #ffffff !important;
+      }
+
+      .navbar-nav .nav-link {
+        font-size: 1rem;
+        margin: 0 10px;
+        color: #dddddd !important;
+        transition: color 0.3s ease, background-color 0.3s ease;
+      }
+
+      .navbar-nav .nav-link:hover {
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.1);
+        border-radius: 5px;
+      }
+
+      .navbar-nav .nav-link.text-danger:hover {
+        background-color: rgba(255, 0, 0, 0.1);
+      }
+
+      .navbar-toggler {
+        border: none;
+      }
+
+      .main-section {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+      }
+
+      .image-section {
+        flex: 1 1 50%;
+        text-align: center;
+      }
+
+      .image-section img {
+        max-width: 90%;
+        height: 400px;
+      }
+
+      .text-section {
+        flex: 1 1 50%;
+        padding: 40px;
+        text-align: center;
+      }
+
+      .text-section h1 {
+        font-weight: 700;
+        font-size: 2.5rem;
+      }
+
+      .text-section p {
+        font-size: 1.1rem;
+        color: #cccccc;
+      }
+
+      .btn-pink {
+        background-color: #ff5c9d;
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        font-size: 1.1rem;
+        font-weight: bold;
+        border-radius: 25px;
+        margin-top: 20px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-pink:hover {
+        background-color: #ff3b85;
+      }
+
+      .features-section, .testimonials-section, .popular-careers, .news-section, .search-section, .contact-section {
+        padding: 60px 15px;
+        text-align: center;
+      }
+
+      .features-section h2, .testimonials-section h2, .popular-careers h2, .news-section h2, .search-section h2, .contact-section h2 {
+        margin-bottom: 40px;
+        font-size: 2rem;
+        font-weight: bold;
+      }
+
+      .feature-box, .testimonial-box, .career-box, .news-box {
+        margin-bottom: 30px;
+      }
+
+      .feature-box h4, .career-box h4, .news-box h4 {
+        color: #ff5c9d;
+        font-weight: bold;
+      }
+
+      .career-box, .news-box {
+        border: 1px solid #444;
+        padding: 20px;
+        border-radius: 8px;
+        background: #121212;
+      }
+
+      .career-box p, .news-box p {
+        font-size: 0.95rem;
+        color: #bbb;
+      }
+
+      .search-bar {
+        max-width: 500px;
+        margin: 0 auto 40px;
+      }
+
+      footer {
+        text-align: center;
+        margin-top: 50px;
+        font-size: 0.9rem;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* Input styles for search */
+      .search-bar input[type="text"] {
+        width: 80%;
+        padding: 10px 15px;
+        border-radius: 25px 0 0 25px;
+        border: none;
+        font-size: 1rem;
+        outline: none;
+      }
+
+      .search-bar button {
+        padding: 10px 20px;
+        border: none;
+        background-color: #ff5c9d;
+        color: white;
+        font-weight: bold;
+        border-radius: 0 25px 25px 0;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      .search-bar button:hover {
+        background-color: #ff3b85;
+      }
+
+    </style>
+  </head>
+  <body>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+  <a class="navbar-brand" href="#">CareerGuideAI</a>
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarNav"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'home' %}">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'about' %}">About</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'profile' %}">Profile</a>
+      </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
+          </li>
+
+      <li class="nav-item">
+        <a class="nav-link text-danger" href="{% url 'logout' %}">Logout</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+  </body>
+</html>
+
+
+{% block style %}
+<style>
+
+  body {
+    background-color: rgb(21, 19, 19);
+  }
+
+  /* Center the About heading */
+  h1.centered-about {
+    text-align: center;
+    color: #ff5c9d;
+    margin-top: 80px;
+    margin-bottom: 40px;
+    font-weight: 700;
+    font-size: 2.5rem;
+    animation: scaleIn 1s ease-out both;
+  }
+
+  /* General Section styling */
+  .section {
+    background-color: #121212;
+    color: #ffffff;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 40px 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    animation: fadeInUp 1.2s ease-out both;
+  }
+
+  .section h2 {
+    font-size: 2rem;
+    color: #ff5c9d;
+    font-weight: 700;
+    margin-bottom: 20px;
+    animation: scaleIn 1s ease-out both;
+  }
+
+  .section p {
+    font-size: 1.1rem;
+    color: #dddddd;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    animation: fadeIn 1.4s ease-out both;
+  }
+
+  .about-highlight {
+    background-color: #1f1f1f;
+    border-left: 5px solid #ff5c9d;
+    padding: 20px;
+    border-radius: 8px;
+    font-style: italic;
+    color: #ccc;
+    animation: slideIn 1.4s ease-out both;
+  }
+
+  /* Mission block styling */
+  .mission-block {
+    flex: 1 1 400px;
+    background-color: black;
+    color: #ff5c9d;
+    border-radius: 15px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 30px rgba(255, 92, 157, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: fadeInUp 1.2s ease-out both;
+  }
+
+  .mission-block h2 {
+    color: #ff5c9d;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    animation: scaleIn 1s ease-out both;
+  }
+
+  .mission-block p {
+    font-size: 1.1rem;
+    color: #dddddd;
+    line-height: 1.8;
+    animation: fadeIn 1.4s ease-out both;
+  }
+
+  /* Vision block styling */
+  .vision-block {
+    flex: 1 1 400px;
+    background-color: black;
+    color: #ff5c9d;
+    border-radius: 15px;
+    padding: 40px 30px;
+    box-shadow: 0 10px 30px rgba(255, 92, 157, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    animation: fadeInUp 1.2s ease-out both;
+  }
+
+  .vision-block h2 {
+    color: #ff5c9d;
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 20px;
+    animation: scaleIn 1s ease-out both;
+  }
+
+  .vision-block p {
+    font-size: 1.1rem;
+    color: #dddddd;
+    line-height: 1.8;
+    animation: fadeIn 1.4s ease-out both;
+  }
+
+  /* Animations */
+  @keyframes fadeInUp {
+    0% {
+      transform: translateY(30px);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideIn {
+    0% { transform: translateX(50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes scaleIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  /* Input/Button styles for assessments */
+  .btn-start {
+    background-color: #ff5c9d;
+    color: black;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: background-color 0.3s ease;
+  }
+  .btn-start:hover {
+    background-color: #e0528a;
+  }
+  .btn-submit {
+    background-color: #ff5c9d;
+    color: black;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .btn-submit:hover {
+    background-color: #e0528a;
+  }
+
+  /* Styles for Job & Internship Recommendation Feed */
+  .job-cards-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+  }
+
+  .job-card {
+      background-color: #1f1f1f;
+      border: 1px solid #333;
+      border-radius: 10px;
+      padding: 25px;
+      text-align: left;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .job-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+  }
+
+  .job-card h3 {
+      color: #ff5c9d;
+      font-size: 1.6rem;
+      margin-bottom: 10px;
+  }
+
+  .job-card p {
+      font-size: 0.95rem;
+      color: #ccc;
+      margin-bottom: 8px;
+      line-height: 1.5;
+  }
+
+  .job-card .company, .job-card .location {
+      font-weight: bold;
+      color: #ddd;
+  }
+
+  .job-card .skills {
+      font-size: 0.85rem;
+      color: #aaa;
+      margin-top: 10px;
+      margin-bottom: 15px;
+  }
+
+  .job-card-link {
+      display: inline-block;
+      background-color: #ff5c9d;
+      color: white;
+      padding: 8px 15px;
+      border-radius: 20px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 0.9rem;
+      transition: background-color 0.2s ease;
+  }
+
+  .job-card-link:hover {
+      background-color: #ff3b85;
+      color: white; /* Keep text white on hover */
+      text-decoration: none;
+  }
+
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .section {
+      padding: 25px 20px;
+    }
+
+    .section h2 {
+      font-size: 1.6rem;
+    }
+
+    .section p {
+      font-size: 1rem;
+    }
+
+    h1.centered-about {
+      font-size: 2rem;
+      margin-top: 60px;
+      margin-bottom: 30px;
+    }
+
+    /* Stack mission and vision vertically on smaller screens */
+    .mission-block, .vision-block {
+      flex: 1 1 100%;
+      margin-bottom: 20px;
+    }
+
+    /* Adjust job cards for smaller screens */
+    .job-cards-container {
+        grid-template-columns: 1fr; /* Single column on small screens */
+        gap: 20px;
+    }
+    .job-card {
+        padding: 20px;
+    }
+    .job-card h3 {
+        font-size: 1.4rem;
+    }
+    .job-card p {
+        font-size: 0.9rem;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<h1 class="centered-about">About</h1>
+
+<section id="about" class="section">
+  <h2>CareerGuideAI</h2>
+  <p>
+    CareerGuideAI is your personalized career assistant, built with advanced AI to help students and professionals navigate the complex world of careers with clarity and confidence.
+  </p>
+  <p>
+    From aptitude assessments to trending career data and curated learning paths, we bring together technology and guidance to empower your future decisions.
+  </p>
+  <div class="about-highlight">
+    "Stop guessing. Start progressing — with CareerGuideAI."
+  </div>
+</section>
+
+<section class="section" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+  <div class="mission-block"> {# Reusing mission-block for consistent styling #}
+    <h2>Our Mission</h2>
+    <p>
+      To empower individuals with personalized, AI-driven career guidance that opens doors to opportunities aligned with their skills and passions.
+    </p>
+  </div>
+
+  <div class="vision-block"> {# Reusing vision-block for consistent styling #}
+    <h2>Our Vision</h2>
+    <p>
+      To become the most trusted digital career advisor, bridging the gap between ambition and achievement globally.
+    </p>
+  </div>
+</section>
+
+<script>
+      function showTest(testType) {
+        // Hide all test forms
+        document.getElementById('logical-test').style.display = 'none';
+        document.getElementById('numerical-test').style.display = 'none';
+        document.getElementById('verbal-test').style.display = 'none';
+
+        // Hide all result messages
+        const resultMessages = document.querySelectorAll('.result-message');
+        resultMessages.forEach(msg => msg.remove());
+
+        // Show selected test form
+        document.getElementById(testType + '-test').style.display = 'flex';
+
+        // Scroll to the form smoothly
+        document.getElementById(testType + '-test').scrollIntoView({ behavior: 'smooth' });
+      }
+
+      // Handle Logical Reasoning Test
+      document.getElementById('logical-test').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const selected = document.querySelector('input[name="logical"]:checked');
+        const correct = "32";
+        showResult(selected?.value === correct, correct, this);
+      });
+
+      // Handle Numerical Reasoning Test
+      document.getElementById('numerical-test').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const input = this.querySelector('input[name="numerical"]');
+        const correct = "5";
+        showResult(input.value === correct, correct, this);
+      });
+
+      // Handle Verbal Reasoning Test
+      document.getElementById('verbal-test').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const selected = this.querySelector('select[name="verbal"]');
+        const correct = "scarce";
+        showResult(selected.value === correct, correct, this);
+      });
+
+      // Show result message
+      function showResult(isCorrect, correctAnswer, formElement) {
+        const existingMessage = formElement.querySelector('.result-message');
+        if (existingMessage) existingMessage.remove();
+
+        const message = document.createElement('div');
+        message.className = 'result-message';
+        message.style.marginTop = '15px';
+        message.style.fontWeight = 'bold';
+        message.style.color = isCorrect ? '#0f0' : '#f00';
+        message.textContent = isCorrect
+          ? '✅ Correct Answer!'
+          : `❌ Wrong Answer. Correct Answer is: ${correctAnswer}`;
+
+        formElement.appendChild(message);
+      }
+    </script>
+
+  </section>
+</section>
+
+
+<section id="ai-career-recommendations" class="section">
+  <h2> AI-Powered Career Recommendations</h2>
+  <p><strong>Tailored Suggestions:</strong> Personalized career options based on assessment results and your profile.</p>
+  <p><strong>Dynamic Industry Updates:</strong> Real-time data on industry trends and job market insights.</p>
+  <p><strong>Predictive Analytics:</strong> Forecasting career growth potential to guide your long-term planning.</p>
+
+</section>
+<section id="learning-paths" class="section">
+  <h2> Personalized Learning Paths</h2>
+  <p>Customized skill development plans to bridge gaps and enhance employability.</p>
+  <p>Integration with online courses, certifications, and projects.</p>
+  <p>Regular progress tracking and adaptive learning recommendations.</p>
+</section>
+
+<section id="job-internship-feed" class="section">
+    <h2>Job & Internship Recommendations</h2>
+    <p>Discover relevant job and internship opportunities tailored to your career interests, location, skills, and experience.</p>
+
+    <div class="job-cards-container" id="jobCardsContainer">
+        <p style="text-align: center; color: #ccc;">Loading recommendations...</p>
+    </div>
+</section>
+
+
+<section id="community-support" class="section">
+    <h2>Community and Support</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+        <div class="mission-block"> {# Reusing mission-block for consistent styling #}
+            <h2>Connect & Collaborate</h2>
+            <p>
+                Join our vibrant community to connect with peers, industry professionals, and mentors. Share insights, ask questions, and grow together.
+            </p>
+            <p>
+                Participate in forums, live Q&A sessions, and virtual meetups to expand your network and knowledge.
+            </p>
+        </div>
+
+        <div class="vision-block"> {# Reusing vision-block for consistent styling #}
+            <h2>Dedicated Support</h2>
+            <p>
+                Access a wealth of resources including resume templates, interview preparation guides, and career development articles.
+            </p>
+            <p>
+                Our support team is always here to assist you with any queries, ensuring a smooth and productive experience on CareerGuideAI.
+            </p>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const jobCardsContainer = document.getElementById('jobCardsContainer');
+
+        // Dummy data to simulate API response
+        // In a real application, this data would come from your backend server
+        // which would fetch it from Naukri/Internshala/LinkedIn Jobs APIs.
+        const dummyJobData = [
+            {
+                title: "Software Engineer Intern",
+                company: "Tech Solutions Inc.",
+                location: "Bangalore, India",
+                description: "Exciting internship for B.Tech CSE students. Work on cutting-edge projects using Python and Django.",
+                skills: ["Python", "Django", "JavaScript", "HTML", "CSS"],
+                link: "https://example.com/software-intern"
+            },
+            {
+                title: "Data Scientist Trainee",
+                company: "Data Insights Co.",
+                location: "Pune, India",
+                description: "Opportunity for freshers with strong analytical skills and knowledge of data science.",
+                skills: ["Python", "R", "Machine Learning", "SQL", "Statistics"],
+                link: "https://example.com/data-scientist"
+            },
+            {
+                title: "Junior Web Developer",
+                company: "Creative Digital Agency",
+                location: "Mumbai, India",
+                description: "Looking for a passionate web developer familiar with modern frontend frameworks.",
+                skills: ["HTML", "CSS", "JavaScript", "React.js", "Bootstrap"],
+                link: "https://example.com/web-dev"
+            },
+            {
+                title: "Mechanical Design Engineer Internship",
+                company: "Innovate Auto Ltd.",
+                location: "Chennai, India",
+                description: "Internship for Mechanical Engineering students. Focus on CAD design and product development.",
+                skills: ["AutoCAD", "SolidWorks", "Mechanical Design", "Prototyping"],
+                link: "https://example.com/mechanical-intern"
+            }
+        ];
+
+        function displayJobCards(jobs) {
+            jobCardsContainer.innerHTML = ''; // Clear loading message
+
+            if (jobs.length === 0) {
+                jobCardsContainer.innerHTML = '<p style="text-align: center; color: #ccc;">No recommendations found at the moment.</p>';
+                return;
+            }
+
+            jobs.forEach(job => {
+                const jobCard = document.createElement('div');
+                jobCard.className = 'job-card';
+
+                jobCard.innerHTML = `
+                    <h3>${job.title}</h3>
+                    <p><strong class="company">${job.company}</strong></p>
+                    <p><span class="location">${job.location}</span></p>
+                    <p>${job.description}</p>
+                    <p class="skills">Skills: ${job.skills.join(', ')}</p>
+                    <a href="${job.link}" target="_blank" class="job-card-link">View Details</a>
+                `;
+                jobCardsContainer.appendChild(jobCard);
+            });
+        }
+
+        // Simulate fetching data after a short delay
+        setTimeout(() => {
+            displayJobCards(dummyJobData);
+        }, 1500); // Simulate network delay
+
+        // --- Important Note for Real API Integration ---
+        // For a real-world scenario with Naukri/Internshala/LinkedIn Jobs API,
+        // you would typically need a backend (e.g., in Python/Django as you use)
+        // to:
+        // 1. Store and manage your API keys securely.
+        // 2. Make authenticated requests to the job portals' APIs.
+        // 3. Process and filter the data on the server-side.
+        // 4. Send the relevant job data to your frontend.
+        // This prevents exposing sensitive API keys in client-side code and
+        // handles CORS issues.
+        //
+        // Example of how a real fetch might look (simplified - requires backend endpoint):
+        /*
+        async function fetchRealJobData() {
+            try {
+                // Replace '/api/jobs' with your actual backend endpoint that
+                // communicates with external job APIs.
+                const response = await fetch('/api/jobs?interest=web-dev&location=nagpur&skills=python');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                displayJobCards(data);
+            } catch (error) {
+                console.error("Error fetching job data:", error);
+                jobCardsContainer.innerHTML = '<p style="text-align: center; color: #f00;">Failed to load recommendations. Please try again later.</p>';
+            }
+        }
+        // Call this function instead of setTimeout with dummy data
+        // fetchRealJobData();
+        */
+    });
+</script>
+
+{% endblock %}

@@ -1,0 +1,153 @@
+
+
+{% block content %}
+<style>
+  body {
+    background-color: black;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;  /* horizontal center */
+    align-items: center;      /* vertical center */
+    padding: 20px;
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+
+  .search-results {
+    max-width: 900px;
+    margin: auto;
+    padding: 20px 25px;
+    background: #1e293b;  /* dark blue-gray background */
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    color: #f1f5f9; /* light text */
+  }
+
+  .search-results h2 {
+    font-size: 2.4rem;
+    margin-bottom: 25px;
+    font-weight: 700;
+    color: #38bdf8; /* bright blue */
+    text-align: center;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.4);
+  }
+
+  .search-results h3 {
+    margin-top: 30px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    border-bottom: 2px solid #ff5c9d; /* pink accent */
+    padding-bottom: 8px;
+    color: #ff5c9d;
+  }
+
+  .search-results ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 15px;
+  }
+
+  .search-results ul li {
+    background: #334155; /* slightly lighter dark */
+    margin-bottom: 12px;
+    padding: 14px 18px;
+    border-radius: 8px;
+    box-shadow: inset 0 0 6px rgba(255, 92, 157, 0.15);
+    transition: background-color 0.3s ease;
+    cursor: default;
+  }
+
+  .search-results ul li:hover {
+    background: #ff5c9d; /* pink highlight */
+    color: white;
+    box-shadow: 0 0 10px #ff5c9d;
+  }
+
+  .search-results ul li strong {
+    font-weight: 700;
+    color: #fef3c7; /* pale yellow for emphasis */
+  }
+
+  .search-results p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin: 15px 0 10px 0;
+    color: #e0e7ff;
+  }
+
+  .search-results a {
+    display: inline-block;
+    margin-top: 8px;
+    color: #38bdf8;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    transition: border-color 0.3s ease;
+  }
+
+  .search-results a:hover {
+    border-color: #38bdf8;
+    text-decoration: none;
+  }
+
+  @media (max-width: 600px) {
+    .search-results {
+      padding: 15px 20px;
+      margin: 20px 10px;
+    }
+
+    .search-results h2 {
+      font-size: 1.8rem;
+    }
+
+    .search-results h3 {
+      font-size: 1.3rem;
+    }
+  }
+</style>
+
+
+
+<div class="search-results">
+  <h2>Search results for "{{ query }}"</h2>
+
+  {% if careers %}
+    <h3>Careers</h3>
+    <ul>
+      {% for career in careers %}
+        <li><strong>{{ career.title }}</strong>: {{ career.description }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if skills %}
+    <h3>Skills</h3>
+    <ul>
+      {% for skill in skills %}
+        <li><strong>{{ skill.name }}</strong>: {{ skill.detail }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if courses %}
+    <h3>Courses</h3>
+    <ul>
+      {% for course in courses %}
+        <li><strong>{{ course.name }}</strong>: {{ course.overview }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if wiki_summary %}
+    <h3>Wikipedia Information about "{{ query }}"</h3>
+    <p>{{ wiki_summary }}</p>
+    {% if wiki_url %}
+      <p><a href="{{ wiki_url }}" target="_blank" rel="noopener noreferrer">Read more on Wikipedia</a></p>
+    {% endif %}
+  {% endif %}
+</div>
+
+
+
+{% endblock %}

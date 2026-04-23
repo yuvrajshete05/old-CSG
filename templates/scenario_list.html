@@ -1,0 +1,54 @@
+<!-- myapp/templates/myapp/scenario_list.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Interview Scenario</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 800px; margin: 0 auto; padding: 20px; background-color: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { text-align: center; color: #0056b3; margin-bottom: 30px; }
+        .scenario-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+            background-color: #fafafa;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .scenario-card h2 { margin-top: 0; color: #333; }
+        .scenario-card p { margin-bottom: 5px; font-size: 0.95em; }
+        .scenario-card a {
+            display: inline-block;
+            background-color: #007bff;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+        .scenario-card a:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Choose an Interview Scenario</h1>
+
+        {% if scenarios %}
+            {% for scenario in scenarios %}
+                <div class="scenario-card">
+                    <h2>{{ scenario.title }}</h2>
+                    <p><strong>Job Role:</strong> {{ scenario.job_role }}</p>
+                    <p><strong>Company:</strong> {{ scenario.company }}</p>
+                    <p>{{ scenario.description }}</p>
+                    <a href="{% url 'interview_session' scenario.id %}">Start Practice</a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No interview scenarios available yet. Please add some via the admin panel!</p>
+        {% endif %}
+    </div>
+</body>
+</html>

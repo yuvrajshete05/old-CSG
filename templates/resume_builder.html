@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Include jspdf and html2canvas libraries for PDF generation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- UPDATED Dark Mode Variables with a new color scheme --- */
+        :root {
+            --bg-primary: #121212; /* Softer, darker gray for body */
+            --bg-secondary: #1e1e1e; /* Slightly lighter dark gray for cards */
+            --text-primary: #e0e0e0; /* Light gray for main text */
+            --text-secondary: #b0b0b0; /* Lighter gray for secondary text */
+            --border-color: #333333; /* Darker border */
+            --shadow-color: rgba(0, 0, 0, 0.6);
+            --navbar-shadow-color: rgba(0, 0, 0, 0.6);
+            --card-shadow-color: rgba(0, 0, 0, 0.5);
+            --btn-accent: #00a896; /* Vibrant teal */
+            --btn-accent-hover: #008f7f;
+            --btn-accent-shadow: rgba(0, 168, 150, 0.4);
+            --btn-accent-hover-shadow: rgba(0, 168, 150, 0.6);
+            --btn-secondary-accent: #ffbf69; /* Warm gold */
+            --btn-secondary-accent-hover: #e09f47;
+            --btn-secondary-accent-shadow: rgba(255, 191, 105, 0.4);
+            --btn-secondary-accent-hover-shadow: rgba(255, 191, 105, 0.6);
+            --input-bg: #1e1e1e;
+            --input-border: #333333;
+            --input-focus-border: #00a896;
+            --input-placeholder: #666666;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            padding-top: 70px;
+            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out;
+        }
+
+        .container {
+            max-width: 1000px;
+        }
+        .form-section {
+            background-color: var(--bg-secondary);
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px var(--card-shadow-color), 0 2px 4px -1- var(--card-shadow-color);
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease-in-out;
+        }
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--input-border);
+            border-radius: 0.5rem;
+            font-size: 0.95rem;
+            background-color: var(--input-bg);
+            color: var(--text-primary);
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--input-placeholder);
+        }
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: var(--input-focus-border);
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(0, 168, 150, 0.25);
+        }
+        .btn-primary {
+            background-color: var(--btn-accent);
+            color: #ffffff;
+            padding: 0.8rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background-color 0.2s ease-in-out, transform 0.15s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px var(--btn-accent-shadow);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-primary:hover {
+            background-color: var(--btn-accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--btn-accent-hover-shadow);
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+            box-shadow: 2px 5px var(--btn-accent-shadow);
+        }
+        .btn-secondary {
+            background-color: var(--btn-secondary-accent);
+            color: #ffffff;
+            padding: 0.8rem 2rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.05rem;
+            transition: background-color 0.2s ease-in-out, transform 0.15s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 10px var(--btn-secondary-accent-shadow);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-secondary:hover {
+            background-color: var(--btn-secondary-accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px var(--btn-secondary-accent-hover-shadow);
+        }
+        .btn-secondary:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 5px var(--btn-secondary-accent-shadow);
+        }
+
+        .loader {
+            border: 4px solid var(--border-color);
+            border-top: 4px solid var(--btn-accent);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* --- New CSS for Templates and Resume Display --- */
+        .template-selector button {
+            background-color: var(--bg-secondary);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s ease-in-out;
+        }
+        .template-selector button:hover {
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            border-color: var(--btn-accent);
+            transform: translateY(-2px);
+        }
+        .template-selector button.active {
+            background-color: var(--btn-accent);
+            color: #ffffff;
+            border-color: var(--btn-accent);
+            box-shadow: 0 4px 10px var(--btn-accent-shadow);
+        }
+
+        /* Base resume display styling */
+        #resumeRenderArea, #rawResumeDisplay {
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-primary);
+            white-space: pre-wrap;
+            word-break: break-word;
+            background-color: var(--bg-secondary);
+            padding: 3.5rem 3rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 20px -5px var(--card-shadow-color);
+            letter-spacing: 0.01em;
+            border: 1px solid var(--border-color);
+            max-width: 1000px;
+            margin: 0 auto;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        #resumeRenderArea.appear, #rawResumeDisplay.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        #rawResumeDisplay {
+            font-family: monospace;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            white-space: pre;
+            overflow-x: auto;
+        }
+        #rawResumeDisplay h3 {
+            color: #79c0ff; /* JSON key color */
+        }
+        #rawResumeDisplay p {
+            color: #a5d6ff; /* JSON value color */
+        }
+
+        /*
+         * --- CORRECTED TEMPLATE-SPECIFIC STYLES ---
+         * The margins have been adjusted for a tighter layout.
+         */
+        #resumeRenderArea h2 {
+            /* A common style for all h2 to override browser defaults */
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        #resumeRenderArea.template-modern h2 {
+            border-bottom: 2px solid var(--btn-accent);
+            padding-bottom: 0.5rem;
+            /* Keep margins consistent, let the padding handle separation */
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        #resumeRenderArea.template-professional h2 {
+            color: var(--btn-secondary-accent);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            /* Tighter margins for a professional look */
+            margin-top: 2rem;
+            margin-bottom: 0.25rem;
+            border-bottom: 1px solid var(--text-secondary);
+        }
+        #resumeRenderArea.template-minimalist {
+            background-color: #ffffff;
+            color: #333333;
+            border: 1px solid #e0e0e0;
+        }
+        #resumeRenderArea.template-minimalist h1 { color: #333333; }
+        #resumeRenderArea.template-minimalist h2 {
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 0.5rem;
+            /* Tighter margins */
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #333333;
+        }
+        #resumeRenderArea.template-bold h1 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--btn-secondary-accent);
+        }
+        #resumeRenderArea.template-bold h2 {
+            background-color: var(--btn-secondary-accent);
+            color: #121212; /* Use a dark color for contrast */
+            padding: 0.5rem 1rem;
+            /* Adjusting the negative margin to prevent content from overlapping */
+            margin: 1.5rem -3rem 0.5rem -3rem;
+            letter-spacing: 0.1em;
+        }
+        #resumeRenderArea.template-creative {
+            border-left: 5px solid var(--btn-accent);
+        }
+        #resumeRenderArea.template-creative h1 { color: var(--btn-secondary-accent); }
+        #resumeRenderArea.template-creative h2 {
+            color: var(--btn-accent);
+            font-size: 1.5rem;
+            position: relative;
+            padding-left: 1.5rem;
+            /* Minimal margin for creative template */
+            margin-top: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        #resumeRenderArea.template-creative h2:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--btn-secondary-accent);
+            font-size: 2rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center py-10 bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <div class="container mx-auto p-4 md:p-8">
+        <h1 class="text-4xl font-extrabold text-center mb-10 leading-tight">
+            AI-Powered Resume Builder
+        </h1>
+
+        <div class="form-section mb-12">
+            <h2 class="text-2xl font-semibold mb-8 text-center">Enter Your Professional Details</h2>
+            <form method="post" id="resumeForm" class="space-y-6">
+                {% csrf_token %}
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.full_name.id_for_label }}" class="form-label">Full Name</label>
+                        {{ form.full_name }}
+                    </div>
+                    <div>
+                        <label for="{{ form.email.id_for_label }}" class="form-label">Email</label>
+                        {{ form.email }}
+                    </div>
+                    <div>
+                        <label for="{{ form.phone.id_for_label }}" class="form-label">Phone</label>
+                        {{ form.phone }}
+                    </div>
+                    <div>
+                        <label for="{{ form.linkedin_url.id_for_label }}" class="form-label">LinkedIn Profile URL</label>
+                        {{ form.linkedin_url }}
+                    </div>
+                    <div>
+                        <label for="{{ form.github_url.id_for_label }}" class="form-label">GitHub Profile URL</label>
+                        {{ form.github_url }}
+                    </div>
+                    <div>
+                        <label for="{{ form.portfolio_url.id_for_label }}" class="form-label">Portfolio URL</label>
+                        {{ form.portfolio_url }}
+                    </div>
+                </div>
+
+                <div>
+                    <label for="{{ form.summary.id_for_label }}" class="form-label">Professional Summary / Objective</label>
+                    {{ form.summary }}
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8 mb-4">Education</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.education_level.id_for_label }}" class="form-label">Highest Education Level</label>
+                        {{ form.education_level }}
+                    </div>
+                    <div>
+                        <label for="{{ form.university_name.id_for_label }}" class="form-label">University / Institution Name</label>
+                        {{ form.university_name }}
+                    </div>
+                    <div>
+                        <label for="{{ form.degree.id_for_label }}" class="form-label">Degree / Program</label>
+                        {{ form.degree }}
+                    </div>
+                    <div>
+                        <label for="{{ form.graduation_year.id_for_label }}" class="form-label">Graduation Year</label>
+                        {{ form.graduation_year }}
+                    </div>
+                </div>
+                <div>
+                    <label for="{{ form.education_details.id_for_label }}" class="form-label">Other Education Details (e.g., certifications, relevant coursework)</label>
+                    {{ form.education_details }}
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8 mb-4">Current/Most Recent Experience</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.job_title.id_for_label }}" class="form-label">Job Title</label>
+                        {{ form.job_title }}
+                    </div>
+                    <div>
+                        <label for="{{ form.company_name.id_for_label }}" class="form-label">Company Name</label>
+                        {{ form.company_name }}
+                    </div>
+                    <div>
+                        <label for="{{ form.start_date.id_for_label }}" class="form-label">Start Date</label>
+                        {{ form.start_date }}
+                    </div>
+                    <div>
+                        <label for="{{ form.end_date.id_for_label }}" class="form-label">End Date (Leave blank if current)</label>
+                        {{ form.end_date }}
+                    </div>
+                </div>
+                <div>
+                    <label for="{{ form.experience_details.id_for_label }}" class="form-label">Responsibilities & Achievements (Use bullet points if possible)</label>
+                    {{ form.experience_details }}
+                </div>
+                <div>
+                    <label for="{{ form.previous_experience.id_for_label }}" class="form-label">Previous Experience (Optional, add job title, company, dates, and responsibilities)</label>
+                    {{ form.previous_experience }}
+                </div>
+
+                <div>
+                    <label for="{{ form.skills.id_for_label }}" class="form-label">Skills (Comma-separated: e.g., Python, JavaScript, SQL, Data Analysis)</label>
+                    {{ form.skills }}
+                </div>
+
+                <h3 class="text-xl font-semibold mt-8 mb-4">Key Project (Optional)</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="{{ form.project_name.id_for_label }}" class="form-label">Project Name</label>
+                        {{ form.project_name }}
+                    </div>
+                    <div>
+                        <label for="{{ form.project_url.id_for_label }}" class="form-label">Project URL</label>
+                        {{ form.project_url }}
+                    </div>
+                </div>
+                <div>
+                    <label for="{{ form.project_description.id_for_label }}" class="form-label">Project Description and Your Role</label>
+                    {{ form.project_description }}
+                </div>
+
+                <div class="flex justify-center mt-10">
+                    <button type="submit" class="btn-primary flex items-center justify-center space-x-3" id="generateBtn">
+                        <span id="buttonText">Generate My Resume</span>
+                        <div id="loader" class="loader hidden"></div>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        {% if generated_resume_text %}
+        <div id="rawResumeText" style="display: none;">{{ generated_resume_text }}</div>
+
+        <div class="form-section mt-12">
+            <h2 class="text-2xl font-semibold mb-8 text-center">Your AI-Generated Resume</h2>
+
+            <h3 class="text-xl font-semibold mb-4 text-center text-primary">Choose a Template</h3>
+            <div class="template-selector flex flex-wrap justify-center gap-4 mb-8">
+                <button onclick="applyTemplate('raw')" class="active">Raw Text</button>
+                <button onclick="applyTemplate('professional')">Professional</button>
+                <button onclick="applyTemplate('minimalist')">Minimalist</button>
+                <button onclick="applyTemplate('bold')">Bold</button>
+                <button onclick="applyTemplate('creative')">Creative</button>
+            </div>
+
+            <div id="resumeRenderArea"></div>
+
+            <div class="flex flex-col md:flex-row justify-center gap-4 mt-8">
+                <button onclick="copyToClipboard()" class="btn-primary">Copy Resume</button>
+                <button onclick="downloadPdf()" class="btn-primary">Download PDF</button>
+                <button onclick="downloadTxt()" class="btn-secondary">Download Plain Text</button>
+                <a href="{% url 'home' %}" class="btn-secondary">Back to Home</a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.getElementById('resumeForm').addEventListener('submit', function() {
+            document.getElementById('buttonText').textContent = 'Generating...';
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('generateBtn').disabled = true;
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const rawResumeText = document.getElementById('rawResumeText');
+            if (rawResumeText && rawResumeText.textContent.trim() !== '') {
+                // Initial render with the new default 'raw' view
+                applyTemplate('raw');
+                const resumeRenderArea = document.getElementById('resumeRenderArea');
+                if (resumeRenderArea) {
+                    resumeRenderArea.classList.add('appear');
+                }
+            }
+        });
+
+        // UPDATED: This function now correctly parses the personal details at the top
+        function parseResumeText(rawText) {
+            const sections = {};
+            const sectionTitles = ['Full Name', 'Email', 'Phone', 'LinkedIn Profile URL', 'GitHub Profile URL', 'Portfolio URL', 'Professional Summary / Objective', 'Summary', 'Education', 'Highest Education Level', 'University / Institution Name', 'Degree / Program', 'Graduation Year', 'Other Education Details', 'Current/Most Recent Experience', 'Job Title', 'Company Name', 'Start Date', 'End Date', 'Responsibilities & Achievements', 'Previous Experience', 'Skills', 'Key Project', 'Project Name', 'Project URL', 'Project Description and Your Role', 'PROJECTS', 'EXPERIENCE'];
+
+            let currentSection = null;
+            let currentContent = [];
+            let isFirstBlock = true;
+
+            const normalizedText = rawText.replace(/(\r\n|\n\r)/g, '\n').trim();
+            const lines = normalizedText.split('\n');
+
+            lines.forEach(line => {
+                let trimmedLine = line.trim();
+                let foundTitle = false;
+
+                // Check if the line is a recognized section title
+                for (const title of sectionTitles) {
+                    if (trimmedLine.toUpperCase() === title.toUpperCase()) {
+                        if (currentSection) {
+                            sections[currentSection] = currentContent.join('\n').trim();
+                        }
+                        currentSection = title;
+                        currentContent = [];
+                        foundTitle = true;
+                        isFirstBlock = false;
+                        break;
+                    }
+                }
+
+                // If it's the very first block of text and no title has been found yet
+                if (!foundTitle && isFirstBlock) {
+                    if (!sections['Personal Details']) {
+                        sections['Personal Details'] = [];
+                    }
+                    sections['Personal Details'].push(line);
+                } else if (!foundTitle && currentSection) {
+                    currentContent.push(line);
+                }
+            });
+
+            // Add the last section
+            if (currentSection) {
+                sections[currentSection] = currentContent.join('\n').trim();
+            }
+
+            // Join the personal details lines and clean up
+            if (sections['Personal Details']) {
+                sections['Personal Details'] = sections['Personal Details'].join('\n').trim();
+            }
+
+            // Format bullet points for all other sections
+            for (const key in sections) {
+                if (sections.hasOwnProperty(key) && key !== 'Personal Details') {
+                    const content = sections[key];
+                    sections[key] = content.split('\n').map(line => {
+                        const trimmed = line.trim();
+                        if (trimmed.startsWith('*')) {
+                            return `<li>${trimmed.substring(1).trim()}</li>`;
+                        } else {
+                            return trimmed;
+                        }
+                    }).filter(item => item !== '').join('\n');
+                }
+            }
+
+            return sections;
+        }
+
+        // Main function to apply a template
+        function applyTemplate(templateName) {
+            const resumeRenderArea = document.getElementById('resumeRenderArea');
+            const rawResumeText = document.getElementById('rawResumeText').textContent;
+
+            resumeRenderArea.className = '';
+
+            if (templateName === 'raw') {
+                resumeRenderArea.innerHTML = `<pre id="rawResumeDisplay" class="appear">${rawResumeText}</pre>`;
+            } else {
+                resumeRenderArea.classList.add(`template-${templateName}`);
+                const parsedData = parseResumeText(rawResumeText);
+                let templateHtml = '';
+
+                // Handle the personal details section first
+                if (parsedData['Personal Details']) {
+                    const lines = parsedData['Personal Details'].split('\n').filter(line => line.trim() !== '');
+                    const name = lines[0] || 'Your Name';
+                    const contactInfo = lines.slice(1).join(' | ');
+
+                    templateHtml += `
+                        <div class="text-center pb-4 border-b border-gray-500 mb-6">
+                            <h1 class="text-3xl font-bold text-primary mb-2">${name}</h1>
+                            <p class="text-lg text-secondary">${contactInfo}</p>
+                        </div>
+                    `;
+                }
+
+                // Loop through the rest of the sections
+                for (const key in parsedData) {
+                    if (parsedData.hasOwnProperty(key) && parsedData[key] && key !== 'Personal Details') {
+                        let contentHtml = '';
+                        if (key.toUpperCase() === 'SKILLS') {
+                            const skillsList = parsedData[key].split(',').map(skill => skill.trim()).join(', ');
+                            contentHtml = `<p class="mt-2">${skillsList}</p>`;
+                        } else if (key.toUpperCase() === 'PROJECTS') {
+                            const projectsContent = parsedData[key].split('\n').filter(line => line.trim() !== '');
+                            let currentProjectHtml = '';
+                            let isFirstLine = true;
+                            projectsContent.forEach(line => {
+                                if (line.startsWith('http')) {
+                                    if (!isFirstLine) {
+                                        currentProjectHtml += '</ul>';
+                                    }
+                                    currentProjectHtml += `<h3 class="text-lg font-semibold mt-4"><a href="${line}" class="text-blue-400 hover:underline">${line}</a></h3><ul class="list-disc list-inside mt-1 space-y-1">`;
+                                    isFirstLine = false;
+                                } else if (line.startsWith('<li>')) {
+                                    currentProjectHtml += line;
+                                } else {
+                                    if (!isFirstLine) {
+                                        currentProjectHtml += '</ul>';
+                                    }
+                                    currentProjectHtml += `<h3 class="text-lg font-semibold mt-4">${line}</h3><ul class="list-disc list-inside mt-1 space-y-1">`;
+                                    isFirstLine = false;
+                                }
+                            });
+                            currentProjectHtml += '</ul>';
+                            contentHtml = `<div class="mt-2">${currentProjectHtml}</div>`;
+                        } else {
+                            contentHtml = `<div class="mt-2">${parsedData[key]}</div>`;
+                        }
+
+                        templateHtml += `
+                            <h2 class="text-xl font-bold mt-6 mb-2">${key.toUpperCase()}</h2>
+                            ${contentHtml}
+                        `;
+                    }
+                }
+                resumeRenderArea.innerHTML = templateHtml;
+            }
+
+            resumeRenderArea.classList.add('appear');
+
+            document.querySelectorAll('.template-selector button').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.template-selector button[onclick="applyTemplate('${templateName}')"]`).classList.add('active');
+        }
+
+        function copyToClipboard() {
+            const resumeText = document.getElementById('resumeRenderArea').innerText;
+            const textArea = document.createElement("textarea");
+            textArea.value = resumeText;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                const copyButton = document.querySelector('button[onclick="copyToClipboard()"]');
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Copied!';
+                setTimeout(() => { copyButton.textContent = originalText; }, 2000);
+            } catch (err) {
+                console.error('Failed to copy text:', err);
+                const copyButton = document.querySelector('button[onclick="copyToClipboard()"]');
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Failed to copy!';
+                setTimeout(() => { copyButton.textContent = originalText; }, 2000);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // New function to download resume as a PDF
+        function downloadPdf() {
+            const resumeElement = document.getElementById('resumeRenderArea');
+            // Check if the resume render area is visible and contains content
+            if (!resumeElement || resumeElement.innerHTML.trim() === '') {
+                // DO NOT USE alert(), use a custom modal or console log instead
+                console.error('Please generate a resume first.');
+                return;
+            }
+
+            // Show a loading indicator
+            const originalButton = document.querySelector('button[onclick="downloadPdf()"]');
+            const originalText = originalButton.textContent;
+            originalButton.textContent = 'Generating PDF...';
+            originalButton.disabled = true;
+
+            // Use html2canvas to render the HTML content to a canvas
+            html2canvas(resumeElement, {
+                scale: 2, // Increase scale for better resolution
+                useCORS: true,
+            }).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF('p', 'mm', 'a4');
+                const imgWidth = 210;
+                const pageHeight = 297;
+                const imgHeight = canvas.height * imgWidth / canvas.width;
+                let heightLeft = imgHeight;
+
+                let position = 0;
+
+                pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                heightLeft -= pageHeight;
+
+                while (heightLeft >= 0) {
+                    position = heightLeft - imgHeight;
+                    pdf.addPage();
+                    pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+                    heightLeft -= pageHeight;
+                }
+
+                pdf.save('resume.pdf');
+
+                // Restore button state
+                originalButton.textContent = originalText;
+                originalButton.disabled = false;
+            }).catch(error => {
+                console.error('Error generating PDF:', error);
+                // Restore button state and show error message
+                originalButton.textContent = 'Error!';
+                setTimeout(() => { originalButton.textContent = originalText; }, 3000);
+                originalButton.disabled = false;
+            });
+        }
+
+        // Original function to download as plain text, now with a new name
+        function downloadTxt() {
+            const resumeText = document.getElementById('resumeRenderArea').innerText;
+            const filename = "resume.txt";
+            const blob = new Blob([resumeText], { type: "text/plain" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

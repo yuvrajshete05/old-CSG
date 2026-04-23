@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>AI Chat Assistant</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+        :root {
+            /* NEW Dark Color Combination (Futuristic Blue/Purple & Teal Accent) */
+            --primary: #00BCD4; /* Bright Cyan/Teal accent */
+            --primary-dark: #0097A7; /* Darker Cyan/Teal for hover */
+            --text-color: #E3F2FD; /* Very light blue for main text */
+            --subtle-text: #90A4AE; /* Muted blue-gray for descriptions */
+            --background: linear-gradient(135deg, #1C2B3A, #121A22); /* Deep dark blue-grey gradient */
+            --card-bg: #273C50; /* Darker blue-grey for the main container */
+            --shadow: 0 15px 40px rgba(0, 0, 0, 0.6); /* Pronounced dark shadow */
+            --border-radius-large: 30px;
+            --border-radius-medium: 15px;
+            --bubble-bg-user: #425F78; /* Medium blue-gray for user message */
+            --bubble-bg-ai: #354F62; /* Slightly darker blue-gray for AI message */
+            --typing-dots-color: #607D8B; /* Medium blue-gray for dots */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--background);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius-large);
+            padding: 40px;
+            text-align: center;
+            max-width: 600px;
+            width: 100%;
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.8s ease-out forwards;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--text-color);
+            position: relative;
+            z-index: 2;
+        }
+
+        p.description {
+            font-size: 1.1rem;
+            color: var(--subtle-text);
+            max-width: 480px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+            z-index: 2;
+        }
+
+        /* Chat simulation styles */
+        .chat-simulation {
+            width: 100%;
+            margin-bottom: 30px;
+            position: relative;
+            padding: 20px 0;
+            z-index: 1;
+        }
+
+        .chat-bubble {
+            background: var(--bubble-bg-ai);
+            border-radius: var(--border-radius-medium);
+            padding: 12px 18px;
+            margin-bottom: 15px;
+            text-align: left;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            max-width: 80%;
+            word-wrap: break-word;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: relative;
+            animation: slideInBubble 0.5s ease-out forwards;
+            opacity: 0;
+        }
+
+        .chat-bubble.user {
+            background: var(--bubble-bg-user);
+            margin-left: auto;
+            animation-delay: 0.2s;
+        }
+
+        .chat-bubble.ai {
+            margin-right: auto;
+        }
+
+        .chat-bubble p {
+            margin: 0;
+            color: var(--text-color);
+        }
+
+        .chat-bubble:nth-child(2) { animation-delay: 0.3s; }
+        .chat-bubble:nth-child(3) { animation-delay: 0.6s; }
+        .chat-bubble:nth-child(4) { animation-delay: 0.9s; }
+
+        @keyframes slideInBubble {
+            from {
+                opacity: 0;
+                transform: translateY(10px) scale(0.95);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 20px;
+            margin-top: 10px;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+            animation-delay: 1.2s;
+        }
+
+        .typing-indicator span {
+            height: 10px;
+            width: 10px;
+            margin: 0 3px;
+            background-color: var(--typing-dots-color);
+            border-radius: 50%;
+            display: inline-block;
+            animation: bubbleJump 1.4s infinite ease-in-out;
+        }
+
+        .typing-indicator span:nth-child(1) { animation-delay: 0.1s; }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.3s; }
+
+        @keyframes bubbleJump {
+            0%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-7px); }
+        }
+
+
+        /* Chat button styles */
+        .chat-bubble-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: var(--border-radius-large);
+            width: auto;
+            height: 60px;
+            padding: 0 40px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6); /* Stronger shadow for accent */
+            animation: none;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        .chat-bubble-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+
+        .chat-bubble-btn i {
+            margin-right: 15px;
+        }
+
+        a.back-home-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: var(--subtle-text);
+            font-weight: 500;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: color 0.3s ease;
+        }
+
+        a.back-home-link:hover {
+            color: var(--text-color);
+            text-decoration: underline;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            p.description {
+                font-size: 0.95rem;
+            }
+
+            .chat-bubble-btn {
+                height: 50px;
+                font-size: 1.2rem;
+                padding: 0 30px;
+            }
+
+            .container {
+                padding: 30px 20px;
+            }
+
+            .chat-bubble {
+                font-size: 0.85rem;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CareerPath AI</h1>
+        <p class="description">
+            Your smart AI is here to help! See how it works, then start a conversation in real-time.
+        </p>
+
+        <div class="chat-simulation">
+            <div class="chat-bubble ai">
+                <p>Hello! How can I assist you today?</p>
+            </div>
+            <div class="chat-bubble user">
+                <p>Hi there! I have a question about career guidance.</p>
+            </div>
+            <div class="chat-bubble ai">
+                <p>Great! I can help with that. What specifically would you like to know?</p>
+            </div>
+            <div class="typing-indicator">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+     <a href="/startchat/" class="chat-bubble-btn" title="Start Chat">
+  <i class="fas fa-robot"></i> Start Chat
+</a>
+
+        <a href="{% url 'home' %}" class="back-home-link">← Back to Home</a>
+    </div>
+
+    <script type="text/javascript">
+        var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+        (function () {
+            var s1 = document.createElement("script"),
+                s0 = document.getElementsByTagName("script")[0];
+            s1.async = true;
+            s1.src = 'https://embed.tawk.to/YOUR_PROPERTY_ID/YOUR_WIDGET_ID'; // Replace with your Tawk.to script
+            s1.charset = 'UTF-8';
+            s1.setAttribute('crossorigin', '*');
+            s0.parentNode.insertBefore(s1, s0);
+        })();
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const btn = document.getElementById('liveChatButton');
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                if (typeof Tawk_API !== 'undefined' && Tawk_API.toggle) {
+                    Tawk_API.toggle();
+                } else {
+                    alert("Live chat not ready. Please try again shortly.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+original code  -->
+
+<!-- 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Chat Support</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background-color: #f0f2f5; margin: 0; padding: 20px; box-sizing: border-box; }
+        #chat-container {
+            background-color: white; padding: 25px; border-radius: 10px; box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            width: 90%; max-width: 700px; display: flex; flex-direction: column; height: 80vh; max-height: 700px;
+        }
+        h2 { color: #333; text-align: center; margin-bottom: 20px; }
+        #chat-log {
+            flex-grow: 1; overflow-y: auto; border: 1px solid #eee; padding: 15px; margin-bottom: 20px;
+            border-radius: 8px; background-color: #fafafa; line-height: 1.5; color: #555;
+        }
+        #chat-log p { margin: 5px 0; padding: 3px 0; }
+        #chat-log .my-message { text-align: right; color: #007bff; }
+        #chat-log .other-message { text-align: left; color: #28a745; }
+        #message-input-area { display: flex; }
+        #message-input { flex-grow: 1; padding: 12px 15px; border: 1px solid #ddd; border-radius: 5px 0 0 5px; font-size: 16px; outline: none; }
+        #chat-submit { background-color: #007bff; color: white; padding: 12px 20px; border: none; border-radius: 0 5px 5px 0; cursor: pointer; font-size: 16px; transition: background-color 0.3s ease; }
+        #chat-submit:hover { background-color: #0056b3; }
+        .sender-name { font-weight: bold; margin-right: 5px; }
+        .back-link { display: block; text-align: center; margin-top: 20px; color: #007bff; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <h2>Live Chat</h2>
+        <div id="chat-log"></div>
+        <div id="message-input-area">
+            <input id="message-input" type="text" placeholder="Type your message here..."/>
+            <input id="chat-submit" type="button" value="Send"/>
+        </div>
+        <a href="home.html" class="back-link">Go back to Home</a>
+    </div>
+
+    <script>
+        // Generate a random user name for demonstration purposes.
+        // In a real app, this would be the logged-in user's name.
+        const username = 'Guest-' + Math.floor(Math.random() * 1000);
+        console.log(`Current user: ${username}`);
+
+        const chatLog = document.getElementById('chat-log');
+        const messageInput = document.getElementById('message-input');
+        const chatSubmit = document.getElementById('chat-submit');
+
+        // Establish WebSocket connection to your Django Channels backend
+        // This URL must match the re_path in app1/routing.py
+        const chatSocket = new WebSocket(
+            'ws://' + window.location.host + '/ws/livechat/'
+        );
+
+        // Handle incoming messages from the WebSocket
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const message = data.message;
+            const sender = data.sender;
+
+            const messageElement = document.createElement('p');
+            messageElement.innerHTML = `<span class="sender-name">${sender}:</span> ${message}`;
+
+            // Apply specific class for sender's own messages vs. others
+            if (sender === username) {
+                messageElement.classList.add('my-message');
+            } else {
+                messageElement.classList.add('other-message');
+            }
+
+            chatLog.appendChild(messageElement);
+            chatLog.scrollTop = chatLog.scrollHeight; // Auto-scroll to bottom
+        };
+
+        // Handle WebSocket closure (e.g., server restarts, network issues)
+        chatSocket.onclose = function(e) {
+            console.error('Chat socket closed unexpectedly:', e);
+            chatLog.innerHTML += '<p style="color: red; text-align: center;">Disconnected from chat. Please refresh the page.</p>';
+        };
+
+        // Handle WebSocket errors
+        chatSocket.onerror = function(err) {
+            console.error('WebSocket error:', err);
+            chatLog.innerHTML += '<p style="color: red; text-align: center;">Chat connection error. Check console.</p>';
+        };
+
+        // Send message on Enter key press in input field
+        messageInput.focus();
+        messageInput.onkeyup = function(e) {
+            if (e.key === 'Enter') {
+                chatSubmit.click();
+            }
+        };
+
+        // Send message on button click
+        chatSubmit.onclick = function(e) {
+            const message = messageInput.value;
+            if (message.trim() !== '') {
+                chatSocket.send(JSON.stringify({
+                    'message': message,
+                    'sender': username,
+                }));
+                messageInput.value = ''; // Clear input after sending
+            }
+        };
+    </script>
+</body>
+</html> -->
